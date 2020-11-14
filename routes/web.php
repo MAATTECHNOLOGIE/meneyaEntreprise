@@ -14,9 +14,26 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('meneya');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/*--------------------------
+  GESTION DU LANDING PAGE
+----------------------------*/
+    // Meneya_abonnement
+     Route::get('meneyaabonner', function () {
+        return view('meneyaabonner');
+      });
+    // Meneya_test 
+     Route::get('meneyatest', function () {
+       return view('meneyatest');
+     });
+    // Meneya_premium 
+     Route::get('meneyaacheter', function () {
+       return view('meneyaacheter');
+     });
+
