@@ -1,1 +1,1 @@
-@include('../mylogin');
+@include('../welcome');

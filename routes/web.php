@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('meneya');
 });
 
-Auth::routes();
+Auth::routes(['register'=>false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
