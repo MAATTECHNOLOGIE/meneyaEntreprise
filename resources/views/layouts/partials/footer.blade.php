@@ -111,6 +111,7 @@
   <div class="spinner-grow text-dark" role="status">
     <span class="sr-only">Loading...</span>
   </div>
+
 </div>
     <!-- ===============================================-->
 
@@ -171,9 +172,13 @@
       // Fonction de chargement
       function loadingScreen()
       {
+                toastr.options.progressBar = true;
+                toastr.info('Chargement en cours ...'); 
         $('#main_content').html($('#animationDiv').attr('class', 'animation text-center'));
-        
-      }
+                toastr.options.progressBar = false;
+
+
+            }
     </script>
     
     <script src="{{ asset('assets/js/js_route.js') }}"></script>

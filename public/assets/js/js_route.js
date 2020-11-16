@@ -9,38 +9,38 @@ TABLEAU DE BORD
 
 
 /*--------- -----------------
-	GESTION DE STOCK PRINCIPALE
+    GESTION DE STOCK PRINCIPALE
 -----------------------------*/
 
-	$('#arrivagePrincipal').click(function()
-	{
-		            loadingScreen();
+    $('#arrivagePrincipal').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/arrivagePrincipal');
-	});
+    });
 
 
     
 
-	//Liste de mes approvisionnent
+    //Liste de mes approvisionnent
 
-	$('#listArrivage').click(function()
-	{
-		            loadingScreen();
+    $('#listArrivage').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/listeApprovisionnement');
-	});
+    });
 
 
-	$('#produitsPrincipal').click(function()
-	{
-		            loadingScreen();
+    $('#produitsPrincipal').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/produitsPrincipal');
-	});
+    });
 
-	$('#stockP').click(function()
-	{
-		            loadingScreen();
+    $('#stockP').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/stock_principal');
-	});
+    });
 
             /*--------- -----------------
                 GESTION DES ARRIVAGES
@@ -87,27 +87,27 @@ TABLEAU DE BORD
     });
 
 
-			/*--------- -----------------
-				GESTION DE VENTE PRINCIPALE
-			-----------------------------*/
-	$('#achatPrincipal').click(function()
-	{
-		            loadingScreen();
+            /*--------- -----------------
+                GESTION DE VENTE PRINCIPALE
+            -----------------------------*/
+    $('#achatPrincipal').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/venteP');
-	});
+    });
 
-	$('#liste_ventePrincipal').click(function()
-	{
-		            loadingScreen();
+    $('#liste_ventePrincipal').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/listeVntP');
-	});	
+    }); 
 
-	$('#clientPrincipal').click(function()
-	{
-		            loadingScreen();
+    $('#clientPrincipal').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/clientPrincipal');
-	});
-    	
+    });
+        
     $('#proformat').click(function()
     {
                     loadingScreen();
@@ -118,77 +118,77 @@ TABLEAU DE BORD
     
 
 
-			/*--------- -----------------
-				GESTION DES EMPLOYES  PRINCIPALE
-			-----------------------------*/
+            /*--------- -----------------
+                GESTION DES EMPLOYES  PRINCIPALE
+            -----------------------------*/
 
-	$('#ajouterEmploye').click(function()
-	{
-		            loadingScreen();
+    $('#ajouterEmploye').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/ajouterEmploye');
-	});	
+    }); 
 
-	$('#listeEmploye').click(function()
-	{
-		            loadingScreen();
+    $('#listeEmploye').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/listeEmploye');
-	});	
+    }); 
 
 
-			/*--------- -----------------
-				GESTION DES SUCCURSALES 
-			-----------------------------*/
+            /*--------- -----------------
+                GESTION DES SUCCURSALES 
+            -----------------------------*/
 
-	$('#creerSuccursale').click(function()
-	{
-		            loadingScreen();
+    $('#creerSuccursale').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/creerSuccursale');
-	});	
+    }); 
 
 
-	$('#listeSuccursale').click(function()
-	{
-		            loadingScreen();
+    $('#listeSuccursale').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/listeSuccursale');
-	});	
+    }); 
 
 //dashboard dune succursale
 $('#dashSucu').click(function()
 {
-	            loadingScreen();
+                loadingScreen();
             $('#main_content').load('dashSucu'); 
 })
 
-	$('#statistiqueSuccursale').click(function()
-	{
-		            loadingScreen();
+    $('#statistiqueSuccursale').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/statistiqueSuccursale');
-	});
+    });
 
 
-	// $('#stock_succ').click(function()
-	// {
-	// 	            loadingScreen();
+    // $('#stock_succ').click(function()
+    // {
+    //              loadingScreen();
             $('#main_content').load('/stockSuccursale');
-	// });	
+    // });  
 
 
-			/*--------- -----------------
-			GESTION DES APPROVISIONNEMENT 
-			-----------------------------*/
+            /*--------- -----------------
+            GESTION DES APPROVISIONNEMENT 
+            -----------------------------*/
 
-	$('#ajouterApprovisionnement').click(function()
-	{
-		            loadingScreen();
+    $('#ajouterApprovisionnement').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/ajouterApprovisionnement');
-	});	
+    }); 
 
-	
-	$('#listeApprovisionnement').click(function()
-	{
-		            loadingScreen();
+    
+    $('#listeApprovisionnement').click(function()
+    {
+                    loadingScreen();
             $('#main_content').load('/listeApprovisionnement');
-	});	
+    }); 
 
 
 
@@ -200,17 +200,20 @@ $('#dashSucu').click(function()
 --------------------*/
     // Achat
      $("#s_Achat").click(function(){
-   	   $("#main_content").load("/s_Achat");
+                    loadingScreen();
+            $('#main_content').load("/s_Achat");
      });
 
     // Clients
      $('#s_Client').click(function(){
-     	$("#main_content").load("/s_Client");
+                     loadingScreen();
+            $('#main_content').load("/s_Client");
      });
 
     // Vente
      $('#s_Vente').click(function(){
-     	$("#main_content").load("/s_Vente");
+                     loadingScreen();
+            $('#main_content').load("/s_Vente");
      });
 
 /*-----------------------
@@ -218,7 +221,8 @@ $('#dashSucu').click(function()
 -------------------------*/
     // Stock
      $("#s_Stock").click(function(){
-   	   $("#main_content").load("/s_Stock");
+                    loadingScreen();
+            $('#main_content').load("/s_Stock");
      });
 
 /*-----------------------
@@ -226,18 +230,21 @@ $('#dashSucu').click(function()
 -------------------------*/
     // Nouveau
      $("#p_newF").click(function(){
-   	   $("#main_content").load("/p_newF");
+                    loadingScreen();
+            $('#main_content').load("/p_newF");
      });
 
      // List Fournisseur
 
      $("#p_listF").click(function(){
-   	   $("#main_content").load("/p_listF");
+                    loadingScreen();
+            $('#main_content').load("/p_listF");
      });
 
     // Echeance
      $("#p_Eche").click(function(){
-   	   $("#main_content").load("/p_Eche");
+                    loadingScreen();
+            $('#main_content').load("/p_Eche");
      });
    
 /*-----------------------
@@ -245,22 +252,26 @@ $('#dashSucu').click(function()
 -------------------------*/
     // Nouveau
      $("#p_Opera").click(function(){
-   	   $("#main_content").load("/p_Opera");
+                    loadingScreen();
+            $('#main_content').load("/p_Opera");
      });
 
     // Stock
      $("#p_OperaStock").click(function(){
-   	   $("#main_content").load("/p_OperaStock");
+                    loadingScreen();
+            $('#main_content').load("/p_OperaStock");
      });
 
     // Commandes opérateurs
      $("#p_OpComd").click(function(){
-   	   $("#main_content").load("/p_OpComd");
+                    loadingScreen();
+            $('#main_content').load("/p_OpComd");
      });
 
     // Liste 
     $("#p_OpListe").click(function(){
-   	   $("#main_content").load("/p_OpListe");
+                    loadingScreen();
+            $('#main_content').load("/p_OpListe");
      });
 
 
@@ -271,39 +282,46 @@ $('#dashSucu').click(function()
 -------------------------*/
     // Nouveau
      $("#p_NewVers").click(function(){
-   	   $("#main_content").load("/p_NewVers");
+                    loadingScreen();
+            $('#main_content').load("/p_NewVers");
      });
 
     // Liste
      $("#p_LVer").click(function(){
-   	   $("#main_content").load("/p_LVer");
+                    loadingScreen();
+            $('#main_content').load("/p_LVer");
      });
 /*--------- -----------------
  GESTION DES PROSPECTS
 -----------------------------*/
     // Nouveau
      $("#p_prospNew").click(function(){
-    	$("#main_content").load("/p_prospNew");
+                     loadingScreen();
+            $('#main_content').load("/p_prospNew");
      });
 
     // Analyse
      $("#p_prospStat").click(function(){
-    	$("#main_content").load("/p_prospStat");
+                     loadingScreen();
+            $('#main_content').load("/p_prospStat");
      });
 
     // Besoins
      $("#p_prospbesoin").click(function(){
-    	$("#main_content").load("/p_prospbesoin");
+                     loadingScreen();
+            $('#main_content').load("/p_prospbesoin");
      });
 
     // Relance SMS
     $("#p_RelSMS").click(function(){
-    	$("#main_content").load("/p_RelSMS");
+                     loadingScreen();
+            $('#main_content').load("/p_RelSMS");
     });
 
     // Liste des prospects
     $("#p_prospL").click(function(){
-    	$("#main_content").load("/p_prospL");
+                     loadingScreen();
+            $('#main_content').load("/p_prospL");
     });
 
 /*--------- -----------------
