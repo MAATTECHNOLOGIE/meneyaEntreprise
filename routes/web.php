@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes(['register'=>false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
 /*--------------------------
   GESTION DU LANDING PAGE

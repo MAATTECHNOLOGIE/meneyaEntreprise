@@ -14,7 +14,8 @@ TABLEAU DE BORD
 
 	$('#arrivagePrincipal').click(function()
 	{
-		$('#main_content').load('/arrivagePrincipal');
+		            loadingScreen();
+            $('#main_content').load('/arrivagePrincipal');
 	});
 
 
@@ -24,18 +25,21 @@ TABLEAU DE BORD
 
 	$('#listArrivage').click(function()
 	{
-		$('#main_content').load('/listeApprovisionnement');
+		            loadingScreen();
+            $('#main_content').load('/listeApprovisionnement');
 	});
 
 
 	$('#produitsPrincipal').click(function()
 	{
-		$('#main_content').load('/produitsPrincipal');
+		            loadingScreen();
+            $('#main_content').load('/produitsPrincipal');
 	});
 
 	$('#stockP').click(function()
 	{
-		$('#main_content').load('/stock_principal');
+		            loadingScreen();
+            $('#main_content').load('/stock_principal');
 	});
 
             /*--------- -----------------
@@ -46,6 +50,8 @@ TABLEAU DE BORD
 //Ajout arrivage       
         $('#addArriv').click(function()
         {
+          
+              loadingScreen();
             $('#main_content').load('/addArriv');
         });
 
@@ -54,26 +60,30 @@ TABLEAU DE BORD
 
     $('#arrivAttn').click(function()
     {
-        $('#main_content').load('/arrivAttn');
+                    loadingScreen();
+            $('#main_content').load('/arrivAttn');
     });
     
     //arrivage valide
     $('#arrivOk').click(function()
     {
-        $('#main_content').load('/arrivOk');
+                    loadingScreen();
+            $('#main_content').load('/arrivOk');
     }); 
 
 //lsit arrivage       
 
     $('#listArriv').click(function()
     {
-        $('#main_content').load('/listArriv');
+                    loadingScreen();
+            $('#main_content').load('/listArriv');
     });
     
 //statistique Arrivage
     $('#statArriv').click(function()
     {
-        $('#main_content').load('/statArriv');
+                    loadingScreen();
+            $('#main_content').load('/statArriv');
     });
 
 
@@ -82,22 +92,26 @@ TABLEAU DE BORD
 			-----------------------------*/
 	$('#achatPrincipal').click(function()
 	{
-		$('#main_content').load('/venteP');
+		            loadingScreen();
+            $('#main_content').load('/venteP');
 	});
 
 	$('#liste_ventePrincipal').click(function()
 	{
-		$('#main_content').load('/listeVntP');
+		            loadingScreen();
+            $('#main_content').load('/listeVntP');
 	});	
 
 	$('#clientPrincipal').click(function()
 	{
-		$('#main_content').load('/clientPrincipal');
+		            loadingScreen();
+            $('#main_content').load('/clientPrincipal');
 	});
     	
     $('#proformat').click(function()
     {
-        $('#main_content').load('/factVnt');
+                    loadingScreen();
+            $('#main_content').load('/factVnt');
     });
 
 
@@ -110,12 +124,14 @@ TABLEAU DE BORD
 
 	$('#ajouterEmploye').click(function()
 	{
-		$('#main_content').load('/ajouterEmploye');
+		            loadingScreen();
+            $('#main_content').load('/ajouterEmploye');
 	});	
 
 	$('#listeEmploye').click(function()
 	{
-		$('#main_content').load('/listeEmploye');
+		            loadingScreen();
+            $('#main_content').load('/listeEmploye');
 	});	
 
 
@@ -125,30 +141,35 @@ TABLEAU DE BORD
 
 	$('#creerSuccursale').click(function()
 	{
-		$('#main_content').load('/creerSuccursale');
+		            loadingScreen();
+            $('#main_content').load('/creerSuccursale');
 	});	
 
 
 	$('#listeSuccursale').click(function()
 	{
-		$('#main_content').load('/listeSuccursale');
+		            loadingScreen();
+            $('#main_content').load('/listeSuccursale');
 	});	
 
 //dashboard dune succursale
 $('#dashSucu').click(function()
 {
-	$('#main_content').load('dashSucu'); 
+	            loadingScreen();
+            $('#main_content').load('dashSucu'); 
 })
 
 	$('#statistiqueSuccursale').click(function()
 	{
-		$('#main_content').load('/statistiqueSuccursale');
+		            loadingScreen();
+            $('#main_content').load('/statistiqueSuccursale');
 	});
 
 
 	// $('#stock_succ').click(function()
 	// {
-	// 	$('#main_content').load('/stockSuccursale');
+	// 	            loadingScreen();
+            $('#main_content').load('/stockSuccursale');
 	// });	
 
 
@@ -158,13 +179,15 @@ $('#dashSucu').click(function()
 
 	$('#ajouterApprovisionnement').click(function()
 	{
-		$('#main_content').load('/ajouterApprovisionnement');
+		            loadingScreen();
+            $('#main_content').load('/ajouterApprovisionnement');
 	});	
 
 	
 	$('#listeApprovisionnement').click(function()
 	{
-		$('#main_content').load('/listeApprovisionnement');
+		            loadingScreen();
+            $('#main_content').load('/listeApprovisionnement');
 	});	
 
 

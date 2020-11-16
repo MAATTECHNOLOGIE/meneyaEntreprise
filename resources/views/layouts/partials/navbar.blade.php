@@ -45,7 +45,7 @@
 
                {{-- MENU PRINCIPALES --}}
 
-              @if(Auth::user()->userRole == "admin")
+              @if(getRole() == "admin")
 
               <ul class="navbar-nav flex-column">
                                 <li class="nav-item">

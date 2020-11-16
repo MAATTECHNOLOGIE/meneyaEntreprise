@@ -82,6 +82,40 @@
 
 
 
+    <!-- ===============================================-->
+    <!--    SPINNER DE CHARGEMENT  -->
+
+<div class="animation text-center invisible mt-5" id="animationDiv">
+
+  <div>
+  <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-success" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-info" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-warning" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-light" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-dark" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+    <!-- ===============================================-->
+
+
+
 
     <!-- ===============================================-->
     <!--    JavaScripts-->
@@ -127,11 +161,19 @@
     <!--    MES PROPRES SCRIPTS-->
     <!-- ===============================================-->
     <script type="text/javascript">
-      function scrollContent()
-         {
+      // Fonction de scrollage
+       function scrollContent()
+       {
             var offset = $('#infoSucc').offset().top;
             $('html, body').animate({scrollTop: offset}, 'slow');
-         }
+       }
+
+      // Fonction de chargement
+      function loadingScreen()
+      {
+        $('#main_content').html($('#animationDiv').attr('class', 'animation text-center'));
+        
+      }
     </script>
     
     <script src="{{ asset('assets/js/js_route.js') }}"></script>
