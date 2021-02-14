@@ -1,10 +1,10 @@
           <footer class="no-print">
             <div class="row no-gutters justify-content-between fs--1 mt-4 mb-3">
               <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 text-600">{{ env("APP_NAME") }} | Tous droits réservés <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> {{ date("Y") }} &copy; <a href="mailto:maattechnologie@gmail.com">By Maat Technologie</a></p>
+                <p class="mb-0 text-600">{{ env("APP_NAME") }} | Tous droits réservés <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> {{ date("Y") }} &copy; <a href="mailto:maattechnologie@gmail.com">By MENEYA & CO</a></p>
               </div>
               <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 text-600">v1.1.0</p>
+                <p class="mb-0 text-600">v1.2.0</p>
               </div>
             </div>
           </footer>

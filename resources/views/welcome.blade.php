@@ -46,19 +46,25 @@
               <div class="card-body p-0">
                 <div class="row no-gutters h-100">
                   <div class="col-md-5 text-white text-center bg-card-gradient">
-                    <div class="position-relative p-4 pt-md-5 pb-md-7">
+                    <div class="position-relative p-4 pt-md-5 pb-md-7" 
+                         style="background-color: #bd003b;">
                       <div class="bg-holder bg-auth-card-shape" style="background-image:url({{ asset('../../assets/img/illustrations/half-circle.png') }});">
                       </div>
                       <!--/.bg-holder-->
 
-                      <div class="z-index-1 position-relative"><a class="text-white mb-4 text-sans-serif font-weight-extra-bold fs-4 d-inline-block" href="#">MENEYA</a>
+                      <div class="z-index-1 position-relative"><a class="text-white mb-4 text-sans-serif font-weight-extra-bold fs-4 d-inline-block" href="/">MENEYA</a>
 
-                        <p class="text-white opacity-75">Bienvenue !
-                          <br> Vous êtes sur la plateforme de gestion interactif. Avec MENEYA, vous centralisez toutes vos données sans soucis.</p>
+                        <p class="text-white opacity-75">
+                          <br>
+                            LA SOLUTION DIGITALE POUR OPTIMISER,CONTROLER,GERER SON
+                            BUSINESS ET AUGMENTER RAPIDEMENT SON
+                            CHIFFRE D’AFFAIRE
+                        </p>
                       </div>
                     </div>
                     <div class="mt-3 mb-4 mt-md-4 mb-md-5">
-                      <p>Username : essaie@meneya.com<br>Mot de Passe : meneya2020<br><a class="text-white text-underline" href="#">Bon travail!</a>
+                      <p>Email : essaie@meneya.com<br>Mot de passe : meneya2020<br>
+                        <a class="text-white text-underline"href='#'>Bon travail!</a>
                       </p>
                     </div>
                   </div>
@@ -97,17 +103,19 @@
                           <label class="custom-control-label" for="card-checkbox">Garder ma session</label>
                         </div>
                         <div class="form-group">
-                          <button class="btn btn-primary btn-block mt-3" type="submit" name="submit">Connexion</button>
+                          <button class="btn btn-block mt-3" 
+                            style="background-color:#bd003b;color: white;" type="submit" name="submit">Connexion</button>
                         </div>
                       </form>
                       <div class="w-100 position-relative mt-4">
                         <hr class="text-300" />
-                        <div class="position-absolute absolute-centered t-0 px-3 bg-white text-sans-serif fs--1 text-500 text-nowrap">ou se connecter avec</div>
+                        <div class="position-absolute absolute-centered t-0 px-3 bg-white text-sans-serif fs--1 text-500 text-nowrap">Meneya</div>
                       </div>
                       <div class="form-group mb-0">
                         <div class="row no-gutters">
-                          <div class="col-sm-6 pr-sm-1"><a class="btn btn-outline-google-plus btn-sm btn-block mt-2" href="#"><span class="fab fa-google-plus-g mr-2" data-fa-transform="grow-8"></span> Google</a></div>
-                          <div class="col-sm-6 pl-sm-1"><a class="btn btn-outline-facebook btn-sm btn-block mt-2" href="#"><span class="fab fa-facebook-square mr-2" data-fa-transform="grow-8"></span> Facebook</a></div>
+                          <div class="col-sm-6 pr-sm-1">
+                            
+                          </div>
                         </div>
                       </div>
                     </div>

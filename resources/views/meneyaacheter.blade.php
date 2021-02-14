@@ -195,8 +195,7 @@
             <hr role="presentation">
 
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-center">
-                <div class="text-muted mb-3">&copy; Un produit de <b style="color:red;">Maat-Tech</b> -
-                   maattechnologie@gmail.com - info@meneya.com
+                <div class="text-muted mb-3">&copy; Un produit de <b style="color:red;">MENEYA & CO</b>  - info@meneya.com
                 </div>
                
             </div>

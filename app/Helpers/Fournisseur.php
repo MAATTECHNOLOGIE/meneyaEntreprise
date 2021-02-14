@@ -1,6 +1,6 @@
 <?php 
   use App\Model\echeance;
-use App\Model\EcheanceHistorique;
+use App\Model\echeancehistorique;
 use App\Model\fournisseur;
 
 
@@ -15,7 +15,7 @@ if(!function_exists('getTransF'))
 {
 	function getTransF($idF)
 	{
-		$transTotal = echeance::where('fournisseur_id','=',$idF)->sum('echeanceMontant');
+		$transTotal = echeance::where('fournisseurs_id','=',$idF)->sum('echeanceMontant');
 		return $transTotal;
 	}
 }
@@ -24,7 +24,7 @@ if(!function_exists('getSommePaye'))
 {
 	function getSommePaye($idEch)
 	{
- 		 $histPaiement = EcheanceHistorique::where('idEch','=',$idEch)->sum('montantPaye');
+ 		$histPaiement = echeancehistorique::where('echeance_id','=',$idEch)->sum('montantPaye');
  		return $histPaiement;
 
 	}
