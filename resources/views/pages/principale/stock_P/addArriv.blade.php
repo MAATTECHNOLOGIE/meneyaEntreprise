@@ -55,13 +55,13 @@
                 <div class="form-group">
                       <label for="idClient">Produits</label>
                       <select class="selectpicker"  id="articleLib" name="article">
-                        <option value="choix">--Choisir--</option>
+                        <option value="choix" id="choix">--Choisir--</option>
                           <option class="text-primary" value="new" >
                            <span class="bg-warning">Nouvel article</span>
                           </option>
                         @if(!$prds->isEmpty())
                           @foreach( $prds as $prd)
-                          <option class="text-900" value="{{ $prd->id}}" title="{{ $prd->produitPrixFour }}" >
+                          <option class="text-900" value="{{ $prd->id}}" title="{{ $prd->produitPrixFour }}" alt="{{ $prd->produitPrix }}" >
                             {{ $prd->produitLibele}}
                           </option>
                           @endforeach
@@ -74,7 +74,11 @@
                                                
                                 <div class="form-group">
                                   <label for="prix">Coût d'achat</label>
-                                        <input class="form-control" type="number" name="prix" id="prix" aria-label="Prix de l'article">
+                                        <input class="form-control" type="number" name="prix" id="prix" aria-label="Prix de l'article" min="1">
+                                </div>
+                                <div class="form-group">
+                                  <label for="prix">Prix de vente</label>
+                                        <input class="form-control" type="number" name="prixV" id="prixV" aria-label="Prix de l'article" min="1">
                                 </div>
                       
                                 <div class="input-group mb-3 col-12">
@@ -266,7 +270,9 @@
             else 
             {
               var selecText = $('#articleLib option:selected').attr('title');
+              var prixVente = $('#articleLib option:selected').attr('alt');
               $("#prix").val(selecText);
+              $("#prixV").val(prixVente);
               
             }
           })
@@ -289,6 +295,7 @@
               {
                 if( $('#prixPrd').val() != '')
                   {
+
                     ajaxAddPrd();
                   }
               
@@ -399,7 +406,9 @@
 		      function articleformClassInit()
 		      {
 		        $('#prix').val('').attr('class','form-control');
-		        $('#quantite').val('').attr('class','form-control');  
+            $('#quantite').val('').attr('class','form-control');  
+            $('#prixV').val('').attr('class','form-control');  
+		        // $('#articleLib').val('').attr('class','form-control');  
 		      };
 
 
@@ -443,9 +452,22 @@
 		                if ($('#quantite').val() != "") 
 		                {
 		                  $('#quantite').attr('class', 'form-control is-valid');
-		                    ajaxProduitSave();
+                      if ($('#prixV').val() > $('#prix').val()) 
+                        {
 
-		                   articleformClassInit();
+                      $('#prixV').attr('class', 'form-control is-valid');
+
+                        ajaxProduitSave();
+
+                       articleformClassInit();
+                        }
+                        else
+                        {
+                          toastr.error('Veuillez saisir un prix de vente supérieur ou égal au cout d\'achat');
+                          $('#prixV').addClass('is-invalid');
+
+                        }
+
 		                 
 		                }
 		                else
@@ -471,7 +493,7 @@
 	       {
 	          if (parseInt($('#compteur_panier').text()) >=1) 
 	            {
-	                   $('#main_content').load('/lArrivPrd');
+	                   $('#main_content').load('mbo/lArrivPrd');
 	            }
 	            else
 	            {

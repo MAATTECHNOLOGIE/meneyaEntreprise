@@ -50,11 +50,6 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
        //Enregistre produit arrivage
     Route::post('saveArrivPrd','p_ArrivController@saveArrivPrd')->name('saveArrivPrd');
 
-
-
-
-
-
 /*--------- ------------------------------
      GESTION DES PRODUITS ET CATEGORIES
 ----------------------------------------*/

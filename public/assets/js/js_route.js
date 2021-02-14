@@ -7,16 +7,18 @@ $(function()
 TABLEAU DE BORD 
 -----------------------------*/
 
+    /******************* 
+    **  A suprimer    **
+    ********************
+    //arrivage en attente
+
+
 
 /*--------- -----------------
     GESTION DE STOCK PRINCIPALE
 -----------------------------*/
 
-    $('#arrivagePrincipal').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/arrivagePrincipal');
-    });
+
 
 
     
@@ -56,20 +58,8 @@ TABLEAU DE BORD
         });
 
 
-    //arrivage en attente
 
-    $('#arrivAttn').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/arrivAttn');
-    });
     
-    //arrivage valide
-    $('#arrivOk').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/arrivOk');
-    }); 
 
 //lsit arrivage       
 

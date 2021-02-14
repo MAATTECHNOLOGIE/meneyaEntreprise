@@ -46,6 +46,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+        $this->mapMboRoutes();
+
         //
     }
 
@@ -76,5 +78,13 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapMboRoutes()
+    {
+        Route::prefix('mbo')
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/mbo.php'));
     }
 }
