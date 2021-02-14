@@ -242,7 +242,7 @@ $('#dashSucu').click(function()
 -------------------------*/
     // Nouveau
      $("#p_Opera").click(function(){
-                    loadingScreen();
+            loadingScreen();
             $('#main_content').load("/p_Opera");
      });
 
@@ -252,16 +252,16 @@ $('#dashSucu').click(function()
             $('#main_content').load("/p_OperaStock");
      });
 
-    // Commandes opérateurs
+    // Nouvelles opérations
      $("#p_OpComd").click(function(){
-                    loadingScreen();
-            $('#main_content').load("/p_OpComd");
+         loadingScreen();
+         $('#main_content').load("/p_OpComd");
      });
 
     // Liste 
     $("#p_OpListe").click(function(){
-                    loadingScreen();
-            $('#main_content').load("/p_OpListe");
+         loadingScreen();
+         $('#main_content').load("/p_OpListe");
      });
 
 

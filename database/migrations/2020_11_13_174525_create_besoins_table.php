@@ -15,7 +15,6 @@ class CreateBesoinsTable extends Migration
     {
         Schema::create('besoins', function (Blueprint $table) {
             $table->id();
-            $table->string('CodeP');
             $table->string('nom');
             $table->string('tel');
             $table->string('mail');

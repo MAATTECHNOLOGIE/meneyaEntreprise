@@ -10,7 +10,6 @@
 <div id="main_content">
          {{-- @include('pages.principale.employe.ajouterEmploye')  --}}
          @include('pages.dash.index')
-
 </div>
 
 

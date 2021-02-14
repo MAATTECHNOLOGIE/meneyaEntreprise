@@ -303,12 +303,12 @@
                       aria-label="Toggle Navigation" id="p_prospbesoin" 
                     ><a class="nav-link" href="#main_content">Besoins</a>
                     </li>
-                    <li class="nav-item" 
+                    {{-- <li class="nav-item" 
                       data-toggle="collapse" data-target="#navbarVerticalCollapse" 
                       aria-controls="navbarVerticalCollapse" aria-expanded="false" 
                       aria-label="Toggle Navigation" id="p_RelSMS">
                       <a class="nav-link" href="#main_content">Relance SMS</a>
-                    </li>
+                    </li> --}}
 
                   </ul>
                 </li>
