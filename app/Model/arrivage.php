@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class arrivage extends Model
 {
-    //
+   protected $fillable = ['arrivageLibelle','arrivageDate','arrivagePrix','arrivageQte','statut','MatArvg'];
 }

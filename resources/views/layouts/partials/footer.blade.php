@@ -182,8 +182,13 @@
     </script>
     
     <script src="{{ asset('assets/js/js_route.js') }}"></script>
+    <script src="{{ asset('assets/js/mbo_route.js') }}"></script>
 
-
+<style type="text/css">
+  .bg-meneya {
+  background-color: #a40046 !important;
+}
+</style>
 
   </body>
 
