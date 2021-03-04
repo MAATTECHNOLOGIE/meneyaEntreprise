@@ -24,25 +24,25 @@ if(!function_exists('recupInfoProduitSucu'))
 		Recuperation des produits manquant
 	-------------------------------------------------*/
 
-	if(!function_exists('produitManquant'))
-	{
-		function produitManquant($quantite)
-		{
-			if($quantite<= 0)
-			{
-				return  'bg-white text-danger h6';
-			}
-			elseif ($quantite<=10)
-			 {
-				return 'bg-white text-warning h6';
-			}
-			else
-			{
-				return 'h6';
-			}
+	// if(!function_exists('produitManquant'))
+	// {
+	// 	function produitManquant($quantite)
+	// 	{
+	// 		if($quantite<= 0)
+	// 		{
+	// 			return  'bg-white text-danger h6';
+	// 		}
+	// 		elseif ($quantite<=10)
+	// 		 {
+	// 			return 'bg-white text-warning h6';
+	// 		}
+	// 		else
+	// 		{
+	// 			return 'h6';
+	// 		}
 			
-		}
-	}
+	// 	}
+	// }
 
 	/*----------------------------------------------
 		Recuperation du client de la commande
@@ -158,13 +158,28 @@ if(!function_exists('recupInfoProduitSucu'))
 		{
 			function gerantSuc($id)
 			{
-				$gerant = User::where('succursale_id','=',$id)->get()->first();
+				$gerant = User::find($id);
 				return $gerant;
 			}
 		}
 
 
+if(!function_exists('isAdminSuc'))
+{
+	function isAdminSuc($idUser)
+	{
+		$isAdmin = succursale::where('user_id','=',$idUser)->get();
+		if (count($isAdmin) == 0) 
+		{
+			return 0;
+		}
+		else
+		{
+			return 1;
+		}
 
+	}
+}
 
 
 		

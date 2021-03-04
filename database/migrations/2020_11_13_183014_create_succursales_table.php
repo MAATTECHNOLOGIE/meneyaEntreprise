@@ -15,11 +15,11 @@ class CreateSuccursalesTable extends Migration
     {
         Schema::create('succursales', function (Blueprint $table) {
             $table->id();
-            $table->string('succursaleMat');
-            $table->string('succursaleLibelle');
-            $table->string('succursalLieu');
-            $table->string('succursalContact');
-            $table->string('datesucu');
+            $table->string('succursaleMat')->nullable();
+            $table->string('succursaleLibelle')->nullable();
+            $table->string('succursalLieu')->nullable();
+            $table->string('succursalContact')->nullable();
+            $table->string('datesucu')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

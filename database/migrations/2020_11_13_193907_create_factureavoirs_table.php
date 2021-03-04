@@ -25,6 +25,7 @@ class CreateFactureavoirsTable extends Migration
             $table->foreign('ventes_succursales_id')->references('id')->on('ventes_succursales')
                                 ->onDelete('cascade');
 
+
             $table->timestamps();
         });
     }

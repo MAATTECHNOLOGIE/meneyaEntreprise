@@ -17,6 +17,7 @@ class CreateOperationsTable extends Migration
             $table->id();
             $table->string('OperationLibele');            
             $table->string('operationCode');            
+            $table->string('Operationcomt')->nullable();            
             $table->timestamps();
         });
     }

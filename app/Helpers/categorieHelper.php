@@ -18,26 +18,25 @@ use App\Model\produits;
 
 
 
-// if(!function_exists('getCatgoEle'))
-// {
-// 	function getCatgoEle($idCatgo)
-// 	{
-//  		 $ele = produitHasCategorie::where('categorie_id','=',$idCatgo)->get();
-//  		return $ele;
+	if(!function_exists('getCatgoEle'))
+	{
+		function getCatgoEle($idCatgo)
+		{
+	 		 $ele = produits::where('categorie_id','=',$idCatgo)->get();
+	 		return $ele;
+		}
+	}
 
-// 	}
-// }
 
+//Recuperer une categorie particuliere 
+	if(!function_exists('getOneCatgo'))
+	{
+		function getOneCatgo($idCat)
+		{
+	 		 $ele = categorie::where('id','=',$idCat)->first();
+	 		return $ele;
 
-// //Recuperer une categorie particuliere 
-// 	if(!function_exists('getOneCatgo'))
-// 	{
-// 		function getOneCatgo($idCat)
-// 		{
-// 	 		 $ele = categorie::where('active','=',1)->where('id','=',$idCat)->first();
-// 	 		return $ele;
-
-// 		}
-// 	}
+		}
+	}
 
 ?>

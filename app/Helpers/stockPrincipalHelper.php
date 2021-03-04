@@ -3,7 +3,7 @@
 
 use App\Model\produits;
 use App\Model\stock_principale;
-use App\Model\vente_principale;
+use App\Model\vente_principales;
 use App\Model\client_principale;
 use App\Model\succursale;
 use App\Model\ressourcesHum;
@@ -43,6 +43,20 @@ if(!function_exists('recupInfoProduitPrincipal'))
 		}
 	}
 
+
+	if(!function_exists('getSeuilPrd'))
+	{
+		function getSeuilPrd($idPrd)
+		{
+			$prd = produits::find($idPrd);
+			return $prd->seuilAlert;		
+			
+		}
+	}
+
+
+
+
 	/*----------------------------------------------
 		Recuperation du client de la commande
 	-------------------------------------------------*/
@@ -52,7 +66,7 @@ if(!function_exists('recupInfoProduitPrincipal'))
 		function getComdQteP($NumComd)
 		 {
 		  	//Lecture de la quantité en fonction du numéro de commandes
-		  	 $comd = vente_principale::where('NumVente','=',$NumComd)->get();
+		  	 $comd = vente_principales::where('NumVente','=',$NumComd)->get();
 		  	 //recup quantite total
 		  	 $qte =0;
 			 for ($i=0; $i <count($comd) ; $i++) 
@@ -75,7 +89,7 @@ if(!function_exists('recupInfoProduitPrincipal'))
 		function getCmdMntP($NumComd)
 		 {
 		  	//Lecture de la quantité en fonction du numéro de commandes
-		  	 $comd = vente_principale::where('NumVente','=',$NumComd)->get();
+		  	 $comd = vente_principales::where('NumVente','=',$NumComd)->get();
 		  	 //recup quantite total
 		  	 $prix = 0;
 			 for ($i=0; $i <count($comd) ; $i++) 
@@ -98,7 +112,7 @@ if(!function_exists('recupInfoProduitPrincipal'))
 		function getComdClientP($NumComd)
 		 {
 		  	//Lecture de la quantité en fonction du numéro de commandes
-		  	 $idclient = vente_principale::where('NumVente','=',$NumComd)->get()->first();
+		  	 $idclient = vente_principales::where('NumVente','=',$NumComd)->get()->first();
 		  	 $infoClient = client_principale::findOrfail($idclient->client_principale_id);
 		  	 //recup quantite total
 		  	 // var_dump($infoClient->client_principaleNom);

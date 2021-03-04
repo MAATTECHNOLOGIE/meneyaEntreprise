@@ -66,10 +66,11 @@
                             <select class="selectpicker" id="inputVal" name="article">
                               <option value="choix">-- Article --</option>
                               @foreach($produits as $produit)
-                              <option idduPrd="{{ $produit->id }}" title="{{ $produit->produitPrix }}">{{ $produit->produitLibele }}</option>
+                              <option idduPrd="{{ $produit->id }}" title="{{ $produit->produitPrix }}" coutachat="{{ $produit->produitPrixFour }}" >{{ $produit->produitLibele }}</option>
                               @endforeach
                             </select>
                             <input type="hidden" name="idArticle" id="produitId" value="">
+                            <input type="hidden" name="coutachat" id="coutachat" value="">
                           </div>                              
                                 <div class="input-group mb-3  col-12">
                                   <div class="input-group-prepend"><span class="input-group-text">$ </span></div>
@@ -167,7 +168,7 @@
       {
                   $.ajax({
                   method: "POST",
-                  url: "/ajaxEnregistreProduit",
+                  url: "mbo/addPrdAprovi",
                   data: $("#formProduit").serialize(),
                     dataType: "json",
                 })
@@ -251,8 +252,10 @@
                   $('#quantite').attr('class', 'form-control is-valid');
 
                   //selection de l'option de l'id de l'article choisit
-              var selectedId = $('#inputVal option:selected').attr('idduPrd');
+                var selectedId = $('#inputVal option:selected').attr('idduPrd');
+                var coutachat = $('#inputVal option:selected').attr('coutachat');
                 $('#produitId').attr('value',selectedId);
+                $('#coutachat').attr('value',coutachat);
                     ajaxProduitSave();
                   var compteur_panier = parseInt($('#compteur_panier').text());
                  $('#compteur_panier').text(compteur_panier+1)
@@ -292,7 +295,7 @@
        {
           if (parseInt($('#compteur_panier').text()) >=1) 
             {
-             $('#main_content').load('/listeArrivageProduit');
+             $('#main_content').load('/mbo/listAproviPrd');
             }
             else
             {

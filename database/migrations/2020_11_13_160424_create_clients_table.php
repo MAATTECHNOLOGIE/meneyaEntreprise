@@ -20,6 +20,7 @@ class CreateClientsTable extends Migration
              $table->string('contact');
              $table->string('lieu');
              $table->string('date');
+             $table->string('mail')->default(0);
             $table->timestamps();
         });
     }
