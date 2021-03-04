@@ -52,7 +52,7 @@
 
 
               <div class="falcon-data-table">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":50,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
                     <tr>
 
@@ -69,19 +69,21 @@
                     @foreach($arrivs as $arriv)
 
 
-                    <tr class="btn-reveal-trigger">
+                    <tr class="btn-reveal-trigger fs-0">
                       <td class="py-2 align-middle white-space-nowrap">
                         {{ $loop->iteration }}
                       </td>
-                      <td class=" align-middle white-space-nowrap">
+                      <td class=" align-middle ">
                         {{$arriv->arrivageLibelle}}
 
                       </td>
-                      <td class="py-2 align-middle white-space-nowrap customer-name-column">
-                        {{ $arriv->arrivagePrix}}
+                      <td class="py-2 align-middle ">
+                        <span class="badge badge rounded-capsule d-block badge-soft-secondary text-warning fs-1">
+                        {{ formatPrice($arriv->arrivagePrix)}}
+                        </span>
                       </td>
                       <td class="py-2 align-middle">
-                        {{ $arriv->arrivageQte }}
+                        {{ formatQte($arriv->arrivageQte) }}
                       </td>
                       <td class="py-2 align-middle sort">{{ $arriv->arrivageDate }}</td>
 
@@ -161,7 +163,7 @@
             
 
         $.ajax({
-               url:'detailArriv',
+               url:'mbo/detailArriv',
                method:'get',
                data:{idArr:idOpVe},
                dataType:'html',
@@ -188,7 +190,7 @@
       {
 
              $.ajax({
-               url:'detailArriv',
+               url:'mbo/detailArriv',
                method:'get',
                data:{idArr:idArr},
                dataType:'html',

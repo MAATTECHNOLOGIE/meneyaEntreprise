@@ -15,10 +15,13 @@ class CreateApprovisionnementsTable extends Migration
     {
         Schema::create('approvisionnements', function (Blueprint $table) {
             $table->id();
-            $table->string('approvisionMat');
-            $table->string('approvisionStatut');
-            $table->string('approvisionMontant');
-            $table->string('approvisionTotal');
+            $table->string('approvisionMat')->default('0');
+            $table->string('approvisionStatut')->default('0');
+            $table->string('approvisionMontant')->default('0');
+            $table->string('approvisionTotal')->default('0');
+            $table->string('dateApro')->default('0');
+            $table->unsignedBigInteger('succursale_id');
+            $table->foreign('succursale_id')->references('id')->on('succursales');
             $table->timestamps();
         });
     }

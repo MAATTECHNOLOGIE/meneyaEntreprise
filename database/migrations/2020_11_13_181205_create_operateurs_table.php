@@ -18,7 +18,8 @@ class CreateOperateursTable extends Migration
             $table->string('operateurMat');
             $table->string('operateurNom');
             $table->string('operateurContact');
-            $table->string('operateurLieu');
+            $table->string('operateurDate');
+            $table->string('operateurLieu')->nullable();
             $table->timestamps();
         });
     }

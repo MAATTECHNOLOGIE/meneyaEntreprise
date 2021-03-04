@@ -17,130 +17,12 @@ TABLEAU DE BORD
 /*--------- -----------------
     GESTION DE STOCK PRINCIPALE
 -----------------------------*/
-
-
-
-
-    
-
-    //Liste de mes approvisionnent
-
-    $('#listArrivage').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/listeApprovisionnement');
-    });
-
-
-    $('#produitsPrincipal').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/produitsPrincipal');
-    });
-
-    $('#stockP').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/stock_principal');
-    });
-
-            /*--------- -----------------
-                GESTION DES ARRIVAGES
-            -----------------------------*/
-
-
-//Ajout arrivage       
-        $('#addArriv').click(function()
-        {
-          
-              loadingScreen();
-            $('#main_content').load('/addArriv');
-        });
-
-
-
-    
-
-//lsit arrivage       
-
-    $('#listArriv').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/listArriv');
-    });
-    
-//statistique Arrivage
-    $('#statArriv').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/statArriv');
-    });
-
-
-            /*--------- -----------------
-                GESTION DE VENTE PRINCIPALE
-            -----------------------------*/
-    $('#achatPrincipal').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/venteP');
-    });
-
-    $('#liste_ventePrincipal').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/listeVntP');
-    }); 
-
-    $('#clientPrincipal').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/clientPrincipal');
-    });
-        
-    $('#proformat').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/factVnt');
-    });
-
-
-    
-
-
-            /*--------- -----------------
-                GESTION DES EMPLOYES  PRINCIPALE
-            -----------------------------*/
-
-    $('#ajouterEmploye').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/ajouterEmploye');
-    }); 
-
-    $('#listeEmploye').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/listeEmploye');
-    }); 
-
-
             /*--------- -----------------
                 GESTION DES SUCCURSALES 
             -----------------------------*/
 
-    $('#creerSuccursale').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/creerSuccursale');
-    }); 
 
 
-    $('#listeSuccursale').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/listeSuccursale');
-    }); 
 
 //dashboard dune succursale
 $('#dashSucu').click(function()
@@ -156,11 +38,6 @@ $('#dashSucu').click(function()
     });
 
 
-    // $('#stock_succ').click(function()
-    // {
-    //              loadingScreen();
-            $('#main_content').load('/stockSuccursale');
-    // });  
 
 
             /*--------- -----------------
@@ -267,20 +144,9 @@ $('#dashSucu').click(function()
 
 
 
-/*-----------------------
- menu Versement
--------------------------*/
-    // Nouveau
-     $("#p_NewVers").click(function(){
-                    loadingScreen();
-            $('#main_content').load("/p_NewVers");
-     });
 
-    // Liste
-     $("#p_LVer").click(function(){
-                    loadingScreen();
-            $('#main_content').load("/p_LVer");
-     });
+
+     
 /*--------- -----------------
  GESTION DES PROSPECTS
 -----------------------------*/

@@ -31,3 +31,20 @@ if(!function_exists('venteTotalS'))
 		return $prdT;
 	}
 }
+
+//Donne la valeur $default a une variable  si elle est  vide
+if(!function_exists('setDefault'))
+{
+	function setDefault($variable,$default)
+	{
+		
+		if(empty($variable))
+		{
+			return $default;
+		}
+		else
+		{
+			return $variable;
+		}
+	}
+}

@@ -17,13 +17,15 @@ class CreateProduitsTable extends Migration
             $table->id();
             $table->string('produitMat')->comment('code de l\'article');
             $table->string('produitLibele');
+            $table->integer('seuilAlert')->default(10);
             $table->integer('produitPrix')->comment('Prix de vente du produit');
             $table->integer('produitPrixFour')->comment('Cout d\' achat du produit');
-            $table->text('description');
-            $table->string('unite_mesure');
+            $table->text('description')->nullable();
+            $table->string('unite_mesure')->nullable();
+            $table->integer('tva')->default(0);
+            $table->integer('autre_charge')->default(0);
             $table->unsignedBigInteger('categorie_id');
-            $table->foreign('categorie_id')->references('id')->on('categories')
-                                            ->onDelete('cascade');
+            $table->foreign('categorie_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

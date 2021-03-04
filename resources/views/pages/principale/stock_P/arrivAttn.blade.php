@@ -54,14 +54,14 @@
               <div class="falcon-data-table">
                 <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
-                    <tr>
+                    <tr >
 
-                      <th class="align-middle no-sort">Code</th>
+                      <th class="align-middle no-sort ">Code</th>
                       <th class="align-middle sort pr-3">Libelle</th>
-                      <th class="align-middle sort">Montant total </th>
-                      <th class="align-middle sort">Quantite produits</th>
-                      <th class="align-middle sort">Date</th>
-                      <th class="align-middle ">Action / Reçu</th>
+                      <th class="align-middle sort">Date </th>
+                      {{-- <th class="align-middle sort">Quantite</th> --}}
+                      <th class="align-middle sort">Montant total</th>
+                      <th class="d-flex justify-content-center ">Action / Reçu</th>
 
                     </tr>
                   </thead>
@@ -69,7 +69,7 @@
                     @foreach($arrivs as $arriv)
 
 
-                    <tr class="btn-reveal-trigger">
+                    <tr class="btn-reveal-trigger fs-0">
                       <td class="py-2 align-middle white-space-nowrap">
                         {{ $arriv->MatArvg }}
                       </td>
@@ -77,23 +77,30 @@
                         {{$arriv->arrivageLibelle}}
 
                       </td>
-                      <td class="py-2 align-middle white-space-nowrap customer-name-column">
-                        {{ $arriv->arrivagePrix}}
-                      </td>
-                      <td class="py-2 align-middle">
-                        {{ $arriv->arrivageQte }}
-                      </td>
-                      <td class="py-2 align-middle sort">{{ $arriv->arrivageDate }}</td>
 
-                      <th class="align-middle sort " style="cursor: pointer;">
-                        <span class='fas fa-list-alt fa-2x  text-primary mr-2 liste' id="{{ $arriv->id }}"></span> 
-                        <span class='far fa-file-pdf fa-2x text-warning reçu' alt="{{ $arriv->arrivageDate }}" id="{{ $arriv->id }}" title="{{ $arriv->arrivageLibelle}}" contenteditable="{{ $arriv->arrivageLibelle}}">
-                        </span> 
+                     {{--  <td class="py-2 align-middle">
+                        {{ formatQte($arriv->arrivageQte) }}
+                      </td> --}}
+
+                      <td class="py-2 align-middle sort">{{ $arriv->arrivageDate }}</td>
+                      <td class="py-2 align-middle sort ">
+                        <span class="badge badge rounded-capsule d-block badge-soft-secondary text-warning fs-1">
+                        {{ formatPrice($arriv->arrivagePrix)}}
+                        </span>
+                      </td>
+                      <td class="d-flex justify-content-end " style="cursor: pointer;">
+                          <button class="ml-1 btn btn-outline-primary rounded-capsule mr-1 mb-1 liste" id="{{ $arriv->id }}"><i class="far fa-list-alt"></i> &nbsp; Liste
+                          </button>
+                          <button class="ml-1 btn btn-outline-warning rounded-capsule mr-1 mb-1 reçu" id="{{ $arriv->id }}"
+                          alt="{{ $arriv->arrivageDate }}" title="{{ $arriv->arrivageLibelle}}" contenteditable="{{ $arriv->arrivageLibelle}}">
+                            <i class="far fa-file-pdf"></i> &nbsp; Reçu
+                          </button>
+
                           <button class="ml-1 btn btn-outline-success rounded-capsule mr-1 mb-1 arrivValid" id="{{ $arriv->id }}">
                             <i class="far fa-check-circle"></i> &nbsp; Valider
                           </button>
                         <span class='fas fa-trash-alt fa-2x  text-danger mr-2 delete' id="{{ $arriv->id }}"></span> 
-                      </th>
+                      </td>
 
                     </tr>
                     @endforeach

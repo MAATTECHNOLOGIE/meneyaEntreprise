@@ -18,8 +18,8 @@ class CreateFournisseursTable extends Migration
             $table->string('fournisseurMat');            
             $table->string('fournisseurContact');            
             $table->string('fournisseurNom');            
-            $table->string('fournisseurRespo');            
-            $table->string('fournisseurMail');            
+            $table->string('fournisseurRespo')->comment('Nom du responsable de l entreprise fournisseur');            
+            $table->string('fournisseurMail')->nullable();            
             $table->timestamps();
         });
     }

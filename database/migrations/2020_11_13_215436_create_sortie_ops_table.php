@@ -15,16 +15,17 @@ class CreateSortieOpsTable extends Migration
     {
         Schema::create('sortie_ops', function (Blueprint $table) {
             $table->id();
-            $table->string('matSortie');
-            $table->string('libelleSortie');
-            $table->integer('montantS');
-            $table->integer('quantiteS');
-            $table->string('dateSortie');
-            $table->string('charges');
+            $table->string('matSortie')->nullable();
+            $table->string('libelleSortie')->nullable();
+            $table->integer('montantS')->nullable();
+            $table->integer('quantiteS')->nullable();
+            $table->string('dateSortie')->nullable();
+            $table->string('charges')->nullable();
+            $table->string('chargesDesc')->nullable();
+            $table->string('tva')->nullable();
             $table->unsignedBigInteger('operationsOperateurs_id');
             $table->foreign('operationsOperateurs_id')
             ->references('id')->on('operations_has_operateurs')->onDelete('cascade');
-
             $table->timestamps();
         });
     }

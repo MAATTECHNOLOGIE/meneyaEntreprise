@@ -16,10 +16,9 @@ class CreateBesoinsTable extends Migration
         Schema::create('besoins', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
-            $table->string('tel');
-            $table->string('mail');
-            $table->string('domicile');
-            $table->string('date');
+            $table->string('image')->default(0);
+            $table->string('detail')->default(0);
+            $table->string('dateV')->comment('date de validation')->default(0);
             $table->timestamps();
         });
     }
