@@ -8,3 +8,4 @@ class operateur extends Model
 {
     protected $fillable = ['operateurMat','operateurNom','operateurContact','operateurLieu','operateurDate'];
 }
+

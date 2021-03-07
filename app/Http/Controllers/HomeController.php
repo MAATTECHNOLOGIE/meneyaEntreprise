@@ -25,4 +25,12 @@ class HomeController extends Controller
     {
         return view('layouts.app');
     }
+
+    public function smspromo(Request $request)
+    {
+        /*return view('pages.principale.marketing.p_campNew')
+                ->with('sender',$sender);*/
+        return view('layouts.smspromo')
+                ->with('info',$request->alert);
+    }
 }

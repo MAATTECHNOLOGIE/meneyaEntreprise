@@ -41,5 +41,8 @@
  //Helper dees roles (roles)
  include 'roleHelper.php';
 
+ // Helper SMS
+ include 'smsHelper.php';
+
 
 ?>

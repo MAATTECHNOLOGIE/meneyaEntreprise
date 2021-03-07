@@ -95,12 +95,42 @@ class p_ArrivController extends Controller
 
        public function lArrivPrd()
 	       {
-
-
 	            return view('pages/principale/stock_P/lArrivPrd');
 	       }
 
+    //Supression d'un prd de la commande
+        public function delPrdArriv(Request $request)
+        {
+          $vente= arrivage::find($request->idVnt);
+          $prd= arrivage_has_produits::find($request->idPrd);
 
+          //Soustraction du montant du prd  et upd de la vnt
+            $coutAchaPrd = getPrd($prd->produits_id)->produitPrixFour * $prd->qteproduits;
+            $vente->arrivagePrix = $vente->arrivagePrix- $coutAchaPrd;
+
+            $vente->arrivageQte = $vente->arrivageQte - $prd->qteproduits;
+
+            $vente->save();
+            
+            $prd->delete();
+
+            return response()->json();
+
+        }
+
+  //Edition des arrivages
+        public function editArriv(Request $request)
+        {
+          $arriv = arrivage::find($request->idArr);
+          $prd = DB::table('arrivage_has_produits')
+              ->join('produits', 'produits.id', '=', 
+                     'arrivage_has_produits.produits_id')
+              ->select('produits.*', 'arrivage_has_produits.*')
+              ->where('arrivage_has_produits.arrivage_id', '=',$request->idArr)
+              ->get();
+          return view('pages/principale/stock_P/editArriv')->with('prd',$prd)
+                                                          ->with('arriv',$arriv);
+        }
   //Detruit la session contenant l'arrivage et son name
     public function deleteArriv(Request $request)
         {
@@ -114,13 +144,18 @@ class p_ArrivController extends Controller
       public function saveArriv(Request $request)
       {
 
+                        $dateV = setDefault($request->dateV,date('d/m/Y'));
+                        $charge = setDefault($request->charge,0);
+                        $chargeDesc = setDefault($request->chargeDesc,'');
                 if (!empty($_SESSION['arrivPrd']))
                     {
                         //insertion de l'approvisionnement dans table appro
                         $arrivage = arrivage::create([
                             'arrivageLibelle'=> $_SESSION['arrivName'],
                             'MatArvg'=> 'Arr#'.date('H_i_s'),
-                            'arrivageDate'=> $request->dateV,
+                            'arrivageDate'=> $dateV,
+                            'charge' =>$charge,
+                            'description_charge' => $chargeDesc,
                               'arrivageQte' => 0,
                               'arrivagePrix' => 0,
                               'statut'  =>0,
@@ -137,10 +172,6 @@ class p_ArrivController extends Controller
                                         "arrivage_id"  => $arrivage->id,
                                             "produits_id"  =>$value['article'],
                                                 ];
-                                    // $myPrd = produits::find($value['article']);
-                                    // $myPrd->produitPrixFour =  $value['prix'] ;
-                                    // $myPrd->produitPrix =  $value['prixV'];
-                                    // $myPrd->save();
                                     $prixTotal += $value['prix']*$value['qte'];
                                     $qteTotal += $value['qte'];
                                     arrivage_has_produits::create($arrayPrdArriv);
@@ -158,15 +189,14 @@ class p_ArrivController extends Controller
  // Liste de mes Arrivages en attente
        public function arrivAttn()
        {
-
-        $arrivs = DB::table('arrivages')->where('statut','=',0)
-                                        ->orderBy('arrivageDate','desc')->get();
+        $arrivs = arrivage::where('statut','=',0)->orderBy('id','desc')->get();
         return view('pages/principale/stock_P/arrivAttn')->with('arrivs',$arrivs);
        }
 
  //Detail d'un arrivage 
        public function detailArriv(Request $request)
        {
+        $myArriv= arrivage::find($request->idArr);
         //Lecture des approviionnements et de la liste des produits de l'approvisionnement
         $arriv = DB::table('arrivages')
             ->join('arrivage_has_produits', 'arrivages.id', '=',
@@ -208,17 +238,25 @@ class p_ArrivController extends Controller
                 </table>
               </div>
               <div class="row no-gutters justify-content-end">
-                <div class="col-auto">
-                  <table class="table table-sm table-borderless fs--1 text-right">';
-
-                $output.='
-                    <tr class="text-danger">
-                      <th class="text-900 text-danger">Total:</th>
-                      <td class="font-weight-semi-bold">'.formatPrice($total).'</td>
-                    </tr>';
-                $output.='    
-                  </table>
-                </div>
+                    <div class="col-auto">
+                     <table class="table table-sm table-borderless fs--1 text-right">';
+                    $total = $total+$myArriv->charge;
+                    if($myArriv->charge !=0)
+                    {
+                    $output.='
+                        <tr class="">
+                          <th class="text-900 ">'.$myArriv->description_charge.':</th>
+                          <td class="font-weight-semi-bold">'.formatPrice($myArriv->charge).'</td>
+                        </tr>';
+                    }
+                    $output.='
+                        <tr class="text-danger">
+                          <th class="text-900 text-danger">Total TTC:</th>
+                          <td class="font-weight-semi-bold">'.formatPrice($total).'</td>
+                        </tr>';
+                    $output.='    
+                      </table>
+                    </div>
               </div>';
          // dd($output);
          return $output;
@@ -286,6 +324,17 @@ class p_ArrivController extends Controller
         }
 
 
+
+  //Mis a jour d'un arrivage 
+      public function updArriv(Request $request)
+      {
+            $arriv= arrivage::find($request->idVnt);
+              $arriv->charge = $request->charge;
+              $arriv->description_charge = $request->chargeLibelle;
+              $arriv->arrivageDate = $request->dateV;
+              $arriv->save();
+                     return response()->json();
+      }
 
 
 

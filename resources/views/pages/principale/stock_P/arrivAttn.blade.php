@@ -17,7 +17,7 @@
           
            <h4 class="mb-0 text-primary">
               <a href="#" class="operateurs"><span><i class="fas fa-shipping-fast"></i> 
-                Liste des arrivages </span></a>
+                Liste des arrivages  </span></a>
            </h4>         
     
         </div>
@@ -49,8 +49,6 @@
               </div>
             </div>
             <div class="card-body p-0 ml-3 mr-3">
-
-
               <div class="falcon-data-table">
                 <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
@@ -60,8 +58,8 @@
                       <th class="align-middle sort pr-3">Libelle</th>
                       <th class="align-middle sort">Date </th>
                       {{-- <th class="align-middle sort">Quantite</th> --}}
-                      <th class="align-middle sort">Montant total</th>
-                      <th class="d-flex justify-content-center ">Action / Reçu</th>
+                      <th class="align-middle sort">Montant TTC</th>
+                      <th class="d-flex justify-content-center ">Action </th>
 
                     </tr>
                   </thead>
@@ -85,7 +83,7 @@
                       <td class="py-2 align-middle sort">{{ $arriv->arrivageDate }}</td>
                       <td class="py-2 align-middle sort ">
                         <span class="badge badge rounded-capsule d-block badge-soft-secondary text-warning fs-1">
-                        {{ formatPrice($arriv->arrivagePrix)}}
+                        {{ formatPrice($arriv->arrivagePrix + $arriv->charge)}}
                         </span>
                       </td>
                       <td class="d-flex justify-content-end " style="cursor: pointer;">
@@ -99,20 +97,23 @@
                           <button class="ml-1 btn btn-outline-success rounded-capsule mr-1 mb-1 arrivValid" id="{{ $arriv->id }}">
                             <i class="far fa-check-circle"></i> &nbsp; Valider
                           </button>
+                        <span class='fas fa-edit fa-2x  text-info mr-2 editArriv' id="{{ $arriv->id }}"></span> 
                         <span class='fas fa-trash-alt fa-2x  text-danger mr-2 delete' id="{{ $arriv->id }}"></span> 
                       </td>
 
                     </tr>
                     @endforeach
-
- 
+                    
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-      
 
+          <div id="mytoken">
+            <input type="hidden" name="id_succursale" id="idSuc" >
+            @csrf
+          </div>
     {{-- MODAL DES DETAILS DE L'APPROVISIONNEMENT  --}}
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
@@ -136,8 +137,6 @@
     {{-- FIN MODAL DES DETAILS DE L'APPROVISIONNEMENT  --}}
 
 </div>
-
-
 
   
           <!-- ===============================================-->
@@ -215,6 +214,17 @@
 
              });
       });
+
+      //Clic sur Editer 
+      $('.editArriv').click(function()
+      {
+        var id = $(this).attr('id');
+        var input = '#mytoken input[name=_token]';
+        var token = $(input).attr('value');
+         $('#main_content').load('mbo/editArriv',{idArr:id, _token:token});  
+      })
+
+      
 
       function ajaxArrivList(idArr)
       {

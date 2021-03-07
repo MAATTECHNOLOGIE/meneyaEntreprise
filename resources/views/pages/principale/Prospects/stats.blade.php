@@ -74,6 +74,11 @@
 
       });
 
+    // Relance SMS
+    /* $(".ReSMS").click(function(){
+       alert("bonjour");
+     });
+*/
 
 
 

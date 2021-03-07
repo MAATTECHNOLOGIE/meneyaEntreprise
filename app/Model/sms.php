@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class sms extends Model
 {
-    protected $fillable = ['codeSMS','dateSend','msg'];
+    protected $fillable = ['id','code','datesms','titre','descrpt','prix','prixold','liv','msg','img'];
 }

@@ -226,7 +226,9 @@ class p_FourniController extends Controller
             ->where('fournisseurs.id','=',$request->idFour)
             ->get();
         //dd($EchF);
-        return view('pages.principale.Fournisseur.showF')->with('EchF',$EchF)->with('four',$four);
+        return view('pages.principale.Fournisseur.showF')
+               ->with('EchF',$EchF)
+               ->with('four',$four);
 
 
     }
@@ -236,7 +238,7 @@ class p_FourniController extends Controller
     {
 
         $idEch = (int)$request->idEch;
-        $hists = EcheanceHistorique::where('idEch','=',$idEch)->get();
+        $hists = EcheanceHistorique::where('echeance_id','=',$idEch)->get();
 
         if(count($hists) >= 1)
         {
@@ -261,7 +263,7 @@ class p_FourniController extends Controller
                         <p class="mb-0">'.$hist->datePaiement.'</p>
                         
                       </td>
-                      <td class="align-middle text-center">'.$hist->typePaiement.'</td>
+                      <td class="align-middle text-center">'.$hist->typepaiement.'</td>
                       <td class="align-middle text-center">'.$hist->montantPaye.'</td>
                       <td class="align-middle text-center">'.$hist->banque.'</td>
                     </tr>';   
@@ -284,16 +286,21 @@ class p_FourniController extends Controller
 
 
     public function p_EchOK(Request $request)
-
     {
         $idEch= (int)$request->idEch;
 
-        $info = ['nomAgent' =>$request->name ,'montantPaye' =>$request->montant,'datePaiement' =>$request->date,'banque'=>$request->banque,'typePaiement' => $request->typePaiement,'idEch'=>$request->idEch];
+        $info = ['nomAgent' =>$request->name ,
+                 'montantPaye' =>$request->montant,
+                 'datePaiement' =>$request->date,
+                 'banque'=>$request->banque,
+                 'typepaiement' => $request->typePaiement,
+                 'echeance_id'=>$request->idEch
+                ];
 
         $echeance = echeance::find($request->idEch);
 
 
-       $totalPaye =  getSommePaye($idEch) + $request->montant;
+        $totalPaye =  getSommePaye($idEch) + $request->montant;
         $histCr = EcheanceHistorique::create($info);
 
             if($totalPaye >= $echeance->echeanceMontant )

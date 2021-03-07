@@ -14,83 +14,7 @@ TABLEAU DE BORD
 
 
 
-/*--------- -----------------
-    GESTION DE STOCK PRINCIPALE
------------------------------*/
-            /*--------- -----------------
-                GESTION DES SUCCURSALES 
-            -----------------------------*/
 
-
-
-
-//dashboard dune succursale
-$('#dashSucu').click(function()
-{
-                loadingScreen();
-            $('#main_content').load('dashSucu'); 
-})
-
-    $('#statistiqueSuccursale').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/statistiqueSuccursale');
-    });
-
-
-
-
-            /*--------- -----------------
-            GESTION DES APPROVISIONNEMENT 
-            -----------------------------*/
-
-    $('#ajouterApprovisionnement').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/ajouterApprovisionnement');
-    }); 
-
-    
-    $('#listeApprovisionnement').click(function()
-    {
-                    loadingScreen();
-            $('#main_content').load('/listeApprovisionnement');
-    }); 
-
-
-
-
-
-
-/*------------------
- menu Vente_Succursale
---------------------*/
-    // Achat
-     $("#s_Achat").click(function(){
-                    loadingScreen();
-            $('#main_content').load("/s_Achat");
-     });
-
-    // Clients
-     $('#s_Client').click(function(){
-                     loadingScreen();
-            $('#main_content').load("/s_Client");
-     });
-
-    // Vente
-     $('#s_Vente').click(function(){
-                     loadingScreen();
-            $('#main_content').load("/s_Vente");
-     });
-
-/*-----------------------
- menu Stock_Succursale
--------------------------*/
-    // Stock
-     $("#s_Stock").click(function(){
-                    loadingScreen();
-            $('#main_content').load("/s_Stock");
-     });
 
 /*-----------------------
  menu Fournisseur
@@ -144,9 +68,6 @@ $('#dashSucu').click(function()
 
 
 
-
-
-     
 /*--------- -----------------
  GESTION DES PROSPECTS
 -----------------------------*/
@@ -191,6 +112,23 @@ $('#dashSucu').click(function()
     // Liste
     $("#CampgList").click(function(){
       $("#main_content").load("/CampgList");
+    });
+
+/*--------- -----------------
+ GESTION DES COMMANDES
+-----------------------------*/
+    // Nouveau
+    $("#CommdNew").click(function(){
+      $("#main_content").load("/CommdNew");
+    });
+    
+     $("#CommdNewF").click(function(){
+      $("#main_content").load("/CommdNew");
+    });
+
+    // Liste
+    $("#CommdLvr").click(function(){
+      $("#main_content").load("/CommdLvr");
     });
 
 /*--------- ------------

@@ -56,6 +56,12 @@ use Illuminate\Support\Facades\Route;
     //Arrivages en attente
        Route::get('arrivAttn','p_ArrivController@arrivAttn')->name('arrivAttn');
 
+    //Edition des Arrivages 
+       Route::post('editArriv','p_ArrivController@editArriv')->name('editArriv');
+
+    //Suprimer un prduit d'une vente de la principales
+       Route::get('delPrdArriv','p_ArrivController@delPrdArriv'); 
+
        //Detail Arrivage
        Route::get('detailArriv','p_ArrivController@detailArriv')->name('detailArriv');
 
@@ -73,8 +79,8 @@ use Illuminate\Support\Facades\Route;
         //list arrivage ** remove for version 2
        // Route::get('listArriv','p_ArrivController@listArriv')->name('listArriv');
 
-       //Stat arrivage
-       // Route::get('statArriv','p_ArrivController@statArriv')->name('statArriv');
+       //update arrivage
+       Route::get('updArriv','p_ArrivController@updArriv')->name('updArriv');
 
 
 /*--------------------------
@@ -172,13 +178,17 @@ use Illuminate\Support\Facades\Route;
        Route::post('addCatgo','produitsControl@addCatgo')->name('addCatgo');
 
        //Ajout de produit
-      Route::get('/addPrd','produitsControl@addPrd')->name('addPrd');
+      Route::post('/addPrd','produitsControl@addPrd')->name('addPrd');
 
       //Calculé le Prix de vente  automatiquement
       Route::get('/calPrixAuto','produitsControl@calPrixAuto')->name('calPrixAuto');
 
       //Delete Produit
       Route::get('/delPrd','produitsControl@delPrd')->name('delPrd');
+
+      //Delete Catégorie
+      Route::get('/delCatgo','produitsControl@delCatgo')->name('delCatgo');
+      
 
 
 
@@ -277,6 +287,8 @@ use Illuminate\Support\Facades\Route;
 
        //Suprimer un prduit d'une vente de la principales
        Route::get('delPrdVnt','GestionVentePrincipalController@delPrdVnt'); 
+
+
        
 
        //Recu de la vente

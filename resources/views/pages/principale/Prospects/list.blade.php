@@ -45,7 +45,14 @@
 
                       <a href="#" class="newP"><span class="text-success">
                        <i class="fas fa-plus"></i>
-                      <b>Nouveau</b></span></a>
+                      <b>Nouveau</b></span></a> |
+
+                      <a href="#" class="DelP"><span class="text-danger">
+                       <i class="fas fa-trash mr-1"></i>
+                      <b>Tout Supprimer</b></span></a> |
+
+                      <a href="#" class="newP text-primary"><span class="">
+                      <b>Total:</b></span> {{$nb}} prospects</a>
 
                     </div>
 
@@ -122,6 +129,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-danger btn-sm updVald" type="button">Valider</button>
+        <input type="hidden" class="prosp">
         <button class="btn btn-secondary btn-sm ferm" type="button" data-dismiss="modal">
           Fermer
         </button>
@@ -137,7 +145,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="BesoinModal">Prospects > Besoins</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+        <button class="close" type="button" data-dismiss="modal" 
+         aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
       </div>
       <div class="modal-body">
         <div class="ContentB col-lg-12">
@@ -163,6 +172,7 @@
               <button class="btn btn-falcon-danger mr-1 mb-1 NOBs" type="button">
                Annuler
               </button>
+              <input type="hidden" class="prosptId">
             </div>
             <div class="col-lg-6">
               <label for="basic-example text-primary">Besoins du prospects</label>
@@ -184,7 +194,8 @@
 </div>
 
 <!-- Modal SMS Marketing -->
-<div class="modal fade" id="SMSModal" tabindex="-1" aria-labelledby="SMSModalLabel" aria-hidden="true">
+<div class="modal fade" id="SMSModal" tabindex="-1" 
+     aria-labelledby="SMSModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -199,9 +210,9 @@
           <input type="hidden" name="Idpros" id="Idpros">
 
           <div class="form-group">
-            <label for="basic-example">SENDER ID</label>
+            <label for="basic-example">SENDER</label>
             <select class="selectpicker senderID" id="senderID">
-              <option value="meneya">Meneya</option>
+              <option value="{{$sender}}">{{$sender}}</option>
             </select>
           </div>
 
@@ -216,6 +227,7 @@
 
       </div>
       <div class="modal-footer">
+        <div class="spinner-border lod" role="status"><span class="sr-only">Loading...</span></div>
         <button type="button" class="btn btn-primary sendSMS">Envoyez
           <i class="far fa-paper-plane"></i>
         </button>
@@ -232,13 +244,14 @@
  <script src="{{ asset('assets/js/theme.js') }}"></script>
 <script type="text/javascript">
 
+  $(".lod").hide();
+
   // Fonction de comptage
    function count_up(obj){
      document.getElementById('compteur').innerHTML = obj.value.length;
       var sms = $("#compteur").text();
       var nbS = parseInt(sms)/160;
       $("#NbSMS").text(parseInt(nbS));
-   
    }
 
 
@@ -261,6 +274,7 @@
     /* Liste des besoins */
      $(".besoins").click(function(){
       var id = $(this).attr("id");
+      $('.prosptId').val(id);
       $.ajax({
        url:'p_PrBes',
        method:'GET',
@@ -281,12 +295,15 @@
      $(".addBs").click(function(){
         var besN  = $("#besoinsN").val();
         var besAc = $("select.besE").children("option:selected").val();
-        var Idpro = $("#Idprosp").val();
+        var Idpro = $(".prosptId").val();
         console.log('besN:'+besN);
         console.log('besAc:'+besAc);
         console.log('IdP:'+Idpro);
         if(besN=='' && besAc=='no'){
            Swal.fire('Veuillez attribuer un besoins');
+        }
+        else if(besN!='' && besAc!='no'){
+          Swal.fire('Veuillez sélectionner un besoin existant ou remplir le champ pour un nouveau besoin');
         }else{
            $.ajax({
              url:'p_besoL',
@@ -322,6 +339,7 @@
     });
 
     $(".sendSMS").click(function(){
+      $(".lod").show();
       var IPros  = $("#Idpros").val();
       var msg    = $("#smsP").val();
       var SendID = $("select.senderID").children("option:selected").val();
@@ -331,10 +349,23 @@
          url:"ProsSMS",
          method:"get",
          data:{IPros:IPros,msg:msg,SendID:SendID},
-         dataType:'html',
+         dataType:'json',
          success:function(data){
-           Swal.fire('SMS envoyé avec succès');
-           InitForm();
+          
+           if (data.success==1) {
+             Swal.fire(
+               'Message envoyé !',
+               'Le prospect a bien reçu le sms',
+               'success'
+             )
+           }else{
+              Swal.fire(
+               'Message echoué !',
+                data.error,
+               'error'
+             )
+           }
+           $('.lod').hide();
          },
          error:function(){
            Swal.fire('Envoie de SMS echoué');
@@ -421,4 +452,36 @@
       }
      })
    });
+
+  // Suppression globale
+  $('.DelP').click(function(){
+      var all = "tous";
+      Swal.fire({
+       title: 'Prospects',
+       text: "Voulez-vous supprimer tous les prospects ?",
+       icon: 'error',
+       showCancelButton: true,
+       confirmButtonColor: '#3085d6',
+       cancelButtonColor: '#d33',
+       cancelButtonText: 'Annuler',
+       confirmButtonText: 'oui , supprimer!',
+       backdrop: `rgba(240,15,83,0.4)`
+      }).then((result)=>{
+         if (result.value) {
+            $.ajax({
+             url:'/p_DelPAll',
+             method:'GET',
+             data:{action:all},
+             dataType:'text',
+             success:function(){
+               $("#main_content").load("/p_prospL");
+             },
+             error:function(){
+               Swal.fire('Problème de connection internet');
+             }
+            });
+         }
+      })
+  });
+
 </script>

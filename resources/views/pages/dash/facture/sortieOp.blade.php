@@ -5,30 +5,29 @@
 
         <div class="content">
           <div class="card mb-3">
-            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../assets/img/illustrations/corner-4.png);opacity: 0.7;">
-            </div>
-            <!--/.bg-holder-->
+
 
             <div class="card-body">
-              <div class="d-flex justify-content-between">
-            
-                <h5> {{ env('APP_LIBELLE') }}<br><span class="fas fa-map-marker-alt"></span> {{ env('APP_LOCATION') }} <span class="fas fa-phone-square-alt"></span> {{ env('APP_CONTACT') }} </h5>
-                <img src="{{ asset('assets/img/team/logodimad.jpg') }}" alt="..." class="img-thumbnail">
+
+
+              <div class="row align-items-center text-center mb-3">
+                <div class="col-sm-6 text-sm-left">
+                  <img src="../assets/img/logos/logo-invoice.png" 
+                       alt="invoice" width="150">
+                </div>
+                <div class="col text-sm-right mt-3 mt-sm-0">
+                  <h2 class="mb-3">Facture d'achat</h2>
+                  <h5>{{getEntreprise()}}</h5>
+                  <p class="fs--1 mb-0">
+                    {{getLocal()}}<br>
+                    {{getContact()}}<br>
+                    {{getAlertMail()}}
+                  </p>
+                </div>
+                <div class="col-12">
+                  <hr>
+                </div>
               </div>
-
-
-              <div  class="d-flex justify-content-between">
-                <div>
-                  <strong class="mr-2">Opérateur: {{ $operateur->operateurNom }}</strong>
-                </div>
-                <div>
-                  <strong class="mr-2">Contact: {{ $operateur->operateurContact }} </strong>
-                </div>
-                <div>
-                  <strong class="mr-2">Date: </strong>
-                  <div class="badge badge-pill badge-soft-secondary fs--2 dateVente">{{ date('d/m/Y') }}<span class="fas fa-check ml-1" data-fa-transform="shrink-2"></span></div>
-                </div>
-            </div>
 
             </div>
           </div>
@@ -38,13 +37,20 @@
             </div>
           </div>
           <footer>
-            <div class="row no-gutters justify-content-between fs--1 mt-4 mb-3">
-              <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 text-600">DIM AD Reçu <span class="d-none d-sm-inline-block">| </span><br class="d-sm-none" /> {{ date('Y') }} &copy; <a href="https://themewagon.com">Copyright</a></p>
-              </div>
-              <div class="col-12 col-sm-auto text-center">
-                <p class="mb-0 text-600">v2.7.0</p>
-              </div>
+            <div class="card-footer bg-light">
+              <p class="fs--1 mb-0"><strong>*Autres:</strong> 
+                
+                <?php 
+                  if(isset($sortie)){
+
+                   echo $sortie->chargesDesc;
+                  }
+                  else{
+                    echo "aucun";
+                  }
+  
+                ?>
+              </p>
             </div>
           </footer>
         </div>
@@ -87,3 +93,8 @@
                     
                                 }
             </style>
+
+
+
+
+    

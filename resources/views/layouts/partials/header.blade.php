@@ -2,6 +2,7 @@
 <html lang="en-US" dir="ltr">
 
   <head>
+        <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=603d59d0f6067000116b02ef&product=inline-share-buttons" async="async"></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +11,7 @@
     <!-- ===============================================-->
     <!--    Document Title-->
     <!-- ===============================================-->
-    <title>{{ config('app.name') }} | WebApp Dashboard  </title>
+    <title>{{ config('app.name') }}</title>
 
 
 
@@ -48,6 +49,7 @@
     <link href="assets/css/theme.css" rel="stylesheet">
     <link href="assets/css/sweetalert2.min.css" rel="stylesheet">
     <link href="assets/lib/select2/select2.min.css" rel="stylesheet">
+    
 
 
   </head>

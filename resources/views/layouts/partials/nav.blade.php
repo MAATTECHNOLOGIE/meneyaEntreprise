@@ -328,6 +328,31 @@
                       </li>
                     </ul>
                 </li>
+
+                <li class="nav-item"><a class="nav-link dropdown-indicator" 
+                  href="#commandes" data-toggle="collapse" role="button" 
+                  aria-expanded="false" aria-controls="fournisseur">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon">
+                      <i class="fas fa-cart-arrow-down"></i> </span><span class="nav-link-text">Mes commandes</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="commandes" data-parent="#navbarVerticalCollapse">
+
+                    <li class="nav-item collapsed"
+                      data-toggle="collapse" data-target="#navbarVerticalCollapse" 
+                      aria-controls="navbarVerticalCollapse" aria-expanded="false" 
+                      aria-label="Toggle Navigation" id="CommdNew">
+                      <a class="nav-link"  href="#main_content">Nouvelle</a>
+                    </li>
+                    <li class="nav-item"
+                      data-toggle="collapse" data-target="#navbarVerticalCollapse" 
+                      aria-controls="navbarVerticalCollapse" 
+                      aria-expanded="false" 
+                      aria-label="Toggle Navigation" id="CommdLvr">
+                      <a class="nav-link" href="#main_content">Livrées</a>
+                    </li>
+                  </ul>
+                </li>
                 @endif
               </ul>
             @else
