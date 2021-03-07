@@ -9,28 +9,32 @@
         <div class="col-lg-8">
 
           <h3 class="mb-0 text-primary">
-           <a href="#" class="operateurs" id="{{ $operateur->id}}">
+           <a href="#" class="operateurs" id="{{$operateur->id}}">
             <i class="fas fa-user-tie"></i>
-            Opérateur > {{ $operateur->operateurNom}}
+            Sortie > Opérateur > {{ $operateur->operateurNom}}
            </a>
           </h3>
-          <p class="mt-2">
-            <span class="fas fa-blender-phone"></span>
-            <b>Contact</b>: {{ $operateur->operateurContact}}
-   
-            <span class="fas fa-map-marker-alt ml-2"></span>
-            <b>Lieu</b>: {{ $operateur->operateurLieu}}
-
-            <span class="fas fas fa-barcode ml-2"></span>
-            <b>Matricule</b>: {{ $operateur->operateurMat}}
-          </p>
-          <p class="mt-2"><b>Sortie ></b>,Enregistrer les sorties de l'opération</p>
+          <p class="mt-2"><b>Sortie >></b>Nouvelle sortie</p>
         </div>
       </div>
     </div>
 </div>
 
-<div style="display: flex; justify-content: space-around; ">
+<?php
+
+  foreach ($operations as $key => $value) {
+    $operationl        = $value->OperationLibele;
+    $operationcode    = $value->operationCode;
+    $operationcoment  = $value->Operationcomt;
+    $operaOptID       = $value->operaOpt;
+    $idoperateur      = $value->OperaID;
+    $montantrestant   = $value->montantrestant;
+    
+  }
+?>
+
+
+          <div style="display: flex; justify-content: space-around; ">
             <div class="card mb-2 col-lg-5 ">
               <div class="card-body bg-light overflow-hidden ">
 
@@ -46,40 +50,42 @@
                     </li>
                   </ul>
                   <div class="tab-content border p-3 mt-3" id="pill-myTabContent">
-                    <div class="tab-pane fade show active" id="pill-tab-home" role="tabpanel"       aria-labelledby="home-tab">
-                      <div class="col-12">
-                        <div class="form-group">
+                    <div class="tab-pane fade show active" id="pill-tab-home" role="tabpanel" aria-labelledby="home-tab">
+                          <div class="col-12">
+                            <div class="form-group">
                           <label for="sortieName">Opérations</label>
-                           @if(empty($_SESSION['sortieName']))
+                          {{--  {{dd($_SESSION['sortieName'])}} --}}
+                          @if(empty($_SESSION['sortieName']))
                               <select class="form-control" id="sortieName" name="sortieName" >
                                 @foreach($operations as $operation)
-                                <option value="{{ $operation->id }}" libelle="{{ $operation->id }}">
-                                  {{ $operation->OperationLibele }}
+                                <option value="{{ $operation->id }}" libelle="{{ $operation->id }}">{{ $operation->OperationLibele." (Matr: ".$operation->operaOpt."|".formatPrice($operation->montantrestant)."|".$operation->date." )" }}
                                 </option>
                                 @endforeach
                               </select>
-                            @else
-                            <input class="form-control" id="sortieName" type="text" value="{{ $_SESSION['sortieName'] }}" readonly>
+                              @else
+
+                              <input class="form-control" id="sortieName" type="text" value="{{ $_SESSION['sortieName'] }}" readonly>
 
                           @endif
-                        </div>
-                      </div>
+                            </div>
+                          </div>
                           <div class="col-12" style="display: flex;justify-content: flex-end;">
-                            <button class="btn btn-primary mr-1 mb-1" type="button" 
-                             id="enregistreSortie">
+                            <button class="btn btn-primary mr-1 mb-1" type="button" id="enregistreSortie">
                                 Suivant <i class="fas fa-angle-double-right"></i>
-                            </button>
+                            </button> 
                           </div>
                     </div>
                     <div class="tab-pane fade " id="pill-tab-profile" role="tabpanel" aria-labelledby="profile-tab">
                         <form id="formProduit">
-                          
+                          @csrf
+                          {{-- recuperation des valeur arrivage  par id --}}
                           <input type="hidden" name="sortieNom" id="sortieNom" value="">
                           <input type="hidden" name="sortieLibelle" id="sortieid" value="">
                           <input type="hidden" name="sortieIdOp" value="{{ $operateur->id }}">
-                          <input type="hidden" name="sortieNameOp" 
-                           value="{{ $operateur->operateurNom }}">
-                           @csrf
+                          <input type="hidden" name="sortieNameOp" value="{{ $operateur->operateurNom }}">
+                          
+                        @csrf
+
                           <div class="form-group">
                             <label for="basic-example">Produit</label>
                             <select class="selectpicker" id="inputVal" name="article">
@@ -112,6 +118,7 @@
                   </div>
               </div>
             </div>
+
             <div class="card mb-2 col-lg-4 pt-2">
                   <div class="row justify-content-center align-items-center">
                     <div class="col-sm-auto">
@@ -124,7 +131,7 @@
                     <div class="col-auto">
                       <div class="avatar avatar-5xl status-away">
                         <a href="#titreArrivage" class="stretched-link">
-                        <img class="rounded-circle" src="../assets/img/team/avatar.png" alt="">
+                        <img class="rounded-circle" src="../assets/img/team/avatar.png" alt="" />
                       </a>
                       </div>
                     </div>
@@ -132,22 +139,36 @@
                     <div class="avatar avatar-4xl">
                       <div class="avatar-name bg-warning rounded-circle " style="cursor: pointer;">
                         <span id="compteur_panier">
-                       00 
-                                                </span>
+                      @if(!empty($_SESSION['sortieOp'])) 
+                        {{ count($_SESSION['sortieOp']) }} 
+                        @else {{ "00" }} 
+                        @endif
+                        </span>
                       </div>
                     </div>
                   </div>
                   <div class="d-flex justify-content-center">
                     <button class="btn btn-falcon-primary mr-1 mb-1" id="solde" type="button">
-                      <svg class="svg-inline--fa fa-star fa-w-18" data-fa-transform="shrink-3" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="star" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg="" style="transform-origin: 0.5625em 0.5em;"><g transform="translate(288 256)"><g transform="translate(0, 0)  scale(0.8125, 0.8125)  rotate(0 0 0)"><path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" transform="translate(-288 -256)"></path></g></g></svg><!-- <span class="fa fa-star" data-fa-transform="shrink-3"></span> -->
-                      Solde :
+                      <span class="fa fa-star"  data-fa-transform="shrink-3"></span>
+                      Solde :{{$montantrestant}}
                     </button>
                   </div>
+
                   <div class="d-flex justify-content-center">
-                      <button class="btn btn-warning mr-1 mt-2" type="button" id="listeSortiPrd">
-                        <svg class="svg-inline--fa fa-eye fa-w-18 mr-2" data-fa-transform="shrink-2" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="eye" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg="" style="transform-origin: 0.5625em 0.5em;"><g transform="translate(288 256)"><g transform="translate(0, 0)  scale(0.875, 0.875)  rotate(0 0 0)"><path fill="currentColor" d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z" transform="translate(-288 -256)"></path></g></g></svg><!-- <span class="fas fa-eye mr-2" data-fa-transform="shrink-2"></span> -->
-                        Consulter listes
+
+                      <button class ="btn btn-warning mr-1 mt-2" 
+                              type ="button" 
+                              id               = "listeSortiPrd"
+                              operation        = "{{$operationl}}";
+                              operationcode    = "{{$operationcode}}" 
+                              operationcoment  = "{{$operationcoment}}"
+                              operaOptID       = "{{$operaOptID}}"
+                              idoperateur      = "{{$idoperateur}}">
+                        <span class="fas fa-eye mr-2" 
+                        data-fa-transform="shrink-2" ></span>
+                        Consulter listes 
                       </button>
+                     
                   </div>
 
 
@@ -157,17 +178,191 @@
           </div>
 
 
-<script src="assets/lib/select2/select2.min.js"></script>
-<script type="text/javascript">
-  $(".operateurs").click(function(){
-    loadingScreen();
-    var idV = $(this).attr('id');
-    var token = $('input[name=_token]').val();
-    $("#main_content").load("/p_OpTion",{idV:idV,_token:token});
-  });
 
-   
-           
-           
-           
-</script>
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+
+
+
+    <script src="{{ asset('assets/js/theme.js') }}"></script>
+    <script type="text/javascript">
+
+      $(".operateurs").click(function(){
+         var idV = $(this).attr('id');
+         var token = $('input[name=_token]').val();
+         $("#main_content").load("/p_OpTion",{idV:idV,_token:token});
+      });
+
+      //Fonction d'ajout de prd au panier
+        function ajaxProduitSave()
+        {
+                  $.ajax({
+                    method: "POST",
+                    url: "/savePrdSortie",
+                    data: $("#formProduit").serialize(),
+                    dataType: "json",
+                  })
+
+          .done(function(data) { toastr.success("Ajout validé  ");})
+          .fail(function(data) 
+          {
+                      
+            $.each(data.responseJSON, function (key, value) 
+                {
+                  if (key == "errors") 
+                    {
+                      $.each(value, function(key1,value1)
+                      {
+                        var input = '#formProduit input[name=' + key1 + ']';
+                        $(input).attr('placeholder',value1)
+                      $(input).addClass('is-invalid');
+                      })
+
+
+                    }
+                });
+          });
+        }
+
+
+      //Initialise le formulaire de selection de produits
+        function articleformClassInit()
+        {
+          // $('#inputVal').val('').attr('class','form-control');
+          $('#prix').val('').attr('class','form-control');
+          $('#quantite').val('').attr('class','form-control');  
+        };
+
+
+
+
+
+      $(function()
+      {
+
+
+        // Sélection de produit
+          $('#inputVal').change(function()
+          {
+
+            if($('#inputVal').val() == 'choix')
+            {
+               toastr.warning('Veuillez choisir un article');
+            }
+            else
+            {
+              var selecText = $('#inputVal option:selected').attr('title');
+              $("#prix").val(selecText);
+              
+            }
+          })
+
+        //Selection de l'operation lie a la sortie
+          $('#enregistreSortie').click(function()
+            {
+
+              if($("#sortieName").val() != "")
+              {
+                $('#sortieNom').attr('value',$("#sortieName").val());
+                // $('#arrivageid').attr('value',$("#arrivageName").attr('Cmd'));
+                var selecText = $('#sortieName option:selected').text();
+                $('#sortieid').attr('value', $.trim(selecText));
+
+                $('#sortieName').removeClass('is-invalid').addClass('is-valid');
+                $("#pill-home-tab").attr('class', 'nav-link');
+                $("#pill-tab-home").attr('class', 'tab-pane fade');
+
+                $("#pill-profile-tab").attr('class', 'nav-link active');
+                $("#pill-tab-profile").attr('class', 'tab-pane fade show active');
+              }
+              else
+                {
+                  $('#sortieName').addClass('is-invalid');
+                }
+
+
+            });
+
+        //Ajouter le produits au pannier
+        $('#addPrdSortie').click(function()
+         {
+
+            if ($('#prix').val() != "") 
+            {
+                $('#prix').attr('class', 'form-control is-valid');
+
+                if ($('#quantite').val() != "") 
+                {
+                  $('#quantite').attr('class', 'form-control is-valid');
+
+                 //selection de l'option de l'id de l'article choisit
+                 var selectedId = $('#inputVal option:selected').attr('idduPrd');
+                 $('#produitId').attr('value',selectedId);
+                    ajaxProduitSave();
+                  var compteur_panier = parseInt($('#compteur_panier').text());
+                 $('#compteur_panier').text(compteur_panier+1)
+                   articleformClassInit();
+                 
+                }
+                else
+                {
+                  $('#quantite').addClass('is-invalid');
+                }
+            }
+            else
+              {
+                $('#prix').addClass('is-invalid');
+
+              }
+
+
+          })
+
+
+
+
+
+
+ /*---------------------------------------
+ Ajax liste de produits ajouter au panier
+-----------------------------------------*/
+    // Affiche liste
+     $("#listeSortiPrd").click(function()
+       {
+
+          // Récupération des données
+          var operation       = $(this).attr('operation');
+          var operationcode   = $(this).attr('operation');
+          var operationcoment = $(this).attr('operationcoment');
+          var operaOptID      = $(this).attr('operaOptID');
+          var idoperateur     = $(this).attr('idoperateur');
+          var token = $('input[name=_token]').val();
+          
+          if (parseInt($('#compteur_panier').text()) >=1) 
+            {
+             $('#main_content').load('/listeSortiPrd',
+                {idOp : idoperateur, 
+                 idOpt:operaOptID, 
+                 _token :token,
+                 operation:operation,
+                 operationcode:operationcode,
+                 operationcoment:operationcoment
+                });
+            }
+            else
+            {
+              Swal.fire(
+                'Oupss!',
+                'Commande  encore vide!',
+                'error'
+                );
+            }
+
+       });
+      });
+    </script>
+
+<script src="assets/lib/select2/select2.min.js"></script>
+

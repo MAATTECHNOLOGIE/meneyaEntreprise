@@ -42,10 +42,16 @@
                       </svg></span></span></a>
 
               </li>
-              <li class="nav-item">
+{{--               <li class="nav-item">
                 <a class="nav-link px-0 notification-indicator notification-indicator-warning notification-indicator-fill icon-indicator" href="#"><span class="fas fa-shopping-cart fs-4" data-fa-transform="shrink-7"></span><span class="notification-indicator-number">0</span></a>
-              </li>
+              </li> --}}
 
+              <li class="nav-item" id="CommdNewF">
+                <a class="nav-link px-0 notification-indicator notification-indicator-warning notification-indicator-fill icon-indicator" href="#"><span class="fas fa-shopping-cart fs-4" data-fa-transform="shrink-7"></span>
+                  <span class="notification-indicator-number">
+                    {{getCommande()}}
+                  </span></a>
+              </li>
               <li class="nav-item dropdown dropdown-on-hover">
                 <a class="nav-link notification-indicator notification-indicator-primary px-0 icon-indicator" 
                 id="navbarDropdownNotification" href="#" role="button" 

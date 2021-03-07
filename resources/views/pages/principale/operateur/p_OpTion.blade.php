@@ -15,7 +15,7 @@
                 <button class="ml-1 btn btn-outline-primary rounded-capsule mr-1 mb-1 newOp" 
                  type="button">   Nouvelle opération
                 </button><br class="d-none d-md-block"/>
-                <a class="retour" href="#">
+                <a class="Retour" href="#" id="{{$idOp}}">
                   <span class="text-danger"><i class="fas fa-angle-left"></i> Retour</span>
                 </a>
               </p>
@@ -35,10 +35,11 @@
              });
 
             // Retour opérateur
-             $('.retour').click(function(){
-               loadingScreen();
+             $('.Retour').click(function(){
+               //loadingScreen();
                $("#main_content").load("/p_OpListe");
-
+               /*var idOp = $("#IdOp").val();
+               console.log('retour: '+idOp);*/
              });
 
           </script>
@@ -55,11 +56,12 @@
     <div class="card-body">
       <div class="row">
         <div class="col-lg-8">
-         
+          {{-- {{dd($oper)}} --}}
           <?php foreach ($oper as $key => $value){?>
           
            <h3 class="mb-0 text-primary">
-              <a href="#" class="operateurs"><span><i class="fas fa-briefcase"></i> 
+              <a href="#" class="operateurs"><span>
+                <i class="fas fa-briefcase"></i> 
                 Opérateurs ></span></a>
               <?php echo $value->operateurNom; ?>
            </h3>
@@ -81,8 +83,9 @@
             id="<?php echo $value->id;?>" type="button">
              <span class="fab fa-battle-net fa-2x"  data-fa-transform="shrink-3"></span>Actualiser
            </button>
-            <button class="btn btn-falcon-danger mr-1 mb-1  bntSortie"id="<?=$value->id?>" type="button">
-             <span class="fas fa-plus "  data-fa-transform="shrink-3" ></span>Ajouter sortie
+            <button class="btn btn-falcon-danger mr-1 mb-1  bntSortie"
+                    id="<?php echo $value->id;?>" type="button">
+             <span class="fas fa-plus "  data-fa-transform="shrink-3" ></span>Nouvelle sortie
            </button>
 
                     <button class="btn btn-falcon-default btn-sm newOpera" type="button">
@@ -121,7 +124,7 @@
                           </label>
                         </div>
                       </th>
-                      <th class="align-middle sort">Mat.</th>
+                      <th class="align-middle sort">Matr.</th>
                       <th class="align-middle sort">Opérat.</th>
                       <th class="align-middle sort" style="min-width: 12.5rem;">Montant
                       </th>
@@ -133,6 +136,7 @@
                   </thead>
                   <tbody id="orders">
                    <?php foreach ($OpTion as $key => $value){?>
+                     {{-- {{dd($value)}} --}}
                     <tr class="btn-reveal-trigger">
                       <td class="py-2 align-middle">
                         <div class="custom-control custom-checkbox">
@@ -141,7 +145,8 @@
                           <label class="custom-control-label" for="checkbox-0"></label>
                         </div>
                       </td>
-                      <td class="py-2 align-middle white-space-nowrap"><a href="#">
+                      <td class="py-2 align-middle white-space-nowrap">
+                        <a href="#">
                         <strong><?php echo $value->opeOperat;?></strong><br />
                       </td>
                       <td class="py-2 align-middle white-space-nowrap"><a href="#">
@@ -149,16 +154,22 @@
                       </td>
                       <td class="py-2 align-middle">
                         <span class="badge badge-pill badge-secondary" style="font-size: 15px">
-                          <?php echo number_format($value->montant,0,',','. ').' FCFA' ;?>
+                          <?php echo formatPrice($value->montant);?>
 
                           </span>
                       </td>
                       <td class="py-2 align-middle">
-                        <span class="badge badge-pill badge-primary" style="font-size: 15px">
-                          <?php echo number_format($value->montantrestant,0,',','. ').' FCFA';?>
-                            
+                        @if($value->montantrestant<0)
+                         <span class="badge badge-pill badge-danger" style="font-size: 15px">
+                          <?php echo formatPrice($value->montantrestant);?>
                           </span>
-                        </td>
+                        @else
+                          <span class="badge badge-pill badge-primary" 
+                             style="font-size: 15px">
+                          <?php echo formatPrice($value->montantrestant);?>
+                          </span>
+                        @endif
+                      </td>
                       <td class="py-2 align-middle">
                         <p class="mb-0 text-500">
                          <?php echo $value->date;?>
@@ -167,14 +178,47 @@
 
                       <td class="py-2 align-middle white-space-nowrap">
                         
-                        <button class="btn btn-falcon-info rounded-capsule mr-1 mb-1 sorties" type="button" id="<?php echo $value->opeOperat;?>">Sorties
+                        <button class="btn btn-falcon-info rounded-capsule mr-1 mb-1 sorties" 
+                          type="button" 
+                          id="{{$value->opeOperat}}"
+                          operation="{{$value->OperationLibele}}"
+                          operationcode="{{$value->operationCode}}"
+                          operationcoment="{{$value->Operationcomt}}"
+                          >Sorties
                         </button>
+
+                        <button class="btn btn-falcon rounded-capsule 
+                                      mr-1 mb-1 story bg-danger text-light" 
+                                type="button"
+                                id="{{$value->opeOperat}}">
+                          Historique
+                        </button>
+
+                        <span class="addCreditBtn" 
+                              type="button" 
+                              data-toggle="modal"
+                              data-target="#addCredit"
+                              id="{{$value->opeOperat}}" 
+                              title='{{$value->OperationLibele}}' 
+                              operations= '{{$value->IDoperation}}'
+                              montantRst = '{{formatprice($value->montantrestant)}}'
+                              >
+                          <i class="fas fa-money-check-alt fa-2x text-warning">
+                          </i>
+                       </span>
+
 
                         <a href="#" class="delete" 
                            id="<?php echo $value->opeOperat;?>">
                           <i class="far fa-trash-alt fa-2x text-danger">
                           </i>
                         </a>
+
+                        {{-- <a href="#" class="edit" 
+                           id="<?php echo $value->opeOperat;?>">
+                          <i class="far fa-edit fa-2x text-infos">
+                          </i>
+                        </a> --}}
                       </td>
                     </tr> 
                    <?php } ?>
@@ -188,6 +232,106 @@
 
 <!-- Modal-->
 
+<!-- Modal de paiement -->
+<div class="modal fade" id="addCredit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Paiement de Credit > {{ $oper[0]->operateurNom }}</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+      </div>
+      
+            <form class="modal-body" id="payVersForm">
+               @csrf
+              <div class="form-group">
+                 <label for="infoVers"><b>Montant restant => 
+                  <span class="montaRest"></span></b>
+                 </label>
+                 <input class="form-control operationT" type="text" disabled>
+              </div>
+
+              <div class="form-row">
+                <div class="col-6">
+                 <div class="form-group">
+                 <label for="agent" class="text-danger">Agent (Nom du caissier)
+                  <span class="fas fa-times-circle " data-fa-transform="shrink-1"></span>
+                 </label>
+                 <input class="form-control" id="agent" name="agent" value="{{ Auth::user()->name }}"  type="text" readonly="">
+                </div>                 
+                </div>
+
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="agent">Type paiement</label>
+                    <select class="form-control" id="moyen"  name="moyen">
+                          <option value="Mobile money" >Mobile money</option> 
+                          <option value="Chèques" >Chèques</option>
+                          <option value="Espèce" >Espèce</option>
+                          <option value="Virement Bancaire" >Virement Bancaire</option>
+                    </select>
+                  </div>                 
+                </div>
+
+                <div class="col-6">
+                  <div class="form-group ">
+                   <label for="montant " class="text-danger">
+                      Montant 
+                      <span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span>
+                   </label>
+                   <input class="form-control" id="montantPay" type="number" 
+                   name='montant' value="" min='1' max="">
+                  </div>
+                </div> 
+
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="datePayVers">Date (date de paiement) </label>
+                    <input class="form-control form-control-sm datetimepicker flatpickr-input"
+                     id="datePayVers"
+                     required="" 
+                     name="datePayVers" type="text" 
+                     placeholder="d/m/Y" 
+                     value="{{ date('d/m/Y') }}" >
+                  </div>
+                </div>
+                <input type="hidden" 
+                       name="Operation_operateur" 
+                       id="operaOperation">
+              </div>
+
+      </form>
+
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm closeBtn" type="button" data-dismiss="modal">Fermer</button>
+        <button class="btn btn-primary btn-sm" type="button" id="appliquer">Appliquer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de paiement -->
+<div class="modal fade" id="story" tabindex="-1" role="dialog" 
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Historique de paiement  > {{ $oper[0]->operateurNom }}</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+      </div>
+      
+      <div class="modal-body corps_story">
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-sm closeBtn" type="button" data-dismiss="modal">Fermer</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- Champ inactif -->
 <?php foreach ($OpTion as $key => $value){?>
@@ -198,7 +342,73 @@
 
      <script src="{{ asset('assets/js/theme.js') }}"></script>
      <script type="text/javascript">
+        
+        // Story de paiement
+        $(".story").click(function(){
+           var idOperaOperat = $(this).attr("id");
+           $.ajax({
+             url:'story',
+             method:'GET',
+             data:{idOperaOperat:idOperaOperat},
+             dataType:'text',
+             success:function(data){
+               console.log(data);
+               $(".corps_story").html(data);
+               $("#story").modal('show');
+             },
+             error:function(data){
+               console.log(data);
+             }
+           });
+        });      
+
+        // Lancement du modal
+        $('.addCreditBtn').click(function()
+         {
+           var idOp      = $(this).attr('id');
+           var operation = $(this).attr('title');
+           var montantR  = $('.addCreditBtn').attr("montantRst");
+           console.log("Idop:"+idOp);
+           console.log("operation:"+operation);
+           console.log("montantR:"+montantR);
+
+           $(".montaRest").text(montantR);
+           $(".operationT").val(operation);
+           $("#operaOperation").val(idOp);
+            
+         });
+
+        // Lancement du paiement
+         $('#appliquer').click(function()
+         {
+
+          $.ajax({
+             url:'addCredit',
+             method:'GET',
+             data: $('#payVersForm').serialize(),
+             dataType:'text',
+             success:function(data){
+              toastr.success('Montant mis à jour avec succès');
+              $('.closeBtn').click();
+              $('.refresh').click();
+             },
+             error:function(){
+              Swal.fire('Problème de connection internet');
+             }
+
+           }); 
+         })
+
+
+
        
+        // Edit
+         $(".edit").click(function(){
+           var idOp = $(this).attr("id");
+           console.log(idOp);
+         });
+
+
         //Valider 
          $('.valider').click(function(){
             var idV     = $(this).attr('id');
@@ -291,10 +501,15 @@
         //Ajouter une sortie
          $('.bntSortie').click(function()
          {
-           var idV = $(this).attr('id');
+          /* var idV = $(this).attr('id');
            //alert(idV);
            var token = $('input[name=_token]').val();
-           $("#main_content").load("/p_OpSortie",{idV:idV,_token:token});
+           $("#main_content").load("/p_OpSortie",{idV:idV,_token:token});*/
+
+           var idV = $(this).attr('id');
+           var token  = $('input[name=_token]').val();
+           $("#main_content").load("p_OpSortie",{idV:idV,_token:token});
+           //alert(token);
 
          });
 
@@ -311,9 +526,19 @@
         $('.sorties').click(function()
         {
           var idOp = $('#idOperateur').val();
-          var idOpt = $(this).attr('id');   //id de l'operation de l'operateur
-           var token = $('input[name=_token]').val();
-           $("#main_content").load("/p_listeSortie",{idOp : idOp, idOpt:idOpt, _token :token});
+          var idOpt = $(this).attr('id');
+          var operation = $(this).attr("operation");
+          var operationcode = $(this).attr("operationcode");
+          var operationcoment = $(this).attr("operationcoment");
+          var token = $('input[name=_token]').val();
+          $("#main_content").load("/p_listeSortie",
+                {idOp : idOp, 
+                 idOpt:idOpt, 
+                 _token :token,
+                 operation:operation,
+                 operationcode:operationcode,
+                 operationcoment:operationcoment
+                });
         })
 
 

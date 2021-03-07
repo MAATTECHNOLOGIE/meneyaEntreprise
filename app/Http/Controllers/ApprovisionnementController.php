@@ -136,13 +136,18 @@ class ApprovisionnementController extends Controller
                     {
                         //Generation du matricule de l'approvisionnement
                         $matricule = "APR#".date("d/m/y")."#".rand(0,1000); 
+                        $dateV = setDefault($request->dateV,date('d/m/Y'));
+                        $charge = setDefault($request->charge,0);
+                        $chargeDesc = setDefault($request->chargeDesc,'');
                         // dd($matricule);
 
                         //insertion de l'approvisionnement dans table appro
                         $arrivage = approvisionnement::create([
                                     'approvisionMat'=> $matricule,
                                     'succursale_id' => $_SESSION['arrivageid'],
-                                    // 'produits_id' => $value['idArticle']
+                                    'dateApro'  => $dateV,
+                                    'charge'    =>$charge,
+                                    'description_charge' =>$chargeDesc,
                                     ]);
                                 $prixTotal = 0;
                                 $qteTotal = 0;
@@ -196,13 +201,12 @@ class ApprovisionnementController extends Controller
       public function approviList(Request $request)
         {
             //Lecture des approviionnements et de la liste des produits de l'approvisionnement
-            $aproV = DB::table('approvisionnements')
-                ->join('produits_has_approvisionnements', 'approvisionnements.id', '=',
-                        'produits_has_approvisionnements.approvisionnement_id')
+            $myAprov = approvisionnement::find($request->idApprovi);
+            $aproV = DB::table('produits_has_approvisionnements')
                 ->join('produits', 'produits.id', '=', 
                        'produits_has_approvisionnements.produits_id')
-                ->select('produits.*', 'produits_has_approvisionnements.*', 'approvisionnements.id as approId')
-                ->where('approvisionnements.id', '=',$request->idApprovi)
+                ->select('produits.*', 'produits_has_approvisionnements.*')
+                ->where('produits_has_approvisionnements.approvisionnement_id', '=',$request->idApprovi)
                 ->get();
                 $total= 0;
              $output ='';
@@ -236,10 +240,19 @@ class ApprovisionnementController extends Controller
                   </div>
                   <div class="row no-gutters justify-content-end">
                     <div class="col-auto">
-                      <table class="table table-sm table-borderless fs--1 text-right">';
+                     <table class="table table-sm table-borderless fs--1 text-right">';
+                    $total = $total+$myAprov->charge;
+                    if($myAprov->charge !=0)
+                    {
+                    $output.='
+                        <tr class="">
+                          <th class="text-900 ">'.$myAprov->description_charge.':</th>
+                          <td class="font-weight-semi-bold">'.formatPrice($myAprov->charge).'</td>
+                        </tr>';
+                    }
                     $output.='
                         <tr class="text-danger">
-                          <th class="text-900 text-danger">Total( '.getMyDevise().'):</th>
+                          <th class="text-900 text-danger">Total TTC:</th>
                           <td class="font-weight-semi-bold">'.formatPrice($total).'</td>
                         </tr>';
                     $output.='    

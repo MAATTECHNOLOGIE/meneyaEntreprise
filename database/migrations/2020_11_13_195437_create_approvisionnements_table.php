@@ -20,6 +20,8 @@ class CreateApprovisionnementsTable extends Migration
             $table->string('approvisionMontant')->default('0');
             $table->string('approvisionTotal')->default('0');
             $table->string('dateApro')->default('0');
+            $table->string('charge')->nullable();
+            $table->string('description_charge')->nullable();
             $table->unsignedBigInteger('succursale_id');
             $table->foreign('succursale_id')->references('id')->on('succursales');
             $table->timestamps();

@@ -23,10 +23,14 @@
           
 
            <h3 class="mb-0 text-primary">
-
-              <a href="#" class="operateurs"><span><i class="fas fa-briefcase"></i> 
-
-                Opérateurs ></span></a>{{ $operateur->operateurNom }}
+              {{-- {{dd($operateur)}} --}}
+              <a href="#" class="operateurs" 
+                 id="{{ $operateur->id }}">
+                <span><i class="fas fa-briefcase"></i> 
+                 {{-- {{dd($operateur)}} --}}
+                 Opérateurs >
+                </span>{{ $operateur->operateurNom }}
+              </a>
 
            </h3>
 
@@ -39,24 +43,43 @@
           <p class="mt-2">
 
             <span class="fas fa-blender-phone"></span>
-
             <b>Contact</b>: {{  $operateur->operateurContact }}
 
    
 
             <span class="fas fa-map-marker-alt ml-2"></span>
-
             <b>Lieu</b>: {{  $operateur->operateurLieu }}
 
 
 
-            <span class="fas fas fa-barcode ml-2"></span>
-
+            <span class="fab fa-gg ml-2"></span>
             <b>Matricule</b>:  {{ $operateur->operateurMat }}
+            <hr>
+
+            <span class="fas fas fa-barcode ml-2 operaCode"
+             operacode="{{$operationcode}}"></span>
+            <b>Opération code</b>:  {{$operationcode}}<br>
+
+            <span class="fas fas fa-barcode ml-2 operaName"
+             operaname="{{$operation}}"
+            ></span>
+            <b>Opération</b>:  {{$operation}}<br>
+
+
+            <span class="fas fas fa-barcode ml-2"></span>
+            <b>Opération détails</b>:  {{$operationcoment}}
 
           </p>
 
-          
+           <button class="btn btn-falcon-danger mr-3 mb-1 refresh"        type="button"
+                   operationcode="{{$operationcode}}"
+                   operation="{{$operation}}"
+                   operationcoment="{{$operationcoment}}"
+                   idoperateurOperation="{{$idOpt}}"
+                   idOp={{$idOp}}
+           >
+              <span class="fab fa-battle-net fa-2x"  data-fa-transform="shrink-3"></span>Actualiser
+            </button>
 
 {{--           <br>
 
@@ -112,7 +135,7 @@
 
 
 
-	@if($sorties->isEmpty())
+  @if($sorties->isEmpty())
 
 
 
@@ -146,7 +169,7 @@
 
                 </button><br class="d-none d-md-block"/>
 
-                <a class="retour" href="#">
+                <a class="retour" href="#" id="{{ $operateur->id }}">
 
                   <span class="text-danger"><i class="fas fa-angle-left"></i> Retour</span>
 
@@ -177,8 +200,6 @@
             // Nouvelle sortie
 
              $('.newOp').click(function(){
-
-               //$("#main_content").load("/p_opetNew");
                var idV = $(this).attr('id');
                var token = $('input[name=_token]').val();
                $("#main_content").load("/p_OpSortie",{idV:idV,_token:token});
@@ -190,9 +211,9 @@
             // Retour opérateur
 
              $('.retour').click(function(){
-
-               $("#main_content").load("/p_OpListe");
-
+               var idV = $(this).attr('id');
+               var token = $('input[name=_token]').val();
+               $("#main_content").load("/p_OpTion",{idV:idV,_token:token});
              });
 
 
@@ -205,7 +226,7 @@
 
 
 
-	@else
+  @else
 
           <div class="card mb-5 ">
 
@@ -215,7 +236,8 @@
 
                 <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
 
-                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Liste de vos différentes sortie <a href="" data-toggle="modal" data-target="#exampleModalRight"></a></h5>
+                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Liste des sorties liées à l'opération<a href="" data-toggle="modal" data-target="#exampleModalRight"></a></h5>
+                 
 
                 </div>
 
@@ -224,12 +246,6 @@
 
 
                   <div id="dashboard-actions">
-
-                   
-
-                    <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Filtre</span></button>
-
-                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Imprimer</span></button>
 
                   </div>
 
@@ -249,53 +265,88 @@
 
                     <tr>
 
-                      <th class="align-middle sort">N° Vente</th>
+                      <th class="align-middle sort">Code Sortie</th>
 
                       <th class="align-middle sort" >Qte produits</th>
 
                       <th class="align-middle sort text-left">Montant Total</th>
 
-                      <th class="align-middle sort text-left">Reçus </th>
+                      <th class="align-middle sort text-left">Charges</th>
 
-                      <th class="align-middle sort text-left">Date </th>
+                      <th class="align-middle sort text-left">Détails de charges
+                      </th>
+
+                      <th class="align-middle sort text-left">Date 
+                      </th>
+
+                      <th class="align-middle sort text-left">Action </th>
 
                     </tr>
 
                   </thead>
 
                   <tbody>
+                    {{-- {{dd($sorties)}} --}}
 
-                  	@foreach($sorties as $sortie)
+                    @foreach($sorties as $sortie)
 
                     <tr>
 
                       <th class="align-middle sort">
 
-                      	{{ $sortie->libelleSortie }}
+                        {{ $sortie->matSortie }}
 
                       </th>
 
                       <th class="align-middle sort" >
 
-                      	{{ $sortie->quantiteS }}
+                        {{ $sortie->quantiteS }}
 
                       </th>
 
-                      <th class="align-middle sort text-left">{{ $sortie->montantS }} FCFA </th>
+                      <th class="align-middle sort text-left">
+                        @if($sortie->montantS!='')
+                        {{ $sortie->montantS }} {{getMyDevise()}} 
+                        @else 
+                          0 {{getMyDevise()}}
+                        @endif 
+                      </th>
 
-                      <th class="align-middle sort text-left" style="cursor: pointer;">
+                      <th class="align-middle sort text-left">
+                        @if($sortie->charges==0)
+                          {{0}} {{getMyDevise()}} 
+                        @else
+                          {{ $sortie->charges }} {{getMyDevise()}}
+                        @endif
+                      </th>
 
-                      	<span class='fas fa-list-alt fa-2x  text-primary mr-2 liste' id="{{ $sortie->id }}"></span> 
-
-                      	<span class='far fa-file-pdf fa-2x text-warning reçu' alt="{{ $sortie->created_at }}" id="{{ $sortie->id }}"></span> 
-
+                      <th class="align-middle sort text-left">
+                       {{$sortie->chargesDesc}}
                       </th>
 
                       <th class="align-middle sort">
 
-                        {{ $sortie->created_at }}
+                        {{ $sortie->dateSortie }}
 
                       </th>
+
+                      <th class="align-middle sort text-left" 
+                          style="cursor: pointer;">
+
+                        <span class='fas fa-list-alt fa-2x  text-primary mr-2 liste' 
+                        id="{{ $sortie->id }}"></span> 
+
+                        <span class='far fa-file-pdf fa-2x text-warning reçu' 
+                         alt="{{ $sortie->dateSortie }}" 
+                         id="{{ $sortie->id }}"></span> 
+
+                         <span class='far fa-trash-alt fa-2x text-danger sup' 
+                         alt="{{ $sortie->created_at }}" 
+                         id="{{ $sortie->id }}"></span> 
+
+                      </th>
+
+                      
 
                     </tr>
 
@@ -319,7 +370,7 @@
 
 
 
-	@endif
+  @endif
 
 
 
@@ -383,7 +434,7 @@
 
 
 
-      @include('pages/dash/facture/sortieOp');
+      @include('pages/dash/facture/sortieOp')
 
 
 
@@ -409,17 +460,82 @@ $(function()
 
 {
 
-	    $('.liste').click(function(){
+  // Actualiser la page
+  $(".refresh").click(function(){
+     var idOpt = $(this).attr('idoperateurOperation');
+     var operation = $(this).attr("operation");
+     var operationcode = $(this).attr("operationcode");
+     var operationcoment = $(this).attr("operationcoment");
+     var idOp = $(this).attr("idOp");
+     var token = $('input[name=_token]').val();
+     $("#main_content").load("/p_listeSortie",
+       {idOp : idOp, 
+        idOpt:idOpt, 
+        _token :token,
+        operation:operation,
+        operationcode:operationcode,
+        operationcoment:operationcoment
+       });
+  });
+
+  // Supprimer une sortie
+  $(".sup").click(function(){
+    var idSort = $(this).attr("id");
+    var action = 'supp';
+    /*alert("supprimer");*/
+    Swal.fire({
+            title: 'Opérateurs',
+            text: "Voulez-vous supprimer cette sortie ?",
+            icon: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Annuler',
+            confirmButtonText: 'oui , supprimer!',
+            backdrop: `rgba(240,15,83,0.4)`
+          }).then((result) => {
+              if (result.value) {
+                $.ajax({
+                  url:'/p_SortieDel',
+                  method:'GET',
+                  data:{idST:idSort,action:action},
+                  dataType:'text',
+                  success:function(){
+                    Swal.fire(
+                     'Supprimer!',
+                     'Supression validé avec succès',
+                     'error'
+                    );
+                    $(".refresh").click();
+                  },
+                  error:function(){
+                    Swal.fire('Problème de connection internet');
+                  }
+                });
+              }
+          })
+  }); 
+
+  //Retour liste des opérations-operateurs
+    $(".operateurs").click(function(){
+      var idV = $(this).attr('id');
+      var token = $('input[name=_token]').val();
+      console.log("Opérateur: "+idV);
+      $("#main_content").load("/p_OpTion",{idV:idV,_token:token});
+    });  
+
+      $('.liste').click(function(){
 
             // Id de l'opération
 
              var idOpVe = $(this).attr('id');
-
-
+             var operationcode = $('.operaCode').attr('operacode');
+             var operation = $('.operaName').attr('operaname');
+            
 
             // Envoie au controller
 
-              ajaxRecupSortie(idOpVe);
+              ajaxRecupSortie(idOpVe,operationcode,operation);
 
             // console.log('operation_id:'+idOpera);
 
@@ -465,10 +581,6 @@ $(function()
 
                   print();
 
-
-
-
-
                },
 
                error:function()
@@ -487,7 +599,7 @@ $(function()
 
 
 
-      function ajaxRecupSortie(idOpVe)
+      function ajaxRecupSortie(idOpVe,operationcode,operation)
 
       {
 
@@ -499,7 +611,7 @@ $(function()
 
                method:'get',
 
-               data:{idOpVe:idOpVe},
+               data:{idOpVe:idOpVe,operationcode:operationcode,operation:operation},
 
                dataType:'html',
 

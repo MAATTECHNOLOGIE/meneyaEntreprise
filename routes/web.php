@@ -20,6 +20,16 @@ Auth::routes(['register'=>false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
+
+
+/*--------------------------
+  GESTION DU PAIEMENT CINETPAY
+----------------------------*/
+  Route::match(["get","post"],"/cinetpay_notify",
+    "CampController@cinetpay_notify")->name('cinetpay.notify');
+
+
 
 /*--------------------------
   GESTION DU LANDING PAGE
@@ -40,6 +50,15 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
      
     // Meneya_premium 
      Route::get('meneyaacheter','landing@meneyaacheter');
+
+/*--------------------------
+  GESTION DE CAMPAGNE PUB
+----------------------------*/
+    // Page de campagne
+     Route::get('/camp', 'CampController@camp')->name('camp');
+
+    // Acheter un produit
+     Route::get('/comd', 'CampController@comd')->name('comd');
 
 
 
@@ -84,12 +103,47 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
          Route::get('p_opeOpNew','p_OperaController@p_opeOpNew')->name('p_opeOpNew');
 
         //Liste des sorties de l'operateur
-         Route::post('p_listeSortie','p_OperaController@p_listeSortie');
-         Route::get('p_opRecuSorti','p_OperaController@p_opRecuSorti');
+         Route::post('p_listeSortie','p_OperaController@p_listeSortie')->name('p_listeSortie');
+         Route::get('p_opRecuSorti','p_OperaController@p_opRecuSorti')->name('p_opRecuSorti');
+
+        // Suppression d'une sortie
+         Route::get('p_SortieDel','p_OperaController@p_SortieDel')->name('p_SortieDel');
+         
+        // Suppression d'un produit lié à une sortie
+         Route::get('delPrd','p_OperaController@delPrd')
+              ->name('delPrd');
+
 
         // Sortie => Effectuer une sortie pour l'opérateur
           Route::post('p_OpSortie','p_OperaController@p_OpSortie')->name('p_OpSortie');
-         
+
+        //Sortie => Suppression de produits
+          Route::get('suprPrdSortie','p_OperaController@suprPrdSortie');
+
+        // Nouvelle sortie
+        Route::post('savePrdSortie','p_OperaController@savePrdSortie')->name('savePrdSortie');
+
+        // Liste produit de sortie Operateur
+         Route::match(["get","post"],'/listeSortiPrd',
+                      'p_OperaController@listeSortiPrd')
+               ->name('listeSortiPrd');
+
+        // Vider le panier de la sortie
+        Route::get('suprSortie','p_OperaController@suprSortie')->name('suprSortie');
+
+        // Enregistrer la sortie d'une opération 
+         Route::get('saveSortie','p_OperaController@saveSortie')->name('saveSortie');
+
+        //Ajout credit operation 
+         Route::get('addCredit','p_OperaController@addCredit')->name('addCredit');
+
+        // Story de paiement des crédits liées une opération
+         Route::get("story","p_OperaController@story")->name("story");
+        
+        // Détails d'une sortie liée à une operation
+          Route::get('p_opDet','p_OperaController@p_opDet')->name('p_opDet');
+
+
 
         //opération => Liste
          Route::get('/p_OpComd', 'p_OperaController@p_OpComd')->name('p_OpComd');
@@ -103,6 +157,9 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
         // Opération  => Modification Phase 1
          Route::get('p_OperaUpd','p_OperaController@p_OperaUpd')->name('p_OperaUpd');
+
+        // Supprimer une opération liée à l'opérateur
+         Route::get('p_OptnDel','p_OperaController@p_OptnDel')->name('p_OptnDel');
 
 /*--------------------------
   GESTION DES PROSPECTS
@@ -118,6 +175,14 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
   */
         // Nouveau => Formulaire  prospect
          Route::get('p_prospNew','p_prospController@p_prospNew')->name('p_prospNew');
+
+        // Suppression globale des prospects
+         Route::get('p_DelPAll','p_prospController@p_DelPAll')
+                ->name('p_DelPAll');
+
+        // Suppression globale des besoins
+                Route::get('p_DelBesAll','p_prospController@p_DelBesAll')
+                      ->name('p_DelBesAll');
         
         // Liste des prospects
          Route::get('p_prospL','p_prospController@p_prospL')->name('prospect');
@@ -161,6 +226,10 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
         // Analyse des besoins-prospects
          Route::get('statBes','p_prospController@statBes')->name('statBes');
 
+        // SMS Prospect
+         Route::get('ReProsSMS','p_prospController@ReProsSMS')->name('ReProsSMS');
+
+
 
 
 /*--------------------------
@@ -177,6 +246,9 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
     // Nouveau
      Route::get('CampgNew','p_CampMarkController@CampgNew')->name('CampgNew');
 
+    // SMS Promotionnel
+     Route::post('smsPro','p_CampMarkController@smsPro')->name('smsPro');
+
     // Liste
      Route::get('CampgList','p_CampMarkController@CampgList')->name('CampgList');
 
@@ -188,6 +260,39 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
     // Vider l'historique des sms
      Route::get('emptySMS','p_CampMarkController@emptySMS')->name('emptySMS');
+
+/*--------------------------
+  MES COMMANDES
+----------------------------*/
+  // Nouvelle commandes
+   Route::get('CommdNew','p_CampMarkController@CommdNew')->name('CommdNew');
+  
+  //Listes des commandes 
+   Route::get('CommdLvr','p_CampMarkController@CommdLvr')->name('CommdLvr');
+
+  // Suppression d'une commande
+   Route::get('ComdDel','p_CampMarkController@ComdDel')->name('ComdDel');
+
+  // Livrer une commande
+   Route::get('ComdLiv','p_CampMarkController@ComdLiv')->name('ComdLiv');
+
+  // Détails d'une commandes
+   Route::get('comdShow','p_CampMarkController@comdShow')->name('comdShow');
+
+  // Supprimer toutes les commandes
+   Route::get('p_DelCdAll','p_CampMarkController@p_DelCdAll')->name('p_DelCdAll');
+   
+   
+
+   
+
+   
+   
+
+
+
+
+
 
 /*--------------------------
   FOURNISSEUR
@@ -223,8 +328,25 @@ Route::get('/dashboard', 'HomeController@index')->name('dashboard');
      Route::get('/p_Eche', 'p_FourniController@p_Eche')->name('p_Eche');
      Route::post('/EcheFour','p_FourniController@EcheFour')->name('EcheFour');
      Route::get('/delEch','p_FourniController@delEch')->name('delEch');
+     Route::get('/p_EchOK','p_FourniController@p_EchOK')->name('p_EchOK');
 
+    // Historique du fournisseur
+     Route::get("histEch",'p_FourniController@histEch')->name('histEch');
 
+/*--------- -----------------
+        GESTION DES ARRIVAGES
+-----------------------------*/
+        //Ajout arrivage
+    Route::get('addArriv','p_ArrivController@addArriv')->name('addArriv');
+
+       //Enregistre produit arrivage
+    Route::post('saveArrivPrd','p_ArrivController@saveArrivPrd')->name('saveArrivPrd');
+
+/*--------- ------------------------------
+     GESTION DES PRODUITS ET CATEGORIES
+----------------------------------------*/
+  //Ajout de categorie
+    Route::get('ajaxAddCatg','p_ArrivController@ajaxAddCatg')->name('ajaxAddCatg');
 
 
 

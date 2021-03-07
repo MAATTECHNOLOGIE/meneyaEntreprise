@@ -34,6 +34,7 @@ class landing extends Controller
         return redirect('/login');
     }
 
+
     // apel ajax de formate price
         public function formatPriceJs(Request $request)
         {

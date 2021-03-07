@@ -157,8 +157,6 @@ class GestionVentePrincipalController extends Controller
             $prd->delete();
 
             return response()->json();
-
-
         }      
 
     //Liste des produits de la vente en session

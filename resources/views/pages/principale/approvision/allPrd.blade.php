@@ -20,7 +20,7 @@
 
                   <button class="btn btn-falcon-danger btn-sm mr-2 listCatg" role="button" data-toggle="modal" data-target="#histMod"> <i class="fas fa-chart-pie mr-1 text-900 " ></i>Mes Categories</button>
                   <button class="btn btn-falcon-primary btn-sm mr-2 byCatg" role="button"><i class="fas fa-sort-amount-down-alt" ></i> Trier par Catégorie</button>
-                   <button class="btn btn-falcon-default btn-sm" id="addBtn" type="button" data-toggle="modal" data-target="#modalAddProd" ><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Ajouter</span></button>
+                   <button class="btn btn-falcon-default btn-sm" id="addBtn" type="button" data-toggle="modal" data-target="#modalAddProd" data-backdrop="static" ><span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Ajouter</span></button>
                     <button class="btn btn-falcon-default btn-sm mx-2" id="btnActualiser" type="button"><span class="fas fa-sync-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Actualiser</span></button>
                 </div>
               </div>
@@ -107,7 +107,7 @@
                           <th class="align-middle sort">
                             <a href="#"  class="editProduit mr-2 text-danger" 
                             data-toggle="modal" data-target="#modalAddProd" 
-                            id="{{ $produit->id }}"       
+                            id="{{ $produit->id }}" data-backdrop="static"      
                             produitMat = "{{ $produit->id }}"
                             produitLibele = "{{ $produit->produitLibele }}"
                             produitPrix = "{{ $produit->produitPrix }}"
@@ -115,6 +115,8 @@
                             unite_mesure = "{{ $produit->unite_mesure }}"
                             seuilAlert = "{{ $produit->seuilAlert }}"
                             categorie_id = "{{ $produit->categorie_id }}"
+                            charge = "{{ $produit->autre_charge }}"
+                            tva = "{{ $produit->tva }}"
                             >
                               <span class="far fa-edit fa-2x" ></span>
                             </a>
@@ -168,7 +170,7 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary btn-sm" type="button" id="histModClose" data-dismiss="modal">Fermer</button>
+        <button class="btn btn-secondary btn-sm" type="button" id="clsCatgo" data-dismiss="modal">Fermer</button>
       </div>
     </div>
   </div>
@@ -295,6 +297,8 @@
         };
 
 
+
+
         $('.editProduit').click(function()
           {
 
@@ -307,15 +311,22 @@
             var unite_mesure = $(this).attr('unite_mesure');
             var seuilAlert = $(this).attr('seuilAlert');
             var categorie_id = $(this).attr('categorie_id');
+            var charge = $(this).attr('charge');
+            var tva = $(this).attr('tva');
+
             //Affectacion des valeurs
               $("#idPrd").val(id);
               $("#listCatg").val(categorie_id);
+              $('#listCatg>option[value="'+categorie_id+'"]').attr('selected', true);
               $("#codePrd").val(produitMat);
               $("#libelleProd").val(produitLibele);
               $("#alertLevel").val(parseInt(seuilAlert));
               $("#unite").val(unite_mesure);
               $("#coutAchat").val(produitPrixFour);
               $("#prixPrd").val(produitPrix); 
+              $("#tva").val(tva); 
+              $("#charge").val(charge); 
+
 
 
           });
@@ -337,7 +348,8 @@
 
 
 
-               })
+
+    })
 
 
 

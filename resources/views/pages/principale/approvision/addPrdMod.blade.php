@@ -50,10 +50,23 @@
                                       </div>
                                       <div class="col-5">
                                         <div class="form-group">
-                                          <label for="coutAchat" class="text-danger mb-3">Cout d'achat </label>
+                                          <label for="tva">TVA ( en %)</label>
+                                          <input class="form-control " required id="tva" name="tva" type="number" placeholder="Ex 2.1%" min="1" >
+                                        </div>
+                                      </div>
+                                      <div class="col-7">
+                                        <div class="form-group">
+                                          <label for="charge">Autres charges ( en {{ getMyDevise() }}) </label>
+                                          <input class="form-control " required id="charge" name="charge" type="number" placeholder="Charge appliqués" min="1" >
+                                        </div>
+                                      </div>
+                                      <div class="col-5">
+                                        <div class="form-group">
+                                          <label for="coutAchat" class="text-danger mb-3">Cout d'achat ( en {{ getMyDevise() }})</label>
                                           <input class="form-control " required id="coutAchat" name="coutAchat" type="number" placeholder="Prix du fournisseur" min="1" >
                                         </div>
                                       </div>
+
                                       <div class="col-7">
                                         <div class="form-group">
                                           <label for="prixPrd" class="text-danger">Prix de vente 
@@ -171,10 +184,12 @@
               $('#calPrix').click(function()
               {
                  var prix  = $('#coutAchat').val();
+                 var charge  = $('#charge').val();
+                 var tva  = $('#tva').val();
                      $.ajax({
                               url: 'mbo/calPrixAuto',
                               method:'GET',
-                              data: { prix:prix },
+                              data: { prix:prix,charge:charge,tva:tva },
                               dataType:'text',
                               success:function(data){
                                     // alert(data);
@@ -192,7 +207,7 @@
                   {
                           $.ajax({
                                   url: 'mbo/addPrd',
-                                  method:'GET',
+                                  method:'POST',
                                   data: $('#formAddProd').serialize(),
                                   dataType:'json',
                                   success:function(){

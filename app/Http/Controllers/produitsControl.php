@@ -30,16 +30,15 @@ class produitsControl extends Controller
       		//Generation de code Prduit
       		  	$id = produits::max('id') + 1;
 	          	$mat = "Prd".$id.'#0'.rand(0,10);
-
-
-	    $validator = $this->validAddProd($request->all())->validate();
-	    if ($request->categorie  == 'new') 
-	    {
-			$request->categorie = 1;     	
-	    } 
-		$request->codePrd = setDefault($request->codePrd , $mat );
-		$request->alertLevel = setDefault($request->alertLevel , getSeuil() );
-		$request->unite = setDefault($request->unite , 'ND' );
+	          	if(trim($request->codePrd) == ""){$request->codePrd = $mat;}
+			    $validator = $this->validAddProd($request->all())->validate();
+			    if ($request->categorie  == 'new'){$request->categorie = 1;} 
+				$request->alertLevel = setDefault($request->alertLevel , getSeuil() );
+				$request->unite = setDefault($request->unite , ' ' );
+		    	if (!is_numeric($request->tva)) { $request->tva = 0;}
+		    	if (!is_numeric($request->charge)) { $request->charge = 0;}
+		    	$tva = setDefault($request->tva,0);
+		    	$charge = setDefault($request->charge,0);
 		
 	            //calcul prix produit
 	            $valeur = array(
@@ -50,7 +49,10 @@ class produitsControl extends Controller
 	                "description" =>$request->libelleProd,
 	                "categorie_id" =>$request->categorie,
 	                "unite_mesure" =>$request->unite,
+	                "tva" =>$tva,
+	                "autre_charge" =>$charge,
 	                "seuilAlert" =>$request->alertLevel,
+
 	            );
 	            if(!empty($request->idPrd))
 	            {
@@ -80,7 +82,11 @@ class produitsControl extends Controller
 
 	    public function calPrixAuto(Request $request)
 	    {
-	    	$prix = getPrixAuto($request->prix);
+	    	if (!is_numeric($request->tva)) { $request->tva = 0;}
+	    	if (!is_numeric($request->charge)) { $request->charge = 0;}
+	    	$tva = setDefault($request->tva,0);
+	    	$charge = setDefault($request->charge,0);
+	    	$prix = getPrixAuto($request->prix)+$charge+(($request->prix*$tva)/100) ;
 	    	return $prix;
 
 	    }
@@ -132,6 +138,7 @@ class produitsControl extends Controller
 	                      <th class="border-0 text-center">N°</th>
 	                      <th class="border-0 text-center">Titre </th>
 	                      <th class="border-0 text-center">Nbre Articles</th>
+	                      <th class="border-0 text-center">Action</th>
 
 	                    </tr>
 	                  </thead>
@@ -146,6 +153,7 @@ class produitsControl extends Controller
 	                        </td>
                       		<td class="align-middle text-center h6">'.$catgo->libelle.'</td>
 	                      <td class="align-middle text-center h6">'.getCatgoEle($catgo->id)->count().'</td>
+	                      <td class="align-middle text-center h6 delCat" idCat="'.$catgo->id.'" ><span class="far fa-trash-alt text-danger mr-2"></span></td>
 	                    </tr>';   
 	                  }
 
@@ -159,9 +167,75 @@ class produitsControl extends Controller
 		            $output= '<h2 class="text-warning text-center">Aucune catégorie enregistré</h2>';
 		        }
 
+		        //INSERTION DES SCRIPTS DANS LE OUTPUT 
+		        $output .="<script type='text/javascript'>
+						    $(function()
+						    {
+								        //Au clic de supression de la catgo
+						        $('.delCat').click(function()
+						          {
+						            if ($(this).attr('idCat') == '1') {
+						              Swal.fire('Supression impossible');
+						            }
+						            else
+						            {
+						            ajaxDelCatgo($(this).attr('idCat'));
+						            }
+						          });
+
+
+						        //Ajax suprime categorie
+						          function ajaxDelCatgo(idCatgo)
+						          {
+
+
+						                  Swal.fire({
+						                    title: 'Catégorie',
+						                    text: 'Voulez vous supprimer cette catégorie ?',
+						                    icon: 'warning',
+						                    showCancelButton: true,
+						                    confirmButtonColor: '#3085d6',
+						                    cancelButtonColor: '#d33',
+						                    cancelButtonText: 'Annuler',
+						                    confirmButtonText: 'oui , Supprimer!'
+						                  }).then((result) => {
+						                      if (result.value) {
+						                        $.ajax({
+						                          url: 'mbo/delCatgo',
+						                          method:'GET',
+						                          data:{idCatgo:idCatgo},
+						                          dataType:'json',
+						                          success:function(){
+						                            Swal.fire(
+						                             'Supression!',
+						                             'Catégorie suipprimé avec succès',
+						                             'success'
+						                            );
+						                            $('#clsCatgo').click();
+						                            $('#main_content').load('mbo/allPrd');
+						                          },
+						                          error:function(){
+						                            Swal.fire('La suppression de produits est impossible');
+						                          }
+						                        });
+						                      }
+						                  })
+						          
+						          } 
+						    })
+						    </script>";
 		        return $output;
     	}
 
+
+    //Suprimer une catégorie
+    	public function delCatgo(Request $request)
+    	{
+    		produits::where('categorie_id','=',$request->idCatgo)->update(['categorie_id' => 1]);
+    		categorie::find($request->idCatgo)->delete();
+
+    		return response()->json();	
+    	}
     //Trier produit par categorie donne
     	public function prdByCatg(Request $request)
     	{

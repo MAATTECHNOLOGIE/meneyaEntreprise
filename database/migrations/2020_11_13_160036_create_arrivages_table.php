@@ -20,6 +20,8 @@ class CreateArrivagesTable extends Migration
             $table->string('arrivageQte'); 
             $table->string('arrivageDate'); 
             $table->string('MatArvg'); 
+            $table->string('charge')->nullable(); 
+            $table->string('description_charge')->nullable(); 
             $table->integer('statut'); 
             $table->timestamps();
         });

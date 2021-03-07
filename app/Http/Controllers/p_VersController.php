@@ -98,8 +98,9 @@ class p_VersController extends Controller
                     $orderByPrice = $collection->sortByDesc('bnfRel')->values(); 
         
   $output='<div class="card-deck">';
- 
-            for ($i=0; $i <3 ; $i++) { 
+                if(count($orderByPrice)<3){$fin = count($orderByPrice); }
+                  else{$fin = 3;}
+            for ($i=0; $i <$fin ; $i++) { 
                $output.='
                     <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
                       <div class="bg-holder bg-card" 

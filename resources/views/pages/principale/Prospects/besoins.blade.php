@@ -57,13 +57,14 @@
                   <div class="card h-100">
                     <div class="card-header bg-light">
                       <h5 class="mb-0">Produits demandés</h5>
-                      <a href="#"><span class="text-danger"><i class="fas fa-trash-alt"></i> Tout supprimer</span></a><br>
+                      <a href="#" class="supBes"><span class="text-danger">
+                        <i class="fas fa-trash-alt"></i> Tout supprimer</span>
+                      </a>|
                       <a href="#" class="refresh"><span class="text-info">
                        <i class="fas fa-retweet"></i>
                       <b>Actualiser</b></span>
                       </a> 
                     </div>
-|
 
                      <div class="card-body">
                       <table class="table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false,"}'>
@@ -161,6 +162,37 @@
      })
     });
 
+    // Suppression totale
+    $(".supBes").click(function(){
+       var Allbes = 'all';
+       Swal.fire({
+         title: 'Besoins prospects',
+         text: "Voulez-vous supprimer ce produits ?",
+         icon: 'error',
+         showCancelButton: true,
+         confirmButtonColor: '#3085d6',
+         cancelButtonColor: '#d33',
+         cancelButtonText: 'Annuler',
+         confirmButtonText: 'oui , supprimer!',
+         backdrop: `rgba(240,15,83,0.4)`
+       }).then((result)=>{
+         if (result.value) {
+            $.ajax({
+             url:'/p_DelBesAll',
+             method:'GET',
+             data:{action:Allbes},
+             dataType:'text',
+             success:function(){
+               $("#main_content").load("/p_prospbesoin");
+             },
+             error:function(){
+               Swal.fire('Problème de connection internet');
+             }
+            });
+         }
+       })
+    });
+
     // Modification
     $(".upd").click(function(){
      var id = $(this).attr("id");
@@ -218,7 +250,7 @@
              }
            });
         }else{
-          Swal.fire('Veuillez saisir le besoins');
+          Swal.fire('Veuillez saisir le besoin');
         }
 
      });

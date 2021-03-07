@@ -83,7 +83,7 @@
 
                       <td class="py-2 align-middle sort">
                         <span class="badge badge rounded-capsule d-block badge-soft-secondary text-warning fs-1">
-                        {{ formatPrice($approvi->approvisionMontant)}}
+                        {{ formatPrice($approvi->approvisionMontant + $approvi->charge )}}
                       </span>
                       </td>
 

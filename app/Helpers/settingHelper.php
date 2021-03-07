@@ -184,4 +184,122 @@ if(!function_exists('getAlertEtat'))
 		}
 	}	                
 
-?>
+
+
+// Lecture des commandes du client
+if(!function_exists('getCommande'))
+{
+	function getCommande()
+	{
+		
+		$cmd = DB::table('sms_has_interesses')
+		         ->select('sms_has_interesses.*')
+		         ->get();
+		$nbcmd = count($cmd);
+		return $nbcmd;
+	}
+}
+
+// Local de l'entreprise
+if(!function_exists('getLocal'))
+{
+	function getLocal()
+	{
+		
+		$local = setting::where('cle','=','local')->first();
+		// dd($taxe->valeur);
+		return $local->valeur;
+	}
+}
+
+// Logo de l'entreprise
+if(!function_exists('getLogo'))
+{
+	function getLogo()
+	{
+		
+		$logo = setting::where('cle','=','logo')->first();
+		// dd($taxe->valeur);
+		return $logo->valeur;
+	}
+}
+
+// Contact de l'entreprise
+if(!function_exists('getContact'))
+{
+	function getContact()
+	{
+		
+		$contact = setting::where('cle','=','contact')->first();
+		// dd($taxe->valeur);
+		return $contact->valeur;
+	}
+}
+
+// Nom Entreprise
+if(!function_exists('getEntreprise'))
+{
+	function getEntreprise()
+	{
+		
+		$entreprise = setting::where('cle','=','Entreprise')->first();
+		// dd($taxe->valeur);
+		return $entreprise->valeur;
+	}
+}
+
+// Sender
+if(!function_exists('getSender'))
+{
+	function getSender()
+	{
+		
+		$sender = setting::where('cle','=','sender')->first();
+		// dd($taxe->valeur);
+		return $sender->valeur;
+	}
+}
+    if(!function_exists('getShop'))
+	{
+		function getShop()
+		{
+			
+			$shop = setting::where('cle','=', 'about')->first();
+			return $shop->valeur;
+		}
+	}
+
+
+    if(!function_exists('whatsAppShop'))
+	{
+		function whatsAppShop()
+		{
+			
+			$whatsAp = setting::where('cle','=', 'whatsApp')->first();
+			//dd($whatsAp->valeur);
+			return $whatsAp->valeur;
+		}
+	}
+
+	if(!function_exists('facebookShop'))
+	{
+		function facebookShop()
+		{
+			
+			$facebook = setting::where('cle','=', 'facebook')->first();
+			return $facebook->valeur;
+		}
+	}
+
+	if(!function_exists('faceLinkShop'))
+	{
+		function faceLinkShop()
+		{
+			
+			$fbLink = setting::where('cle','=', 'fblink')->first();
+			return $fbLink->valeur;
+		}
+	}
+
+
+	?>
