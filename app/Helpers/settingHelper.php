@@ -80,7 +80,7 @@ if(!function_exists('getContact'))
 	function getContact()
 	{
 		
-		$taxe = setting::where('cle','=', 'alertMail')->first();
+		$taxe = setting::where('cle','=', 'contact')->first();
 		return $taxe->valeur;
 	}
 }

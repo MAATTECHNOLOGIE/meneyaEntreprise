@@ -7,11 +7,10 @@
     <!--   DEBUT DU CONTAINER A RECHARGER -->
     <!-- ===============================================-->
 
-			{{-- VUE INCLUS POUR PRINCIPALE --}}
+			{{-- VUE INCLUS POUR SUCCURSALE --}}
 			<div id="main_content">
-			         @include('pages.dash.index')
+			         @include('pages.dash.indexSuc')
 			</div>
-
 
 
     <!-- ===============================================-->

@@ -1,191 +1,237 @@
 
- <div class="row no-gutters">
-            <div class="col-md-6 col-xxl-3 mb-3 pr-md-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Ma succursale<span class="ml-1 text-400" data-toggle="tooltip" data-placement="top" title="Calculated according to last week's sales">
-                  </span>
-                  </h6>
-                </div>
-                <div class="card-body d-flex align-items-end">
-                  <div class="row flex-grow-1">
-                    <div class="col">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
-                         125444
-                      </div><span class="badge badge-pill fs--2 badge-soft-success">CFA</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <img class="mr-3" src="../assets/img/icons/weather-icon.png" alt="" height="60" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xxl-3 mb-3 pr-md-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Toutes mes ventes<span class="ml-1 text-400" data-toggle="tooltip" data-placement="top" title="Calculated according to last week's sales">
-                  </span>
-                  </h6>
-                </div>
-                <div class="card-body d-flex align-items-end">
-                  <div class="row flex-grow-1">
-                    <div class="col">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
-                         1570000
-                      </div><span class="badge badge-pill fs--2 badge-soft-success">CFA</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <img class="mr-3" src="../assets/img/icons/weather-icon.png" alt="" height="60" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xxl-3 mb-3 pr-md-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Nos clients<span class="ml-1 text-400" data-toggle="tooltip" data-placement="top" title="Calculated according to last week's sales">
-                  </span>
-                  </h6>
-                </div>
-                <div class="card-body d-flex align-items-end">
-                  <div class="row flex-grow-1">
-                    <div class="col">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
-                        15478000
-                      </div><span class="badge badge-pill fs--2 badge-soft-success">clients</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <img class="mr-3" src="../assets/img/icons/customer.png" alt="" height="60" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xxl-3 mb-3 pr-md-2 pl-xxl-2">
-              <div class="card h-md-100">
-                <div class="card-body">
-                  <div class="row h-100 justify-content-between no-gutters">
-                    <div class="col-5 col-sm-6 col-xxl pr-2">
-                      <h6 class="mt-1">Notre stock (produits)</h6>
-                      <div class="fs--2 mt-3">
-                        <div class="d-flex flex-between-center mb-1">
-                          <div class="d-flex align-items-center"><span class="dot bg-primary"></span><span class="font-weight-semi-bold">
-                          <b>Principale</b></span></div>
-                          <div class="d-xxl-none">4579 </div>
-                        </div>
-                        <div class="d-flex flex-between-center mb-1">
-                          <div class="d-flex align-items-center">
-                            <span class="dot bg-300"></span>
-                            <span class="font-weight-semi-bold">
-                             <b>Succursales</b>
-                            </span>
-                          </div>
-                          <div class="d-xxl-none"> 0</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <div class="echart-doughnut"></div>
-                      <div class="absolute-centered font-weight-medium text-dark fs-2">
-                        100
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+@if(userHasSucc(Auth::id()))
 
-            <div class="col-md-6 col-xxl-3 mb-3 pl-md-2 pr-xxl-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2">Nos Fournisseurs</h6>
-                </div>
-                <div class="card-body pt-0">
-                  <div class="row h-100">
-                    <div class="col align-self-end">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
-                       2
-                      </div><span class="badge badge-pill fs--2 bg-200 text-primary"><span class="fas fa-caret-up mr-1"></span>fournisseurs</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <div class="echart-line-total-order h-100"></div>
-                    </div>
-                  </div>
-                </div>
+<div class="card mb-3">
+            <div class="card-header position-relative min-vh-25 mb-7">
+              <div class="bg-holder rounded-soft rounded-bottom-0" style="background-image:url(../assets/img/generic/40.jpg);">
               </div>
-            </div>
-            <div class="col-md-6 col-xxl-3 mb-3 pl-md-2 pr-xxl-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Installé depuis<span class="ml-1 text-400" data-toggle="tooltip" data-placement="top" title="Calculated according to last week's sales"><span class="far fa-question-circle" data-fa-transform="shrink-1"></span></span>
-                  </h6>
-                </div>
-                <div class="card-body d-flex align-items-end">
-                  <div class="row flex-grow-1">
-                    <div class="col">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1"> 10 </div><span class="badge badge-pill fs--2 badge-soft-warning">Jour</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <div class="echart-bar-weekly-sales h-100"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <!--/.bg-holder-->
 
+              <div class="avatar avatar-5xl avatar-profile"><img class="rounded-circle img-thumbnail shadow-sm" src="../assets/img/team/2.jpg" width="200" alt="" /></div>
+            </div>
+            <div class="card-body" id="infoSucc">
+              <div class="row">
+                <div class="col-lg-8">
+                  <h4 class="mb-1"> {{ $sucInfo->name }} 
+                    <small class="fas fa-check-circle text-primary ml-1" data-toggle="tooltip" data-placement="right" title="Verified" data-fa-transform="shrink-4 down-2"></small>
+                  </h4>
+                  <h5 class="fs-0 font-weight-normal">
+                    Gestionnaire de la succursale <span class="h4 text-primary">{{ $sucInfo->succursaleLibelle }}</span>
+                  </h5>
+                  <p class="text-500"></p>
+
+                  <button class="btn btn-falcon-primary btn-sm px-3" 
+                   type="button" id="s_stock">Stock
+                  </button>
+
+                  <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
+                  type="button" id="s_vente">Vente</button>
+
+                  <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
+                  type="button" id="s_client">Client</button>
+
+                  <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
+                  type="button" id="s_credit">Crédit</button>
+
+                  <button class="btn btn-falcon-default active btn-sm px-3 ml-2" 
+                  type="button" id="s_stats">Statistique</button>
+
+                  <hr class="border-dashed my-4 d-lg-none" />
+                </div>
+                <div class="col pl-2 pl-lg-3">
+                  <a class="media align-items-center mb-2" href="#">
+                    <span class="fas fa-phone-square fs-4 mr-2 text-700"></span>
+                    <div class="media-body">
+                      <h6 class="mb-0">{{ $sucInfo->succursalContact }}</h6>
+                    </div>
+                  </a>
+                  <a class="media align-items-center mb-2" href="#">
+                    <span class="fas fa-map-marked-alt fs-4 mr-2 text-700"></span>
+                    <div class="media-body">
+                      <h6 class="mb-0">{{ $sucInfo->succursalLieu }}</h6>
+                    </div>
+                  </a>
+                  <a class="media align-items-center mb-2" href="#">
+                    <span class="fas fas fa-bullhorn fs-4 mr-2 text-700"></span>
+                    <div class="media-body">
+                      <h6 class="mb-0">Qte SMS : 200 </h6>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+</div>
+
+
+<div id="sucCont">
+  {{-- verification si Stock non vide --}}
+      @if( !$stockSuccursales->isEmpty())
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row justify-content-between align-items-center">
+                <div class="col-md">
+                  <h5 class="mb-2 mb-md-0">Mon stock</h5>
+                </div>
+
+                
+                <div class="col-auto">
+                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-chart-pie mr-1 text-900 "></i>Catégorie de produits : 
+                    {{ $stockSuccursales->count('produits_id') }} </button>
+                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-sort-numeric-up mr-1 text-900 "></i>Qté :{{ number_format($stockSuccursales->sum('stock_Qte'),0,',','. ') }}  produits</button>
+                  <button class="btn btn-falcon-danger btn-sm" role="button"><i class="fas fa-money-check-alt mr-1 text-900"></i> Montant : &nbsp; {{number_format( getPrixPrdInStockSuc($stockSuccursales[0]->succursale_id),0,',',' .') }}  FCFA</button>
+                  {{-- <button class="btn btn-falcon-primary btn-sm" role="button"></button> --}}
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="row no-gutters">
-            <div class="col-lg-12 pr-lg-2 mb-3">
-              <div class="card h-lg-100 overflow-hidden">
-                <div class="card-header bg-light">
-                  <div class="row align-items-center">
-                    <div class="col">
-                      <h6 class="mb-0">05 Meilleur Vente</h6>
-                    </div>
-                  </div>
-                </div>
-{{--                 <div class="card-body p-0">
-                @if(bestVente()->count() >0  )
-                @if(bestVente()->count()<5)
-                {{ $end = bestVente()->count() }}
-                @else
-                {{ $end = 5 }}
-                @endif
-                @for($i=0; $i<$end; $i++)
-                  <div class="row no-gutters align-items-center py-2 position-relative border-bottom border-200">
-                    <div class="col pl-card py-1 position-static">
-                      <div class="media align-items-center">
-                        <div class="avatar avatar-xl mr-3">
-                          <div class="avatar-name rounded-circle bg-soft-primary text-dark"><span class="fs-0 text-primary">
-                            {{ substr(getClient(bestVente()[$i]->client_id)->nom, 0,1) }}</span></div>
-                        </div>
-                        <div class="media-body">
-                          <h5 class="mb-0 d-flex align-items-center"><a class="text-800 stretched-link" href="#!">{{ getClient(bestVente()[$i]->client_id)->nom }}</a><span class="badge badge-pill ml-2 bg-200 text-primary">
-                            <i class="fas fa-phone-alt"></i>
-                            {{ getClient(bestVente()[$i]->client_id)->contact }}</span></h5>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col py-1">
-                      <div class="row flex-end-center no-gutters">
-                        <div class="col-auto pr-2">
-                          <div class="fs--1 font-weight-semi-bold">{{ number_format(bestVente()[$i]->prix,0,',',' .').' '.getMyDevise()}}</div>
-                        </div>
-                        <div class="col-5 pr-card pl-2">
-                          <div class="progress mr-2" style="height: 5px;">
-                            <div class="progress-bar rounded-capsule" role="progressbar" style="width:{{ 100/($i+1) }}%" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  @endfor
-                @endif
-                </div> --}}
-                <div class="card-footer bg-light p-0"><a class="btn btn-sm btn-link btn-block py-2" href="#!">Toutes les commandes<span class="fas fa-chevron-right ml-1 fs--2"></span></a></div>
+
+          <div class="card mb-3">
+            <div class="card-header">
+
+              <div class="row align-items-center justify-content-between">
+
               </div>
             </div>
+            <div class="card-body p-0">
 
+              <div class="falcon-data-table">
+                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":12,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                  <thead class="bg-200 text-900">
+                    <tr>
+                      <th class="align-middle no-sort pr-3">
+                        <div class="custom-control custom-checkbox">
+                          <input class="custom-control-input checkbox-bulk-select" id="checkbox-bulk-customers-select" type="checkbox" data-checkbox-body="#customers" data-checkbox-actions="#customers-actions" data-checkbox-replaced-element="#customer-table-actions" />
+                          <label class="custom-control-label" for="checkbox-bulk-customers-select"></label>
+                        </div>
+                      </th>
+                      <th class="align-middle sort">Code</th>
+                      <th class="align-middle sort">Produit</th>
+                      <th class="align-middle sort">Quantite</th>
+                      <th class="align-middle sort">Prix Unitaire</th>
+                      <th class="align-middle sort">Prix Net</th>
+                    </tr>
+                  </thead>
+                    @if(!$stockSuccursales->isEmpty())
+                   <tbody id="customers">
+                    @foreach($stockSuccursales as $stockProduit)
+                      <tr class="{{ produitManquant($stockProduit->stock_Qte) }}">
+                        <td class="align-middle no-sort pr-3">
+                          <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input checkbox-bulk-select" id="checkbox-bulk-customers-select" type="checkbox" data-checkbox-body="#customers" data-checkbox-actions="#customers-actions" data-checkbox-replaced-element="#customer-table-actions" />
+                            <label class="custom-control-label" for="checkbox-bulk-customers-select"></label>
+                          </div>
+                        </td>
+                          <td class="align-middle sort">
+                            {{ recupInfoProduitSuccu($stockProduit->produits_id)->produitMat }}
+                          </td>
+                          <td class="align-middle sort">
+                            {{ recupInfoProduitSuccu($stockProduit->produits_id)->produitLibele }}
+                          </td>
+                          <td class="align-middle sort">
+                            {{ $stockProduit->stock_Qte }} 
+                          </td>
+                          <td class="align-middle sort">
+                            {{ recupInfoProduitSuccu($stockProduit->produits_id)->produitPrix}}
+                          </td>
+                          <th class="align-middle sort">
+                            {{ $stockProduit->stock_Qte * recupInfoProduitSuccu($stockProduit->produits_id)->produitPrix}}  Fcfa
+                          </th>
+                      </tr>
+                    @endforeach
+                  </tbody>
+                  @endif
+                </table>
+              </div>
+            </div>
           </div>
+                          <div class="col-auto d-flex justify-content-center">
+                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-chart-pie mr-1 text-900 "></i>Catégorie de produits : 
+                    {{ $stockSuccursales->count('produits_id') }} </button>
+                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-sort-numeric-up mr-1 text-900 "></i>Qté :{{ number_format($stockSuccursales->sum('stock_Qte'),0,',','. ') }}  produits</button>
+                  <button class="btn btn-falcon-danger btn-sm" role="button"><i class="fas fa-money-check-alt mr-1 text-900"></i> Montant : &nbsp; {{number_format( getPrixPrdInStockSuc($stockSuccursales[0]->succursale_id),0,',',' .') }}  FCFA</button>
+
+                </div>
+      @else
+
+<div class="alert alert-danger text-center h5">
+  Aucun stock. Veuillez contactez votre administrateur pour un approvisionnement de stock.
+</div>
+      @endif         
+</div>
+
+<script src="{{ asset('assets/js/theme.js') }}"></script>
+<script type="text/javascript">
+$(function()
+  {
+     
+  /*-----------------
+   Gestions des menus
+  -------------------*/
+
+    // Stock
+     $('#s_stock').click(function(){
+       $('#dashSucu').click();
+     });
+
+    // Ventes
+     $("#s_vente").click(function(){
+      $('#sucCont').load('/s_Vente');
+
+     });
+
+     //New Vente
+     $("#Addvente").click(function(){
+      $('#sucCont').load('/Addvente');
+     });
+
+
+    // Clients
+     $("#s_client").click(function(){
+      $('#sucCont').load('/s_Client');
+     });
+
+    // Crédits
+     $("#s_credit").click(function(){
+       $('#sucCont').load('/s_credits');
+     });
+
+    // Statis
+     $("#s_stats").click(function(){
+       $('#sucCont').load('/s_stats');
+     });
+
+
+})
+</script>
+
+@else
+ <div class="card">
+            <div class="card-body overflow-hidden text-center pt-5">
+              <div class="row justify-content-center">
+                <div class="col-7 col-md-5"><img class="img-fluid" src="../assets/img/illustrations/modal-right.png" alt="" /></div>
+              </div>
+              <h3 class="mt-3 font-weight-normal fs-2 mt-md-4 fs-md-3">
+                <b class="text-danger">Oupsss!!!!!!</b>, Ce gestionnaire n'est associé à aucune succursale.
+              </h3>
+              <p class="lead">Veuillez vous réferez a votre administrateur.               <br class="d-none d-md-block"/> 
+                
+                  <a class="ml-1 btn btn-outline-primary rounded-capsule mr-1 mb-1 approvi"  href="{{ route('logout') }}"
+                         onclick="event.preventDefault();
+                         document.getElementById('logout-form').submit();">
+                          Déconnexion
+                  </a>
+                <br class="d-none d-md-block"/>
+              </p>
+              
+            </div>
+            <div class="card-footer d-flex justify-content-center bg-light text-center pt-4">
+              <div class="col-10">
+                <p class="mb-2 fs--1"><a href="/dashboard">Avec Meneya gérer vos succursales en toute simplicité.</a></p>
+              </div>
+            </div>
+  </div>
+
+
+
+
+@endif

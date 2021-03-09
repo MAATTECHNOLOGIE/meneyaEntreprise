@@ -358,8 +358,9 @@
             @else
 
               {{-- MENU SUCCURSAES --}}
-
-              <ul class="navbar-nav flex-column">
+              {{-- VERIF SI LE GESTIONNAIRE A UNE SUCC --}}
+              @if(userHasSucc(Auth::id()))
+                <ul class="navbar-nav flex-column">
                 <li class="nav-item">
                   <a class="nav-link dropdown-indicator" href="#Succursale" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="Succursale">
                     <div class="d-flex align-items-center">
@@ -373,8 +374,6 @@
                     </li>
                   </ul>
                 </li>
-
-
                 <li class="nav-item">
                     <a class="nav-link dropdown-indicator" href="#Prospects" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="Prospects">
                       <div class="d-flex align-items-center"><span class="nav-link-icon">
@@ -407,6 +406,7 @@
                     </ul>
                 </li>
                </ul>
+              @endif
             @endif
 
 

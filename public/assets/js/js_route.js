@@ -140,4 +140,14 @@ TABLEAU DE BORD
       $("#main_content").load("/setting");
     });
 
+
+/*--------- ------------
+ GESTION DE LA SUCCURSALE
+------------------------*/
+//dashboard dune succursale
+$('#dashSucu').click(function()
+{
+    $('#main_content').load('dashSucu'); 
+})
+
 });

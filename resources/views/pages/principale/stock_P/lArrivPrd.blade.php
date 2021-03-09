@@ -10,7 +10,7 @@
          
                 <div class="form-row justify-content-start no-print">
                   <div class="form-group col-2">
-                    <label for='dateV'> Date vente <span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span></label>
+                    <label for='dateV'> Date arrivage <span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span></label>
 
                     <input class="form-control datetimepicker" id="dateV" name="dateV" type="text" data-options='{"dateFormat":"d/m/Y"}'>
                   </div>  
