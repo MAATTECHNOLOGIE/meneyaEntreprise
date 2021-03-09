@@ -23,7 +23,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('layouts.app');
+        if(getRole() == "admin")
+        {
+         return view('layouts.app');
+        }
+        else
+        {
+         return redirect('/appSuc');
+        }
     }
 
     public function smspromo(Request $request)

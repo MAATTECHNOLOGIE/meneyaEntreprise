@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Model\succursale;
-use App\Model\ressources_hums;
 use App\Model\stock_succursales;
 use App\Model\produits;
-use App\Model\ventes_succursales;
 use App\Model\role_has_user;
 
 use App\User;
@@ -132,37 +130,33 @@ class GestionSuccursaleController extends Controller
         return response()->json();
     }
 
+   
+    // ROUTE DE DASHBOARD D'UNE SUCCURSALES 
+
+    public function appSuc(Request $request)
+    {
+        // lecture de toute les infrmations de la succursale
+        $suc = DB::table('succursales')
+            ->join('users', 'users.id', '=', 'succursales.user_id')
+            ->select('users.*', 'succursales.*')
+            ->where('succursales.user_id','=',Auth::id())
+            ->get()->first();
+
+        $stock = DB::table('stock_succursales')
+            ->join('produits', 'produits.id', '=', 'stock_succursales.produits_id')
+            ->select('produits.*', 'stock_succursales.*')
+            ->where('stock_succursales.succursale_id','=',$suc->id)
+            ->get();
+ 
+        return view('layouts.appSuc')->withStockSuccursales($stock)
+                                        ->withSucInfo($suc);
+    }
+
+
 
     // public function statistiqueSuccursale()
     // {
     //     return view('pages/principale/gestionSuccursale/statistiqueSuccursale');
-    // }
-
-
-
-
-
-
-
-
-
-
-    
-    // // ROUTE DE DASHBOARD D'UNE SUCCURSALES 
-
-    // public function dashSucu(Request $request)
-    // {
-    //     // lecture de toute les infrmations de la succursale
-    //     $suc = DB::table('succursales')
-    //         ->join('users', 'users.succursale_id', '=', 'succursales.id')
-    //         ->join('ressources_hums', 'ressources_hums.id', '=', 'users.ressourcesHum_id')
-    //         ->select('users.*', 'ressources_hums.*', 'succursales.*')
-    //         ->where('succursales.id','=',Auth::user()->succursale_id)
-    //         ->get()->first();
-  
-
-    //     $stock = stock_succursale::where('succursale_id','=',Auth::user()->succursale_id)->get();
-    //     return view('pages/succursale/dash/dashSucu')->withStockSuccursales($stock)->withSucInfo($suc);
     // }
 
 

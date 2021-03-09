@@ -1,5 +1,6 @@
 <?php
 use App\Model\user_has_acces;
+use App\Model\succursale;
 
 if(!function_exists('getRole'))
 {
@@ -72,5 +73,29 @@ if(!function_exists('hasStatAccesto'))
            
 	}
 }
+
+
+	//Retrouver la succu  a partir du gerant connecte
+if(!function_exists('userHasSucc'))
+{
+	function userHasSucc($user_id)
+	{
+		$suc = succursale::where("user_id","=",$user_id)->get();
+			if (count($suc) == 0) 
+			{
+				return 0;
+			}
+			else
+			{
+
+				return $suc->first();
+			}
+	}
+           
+
+}
+
+
+
 
 

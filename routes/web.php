@@ -351,3 +351,17 @@ Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
 
 
 
+/*
+|--------------------------------------------------------------------------
+| MENU DE GESTION DES INTERFACES FONCTIONNELLES SUCCURSALES
+|--------------------------------------------------------------------------
+|
+| Ici nous gérons les routes du menu
+|
+*/
+
+    Route::get('/appSuc','GestionSuccursaleController@appSuc')->name('appSuc');
+        
+    Route::get('/dashSucu','GestionSuccursaleController@dashSucu')->name('dashSucu');
+
+
