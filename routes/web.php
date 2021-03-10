@@ -360,8 +360,36 @@ Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
 |
 */
 
-    Route::get('/appSuc','GestionSuccursaleController@appSuc')->name('appSuc');
+        Route::get('/appSuc','GestionSuccursaleController@appSuc')->name('appSuc');
         
-    Route::get('/dashSucu','GestionSuccursaleController@dashSucu')->name('dashSucu');
+        // Enregistrement de la commande
+         Route::match(["get","post"],'/s_Vente',
+                      's_VenteController@s_Vente')
+               ->name('s_Vente');
+
+        // Formulaire Ajout d'une vente
+          Route::get('/Addvente', 's_VenteController@Addvente')->name('Addvente');
+
+       //Recup produit de la principal 
+       Route::get('ajaxRecupPrdSuc','s_VenteController@ajaxRecupPrdSuc');
+
+       //enregistre un prd d'une vente
+        Route::post('/savePrdAchatSuc','s_VenteController@savePrdAchatSuc' );
+
+        //Liste des produits de l'achat 
+        Route::get('/lPrdAchat','s_VenteController@lPrdAchat' );
+
+        //Suprimer la vente en session 
+        Route::get('/delAchatSuc','s_VenteController@delAchatSuc');
+        //Suprimer un produit de la vente en session 
+        Route::get('/delPrdAchatSuc','s_VenteController@delPrdAchatSuc');
+
+        //Enregistrer la vente en session 
+        Route::get('/saveAchatSuc','s_VenteController@saveAchatSuc');
+
+       //Recu de la vente
+       Route::get('recuVntSuc','s_VenteController@recuVntSuc')->name('recuVntSuc');
 
 
+        //Validation d'une facture proformat
+        Route::get('/validVntSuc','s_VenteController@validVntSuc');

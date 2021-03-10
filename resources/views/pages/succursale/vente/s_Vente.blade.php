@@ -1,49 +1,58 @@
-<div class="card mb-3 no-print">
+<div class="card mb-3">
   <div class="bg-holder d-none d-lg-block bg-card" 
    style="background-image:url(../assets/img/illustrations/corner-4.png);">
   </div>
   <!--/.bg-holder-->
 
-    <div class="card-body">
-      <div class="row">
-        <div class="col-lg-8">
-          <h4 class="mb-0 text-primary"><i class="fas fa-money-bill-wave"></i> Gestion des factures > Mes Factures proformats</h4>
-          <p class="mt-2">Liste des factures proformats editées </p>
-        </div>
-      </div>
-    </div>
-
 
 </div>
-            <div class="card mb-3 no-print">
+          <div class="card mb-3">
             <div class="card-body">
               <div class="row justify-content-between align-items-center">
                 <div class="col-md">
-                  {{-- <h5 class="mb-2 mb-md-0">Statistiques</h5> --}}
+                  <h4 class="mb-0 text-primary"> <i class="fas fa-hand-holding-usd mr-3"></i>{{ $typevente }}</h4>
+
                 </div>
+
+                  <div class=" col-4">
+                    {{-- <label for="exampleFormControlSelect1">Type </label> --}}
+                    <select class="form-control" id="type" name="type">
+                      <option value="1" typeFacture ="Facture d'achat">--- Type ---</option>
+                      <option value="1" typeFacture ="Facture d'achat">Vente Soldé</option>
+                      <option value="2" typeFacture ="Vente a credit">Vente à crédit</option>
+                      <option value="0" typeFacture ='Facture Proformat'>Vente Proformat</option>
+                    </select>
+                  </div>          
                 <div class="col-auto">
-                  <button class="btn btn-falcon-primary btn-sm mr-2" id="newVente" role="button"> Nouvelle vente</button>
-                  <button class="btn btn-falcon-danger btn-sm mr-2" id="delAll" role="button"> Tous suprimer</button>
-                  <button class="btn btn-falcon-danger btn-sm mr-2" id="refresh" role="button"> Actualiser</button>
-                  @csrf
+
+                    <button class="btn btn-falcon-default btn-sm newOpera" type="button" id="Addvente">
+                      <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
+                      <span class=" d-sm-inline-block ml-1" >
+                        Nouvelle vente
+                      </span>
+                    </button>
+                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> 
+                    <i class="fas fa-chart-pie mr-1 text-900 "></i>
+                    Vente du Jour : {{ formatPrice(venteJourSuc()->sum('prix_vente_total')) }}
+                  </button>
+                  
                 </div>
               </div>
             </div>
           </div>
 
 
+
+
           <div class="card mb-3  no-print">
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
-                <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
-                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Liste de vos différentes factures <a href="" data-toggle="modal" data-target="#exampleModalRight"></a></h5>
-                </div>
+
                 <div class="col-8 col-sm-auto ml-auto text-right pl-0">
 
                   <div id="dashboard-actions">
                    
-                    <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Filtre</span></button>
-                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Imprimer</span></button>
+  
                   </div>
                 </div>
               </div>
@@ -82,20 +91,18 @@
                            
                           </th>
                           <th class="align-middle sort text-center"  style="cursor: pointer;">
+                            @if($vente->typevente == 0)
                           <span class='far fa-check-circle fa-2x  text-success validBtn' id="{{ $vente->id }}" 
-                            name="{{ getClient($vente->clients_id)->id}}" ></span>                          
+                            name="{{ getClient($vente->clients_id)->id}}" ></span>
+                          <span class='far fa-edit fa-2x text-info editBtn ' id="{{ $vente->id }}" name="{{ getClient($vente->clients_id)->id}}"></span>
+                          <span class='fas fa-trash fa-2x  text-danger deleteBtn ' id="{{ $vente->id }}" name="{{ getClient($vente->clients_id)->id}}" ></span>
+                            @endif
+                          
                           <span class='fas fa-eye fa-2x  text-primary consultBtn' id="{{ $vente->id }}" 
                             name="{{ getClient($vente->clients_id)->id}}" ></span>
                         
                           
-                          <span class='far fa-file-pdf fa-2x  text-warning reçu ' id="{{ $vente->id }}" name="{{ getClient($vente->clients_id)->id}}" ></span>
-                         
-                          
-                          <span class='far fa-edit fa-2x text-info editBtn ' id="{{ $vente->id }}" name="{{ getClient($vente->clients_id)->id}}"></span>
-                        
-                          
-                          <span class='fas fa-trash fa-2x  text-danger deleteBtn ' id="{{ $vente->id }}" name="{{ getClient($vente->clients_id)->id}}" ></span>
-                          
+                          <span class='far fa-file-pdf fa-2x  text-warning reçu ' id="{{ $vente->id }}" name="{{ getClient($vente->clients_id)->id}}" ></span>                                             
 
 
                           </th>
@@ -152,11 +159,22 @@
     <script type="text/javascript">
       $(function()
       {
-        //Nouvelle vente 
-          $('#newVente').click(function()
-          {
-            $('#main_content').load('mbo/venteP');
-          })
+    //Au choix du type
+      $('#type').change(function()
+      {
+
+        var token = $('input[name=_token]').val();
+        var type = $('#type').val();
+        $('#sucCont').load('s_Vente',{type:type,_token:token});
+      })
+
+      //Scroll l'affichage a la page charge
+        scrollContent();
+
+      //Nouvelle vente
+     $("#Addvente").click(function(){
+      $('#sucCont').load('/Addvente');
+     });
 
 
         //Consulter les detail
@@ -272,7 +290,7 @@
 
                   Swal.fire({
                     title: 'Validation de facture',
-                    text: "La facture sera enregistré comme une vente et votre stock sera inputé. Veuille confirmé !",
+                    text: "La facture sera enregistré comme une vente et votre stock sera inputé. Veuillez confirmé !",
                     icon: 'info',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -283,7 +301,7 @@
                   }).then((result) => {
                       if (result.value) {
                         $.ajax({
-                          url:'mbo/validVnt',
+                          url:'validVntSuc',
                           method:'GET',
                           data:{idVnt:idVente},
                           dataType:'json',
@@ -293,7 +311,7 @@
                              'La vente  a été enrgistré avec succès',
                              'success'
                             );
-                            $("#main_content").load("mbo/lventeP");
+                            $("#sucCont").load("s_Vente");
                           },
                           error:function(){
                             Swal.fire("Problème de connexion");

@@ -1,7 +1,7 @@
 
 @if(userHasSucc(Auth::id()))
 
-<div class="card mb-3">
+<div class="card mb-3 no-print">
             <div class="card-header position-relative min-vh-25 mb-7">
               <div class="bg-holder rounded-soft rounded-bottom-0" style="background-image:url(../assets/img/generic/40.jpg);">
               </div>
@@ -159,7 +159,9 @@
       @endif         
 </div>
 
-<script src="{{ asset('assets/js/theme.js') }}"></script>
+
+
+<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script type="text/javascript">
 $(function()
   {
@@ -230,8 +232,4 @@ $(function()
               </div>
             </div>
   </div>
-
-
-
-
 @endif
