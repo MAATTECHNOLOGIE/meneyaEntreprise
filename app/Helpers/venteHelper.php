@@ -1,6 +1,6 @@
 <?php
 
-use App\Model\vente_principale;
+use App\Model\vente_principales; 
 
 if(!function_exists('venteJourP'))
 {
@@ -12,12 +12,38 @@ if(!function_exists('venteJourP'))
 	}
 }
 
+
 if(!function_exists('venteTotalP'))
 {
 	function venteTotalP()
 	{
 		
 		$venteT = DB::table('vente_principales')->get();
+		return $venteT;
+	}
+}
+
+
+if(!function_exists('venteJourSuc'))
+{
+	function venteJourSuc()
+	{
+		$idSuc = userHasSucc(Auth::id());
+		$venteJ = DB::table('ventes_succursales')->where('succursale_id','=',$idSuc)
+										->where('dateV','=', date('d/m/Y'))
+										->get();
+		return $venteJ;
+	}
+}
+
+
+if(!function_exists('venteTotalSuc'))
+{
+	function venteTotalSuc()
+	{
+		$idSuc =userHasSucc(Auth::id()); 
+		$venteT = DB::table('ventes_succursales')->where('succursale_id','=',$idSuc)
+													->get();
 		return $venteT;
 	}
 }

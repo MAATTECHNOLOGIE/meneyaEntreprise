@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Model\clients;
 use App\Model\succursale_has_clients;
-use App\Model\ventes_succursale;
+use App\Model\ventes_succursales;
 use App\User;
 use Hash;
 use Auth;
@@ -60,7 +60,7 @@ class GestionClient extends Controller
                 else                      
                 {
                   //Role autre que admin => Gestionnaire
-                  $suc = succursale::find('user_id','=',Auth::id());
+                  $suc = userHasSucc(Auth::id());
                   $succursale_id =$suc->id;       
 
                 }
