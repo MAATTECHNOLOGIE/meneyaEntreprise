@@ -15,9 +15,9 @@ class CreateArrivageHasProduitsTable extends Migration
     {
         Schema::create('arrivage_has_produits', function (Blueprint $table) {
             $table->id();
-            $table->integer('qteproduits')->comment('Quantité du produits pris dans l\'arrivage\n');
-            $table->integer('coutachat')->comment('le coût d\'achat de la relation arrivage_has_produits définit le prix d\'achat actuel du produit et met à jour le prix d\'achat du produit dans la table produit\n\n');
-            $table->integer('prixvente')->comment('le prix de vente de la relation arrivage_has_produits définit le prix de vente actuel du produit et met à jour le prix de vente  du produit dans la table produit\n\n');
+            $table->bigInteger('qteproduits')->comment('Quantité du produits pris dans l\'arrivage\n');
+            $table->bigInteger('coutachat')->comment('le coût d\'achat de la relation arrivage_has_produits définit le prix d\'achat actuel du produit et met à jour le prix d\'achat du produit dans la table produit\n\n');
+            $table->bigInteger('prixvente')->comment('le prix de vente de la relation arrivage_has_produits définit le prix de vente actuel du produit et met à jour le prix de vente  du produit dans la table produit\n\n');
             $table->unsignedBigInteger('arrivage_id');
             $table->foreign('arrivage_id')->references('id')->on('arrivages')
                                             ->onDelete('cascade');

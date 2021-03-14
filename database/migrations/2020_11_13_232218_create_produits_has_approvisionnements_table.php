@@ -15,9 +15,9 @@ class CreateProduitsHasApprovisionnementsTable extends Migration
     {
         Schema::create('produits_has_approvisionnements', function (Blueprint $table) {
             $table->id();
-            $table->integer('qteproduits');
-            $table->integer('coutachat');
-            $table->integer('prixvente');
+            $table->bigInteger('qteproduits');
+            $table->bigInteger('coutachat');
+            $table->bigInteger('prixvente');
             $table->unsignedBigInteger('produits_id');
             $table->foreign('produits_id')->references('id')->on('produits')
                                             ->onDelete('cascade');

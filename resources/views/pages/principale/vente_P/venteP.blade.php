@@ -316,7 +316,8 @@ $(function()
 
             if($('#idClient').val() == 'new')
             {
-               $('#modAddClt').modal('show');
+               // $('#modAddClt').modal('show');
+               $("#modAddClt").modal({ backdrop: 'static', keyboard: false });
             }
           })
 
@@ -422,6 +423,11 @@ $(function()
               .done(function(data) 
                       {
 
+                          var qte = parseInt($('#quantite').val());
+                        //recup la qte en stock l'article choisit
+                          var selectedPrdQte = $('#article option:selected').attr('qteInStck');
+                          var qteRst = parseInt(selectedPrdQte)-qte;
+                          $('#article option:selected').attr('qteInStck',qteRst)
                         toastr.success("Article ajouté avec succès  ");
                         var compteur_panier = $('#compteur_panier').text();
                         compteur_panier = parseInt(compteur_panier)+1;

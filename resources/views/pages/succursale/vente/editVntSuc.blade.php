@@ -117,26 +117,18 @@
                   </div>
 
                   <div class="form-group col-4">
-                    @if($vente->typevente == 1)
-                      <select class="form-control" id="type">
-                        <option value="1" typeFacture ="Facture d'achat"
-                        @if($vente->typevente == 1) selected @endif>
-                          Vente
-                        </option>
-                      </select>
-                    @else
-                      <select class="form-control" id="type">
-                        <option value="0" typeFacture ='Facture Proformat'
-                        @if($vente->typevente == 0) selected @endif>
-                          Facture Proformat
-                        </option>
+                    {{-- <label for="exampleFormControlSelect1">Type </label> --}}
+                    <select class="form-control" id="type">
+                      <option value="0" typeFacture ='Facture Proformat'
+                      @if($vente->typevente == 0) selected @endif>
+                        Facture Proformat
+                      </option>
 
-                        <option value="1" typeFacture ="Facture d'achat"
-                        @if($vente->typevente == 1) selected @endif>
-                          Vente
-                        </option>
-                      </select>
-                    @endif
+                      <option value="1" typeFacture ="Facture d'achat"
+                      @if($vente->typevente == 1) selected @endif>
+                        Vente
+                      </option>
+                    </select>
                   </div>
                   <div class="form-group col-2">
                   <button class="btn btn-sm btn-primary fs-1" id="enregistreAchat"
@@ -172,8 +164,7 @@
         $('#retour').click(function()
           {
             var type = $(this).attr('type');
-            if (type == 0) {$('#main_content').load('/mbo/lfactuProP');}
-            else {$('#main_content').load('/mbo/lventeP');}
+            $('#sucCont').load('s_Vente');
             
           });
 
@@ -260,7 +251,7 @@
             }).then((result) => {
                 if (result.value) {
                   $.ajax({
-                    url:'mbo/updAchat',
+                    url:'updAchatSuc',
                     method:'GET',
                     data:{idVnt:idVnt,charge:charge,dateV:date,chargeLibelle:chargeLibelle,type:type},
                     dataType:'text',
@@ -271,18 +262,9 @@
                           //pouvoir afficher le recu en chargement
                         setTimeout(msgSucces, 1000); 
                         
-                       if ($('#type').val() =='0') 
-                       {
                         //Retourner la vue des facture proformat
-                        $("#main_content").load("mbo/lfactuProP");
+                        $("#sucCont").load("s_Vente");
 
-                       }
-                       else
-                       {
-                        //Retourner la vue des liste des ventes
-                        $("#main_content").load("mbo/lventeP");
-
-                       }
                     },
                     error:function(){
                       Swal.fire('Problème de connection internet');
@@ -328,7 +310,7 @@
                 }).then((result) => {
                     if (result.value) {
                       $.ajax({
-                        url:'mbo/delVntP',
+                        url:'delVntSuc',
                         method:'GET',
                         data:{idVente:idVnt},
                         dataType:'json',
@@ -338,10 +320,7 @@
                            'Vente suipprimé avec succès',
                            'success'
                           );
-            var type = $(this).attr('type');
-            if (type == 0) {$('#main_content').load('/mbo/lfactuProP');}
-            else {$('#main_content').load('/mbo/lventeP');}
-                          $("#main_content").load("mbo/venteP");
+                           $("#sucCont").load("s_Vente");
                         },
                         error:function(){
                           Swal.fire('Problème de connexion internet');
@@ -367,7 +346,7 @@
                 }).then((result) => {
                     if (result.value) {
                       $.ajax({
-                        url:'mbo/delPrdVnt',
+                        url:'delPrdVntSuc',
                         method:'GET',
                         data:{idPrd:idPrd,idVnt:idV},
                         dataType:'json',
@@ -378,7 +357,7 @@
                            'success'
                           );
                           var token = $('input[name=_token]').val();
-                          $("#main_content").load("mbo/editVntP",{idPrd:idPrd,idV:idV, _token:token});
+                          $("#sucCont").load("editVntSuc",{idPrd:idPrd,idVnt:idV, _token:token});
                         },
                         error:function(){
                           Swal.fire('Problème de connexion internet');

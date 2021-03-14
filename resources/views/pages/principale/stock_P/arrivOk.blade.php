@@ -79,7 +79,7 @@
                       </td>
                       <td class="py-2 align-middle ">
                         <span class="badge badge rounded-capsule d-block badge-soft-secondary text-warning fs-1">
-                        {{ formatPrice($arriv->arrivagePrix)}}
+                        {{ formatPrice($arriv->arrivagePrix + $arriv->charge)}}
                         </span>
                       </td>
                       <td class="py-2 align-middle">

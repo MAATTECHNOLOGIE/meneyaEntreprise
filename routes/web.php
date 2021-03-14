@@ -393,3 +393,39 @@ Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
 
         //Validation d'une facture proformat
         Route::get('/validVntSuc','s_VenteController@validVntSuc');
+
+       //Editer une vente de la principales
+       Route::post('editVntSuc','s_VenteController@editVntSuc'); 
+
+       //Suprimer un prduit d'une vente de la principales
+       Route::get('delPrdVntSuc','s_VenteController@delPrdVntSuc'); 
+
+      //Mis a jour d'une vente / achat
+        Route::get('/updAchatSuc','s_VenteController@updAchatSuc');
+
+      //Suprime Vente
+       Route::get('delVntSuc','s_VenteController@delVntSuc')->name('delVntSuc');
+
+       //Detail de la vente
+       Route::get('ajaxDetailVntSuc','s_VenteController@ajaxDetailVntSuc');
+
+
+    /*----------------
+        Credit succurcales
+     -------------------*/
+        // Liste credit
+          Route::get('/s_credits','s_CreditController@s_credits')->name('s_credits');
+
+        //Historique paiement d'un credit
+
+          Route::get('/histCrd','s_CreditController@histCrd')->name('histCrd');
+
+
+        //Payer un credit 
+          Route::post('/s_payCrd','s_CreditController@s_payCrd')->name('s_payCrd');
+
+        //Suprimer credit
+          Route::get('/delCrd','s_CreditController@delCrd')->name('delCrd');
+
+        //Succursale ajoute credit
+          Route::post('/s_addCrd','s_CreditController@s_addCrd')->name('s_addCrd');

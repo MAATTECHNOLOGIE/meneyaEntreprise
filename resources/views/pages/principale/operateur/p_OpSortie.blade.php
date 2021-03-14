@@ -33,7 +33,7 @@
   }
 ?>
 
-
+{{-- {{ dd($produits)  }} --}}
           <div style="display: flex; justify-content: space-around; ">
             <div class="card mb-2 col-lg-5 ">
               <div class="card-body bg-light overflow-hidden ">
@@ -91,6 +91,7 @@
                             <select class="selectpicker" id="inputVal" name="article">
                               <option value="choix">-- Articles --</option>
                               @foreach($produits as $produit)
+
                               <option idduPrd="{{ $produit->id }}" title="{{ $produit->produitPrix }}" >{{ $produit->produitLibele }}</option>
                               @endforeach
                             </select>

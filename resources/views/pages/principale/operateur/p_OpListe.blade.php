@@ -79,34 +79,34 @@
                       </td>
                       <td class="py-2 align-middle">
                         <p class="mb-0 text-500">
-                         <?php echo $value['operateurDate'];?>
+                         {{ $value['operateurDate'] }} 
                         </p>
                       </td>
                       <td class="py-2 align-middle white-space-nowrap"><a href="#">
-                        <strong><?php echo $value['operateurMat'];?></strong><br />
+                        <strong>{{ $value['operateurMat'] }} </strong><br />
                       </td>
-                      <td class="py-2 align-middle"><?php echo $value['operateurNom'];?></td>
+                      <td class="py-2 align-middle">{{ $value['operateurNom'] }} </td>
                       <td class="py-2 align-middle">
                         <p class="mb-0 text-500">
-                         <?php echo $value['operateurContact'];?>
+                         {{ $value['operateurContact'] }} 
                         </p>
                       </td>
                       
                       <td class="py-2 align-middle text-right fs-0 font-weight-medium ">
-                       <?php echo $value['operateurLieu'];?>
+                       {{ $value['operateurLieu'] }} 
                       </td>
 
                       <td class="py-2 align-middle white-space-nowrap">
                         
                         <button class="btn btn-falcon-info rounded-capsule mr-1 mb-1 operat" 
-                         type="button" id="<?php echo $value['id'];?>">Opérations
+                         type="button" id="{{ $value['id'] }} ">Opérations
                         </button>
 
-                        <a href="#" class="delete" id="<?php echo $value['id'];?>">
+                        <a href="#" class="delete" id="{{ $value['id'] }} ">
                           <i class="far fa-trash-alt fa-2x text-danger">
                           </i>
                         </a>
-                       <a href="#" class="updOp" id="<?php echo $value['id'];?>">
+                       <a href="#" class="updOp" id="{{ $value['id'] }} ">
                         <i class="far far fa-edit fa-2x text-primary"></i>
                        </a>
 
@@ -255,6 +255,10 @@
              dataType:'html',
              success:function(){
                 Swal.fire('Modifier avec succès');
+               $("#exampleModal").modal('hide');
+               $('#refresh').click();
+
+
               },
              error:function(){Swal.fire('Problème de connection internet');}
            });

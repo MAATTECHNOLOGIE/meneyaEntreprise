@@ -59,8 +59,9 @@ class p_VersController extends Controller
         $periode = explode(" to ", $dateBP);
         $debut   = $periode[0];
         $fin     = $periode[1];
+        $fin2     = $periode[1];
        /* dd($debut);*/
-        /*dd($fin);*/
+        // dd($fin);
         // Selection distincte
 
                 $collection = collect([]);
@@ -107,7 +108,7 @@ class p_VersController extends Controller
                        style="background-image:url(assets/img/illustrations/corner-1.png);">
                       </div>
                       <div class="card-body position-relative">
-                        <h6>'.formatPrice($orderByPrice[$i]['bnfRel']).'<span class="badge badge-soft-warning rounded-capsule ml-2">60%</span></h6>
+                        <h6>'.formatPrice($orderByPrice[$i]['bnfRel']).'<span class="badge badge-soft-warning rounded-capsule  ml-2"> <i class="far fa-star"></i></span></h6>
                         <div class="display-6 fs-3 mb-2 font-weight-normal text-sans-serif text-warning">'.readSurc($orderByPrice[$i]['Idsucu'])->succursaleLibelle.'</div>
                         <a class="font-weight-semi-bold fs-1 text-nowrap ReSMS" href="#!" id="'.$orderByPrice[$i]['bnfRel'].'">';
                         if($i == 0)
@@ -130,11 +131,11 @@ class p_VersController extends Controller
             $output.='</div>';
 
             $output.='<div class="d-flex justify-content-center" >
-                        <h4 class="mb-4 text-primary position-relative">
-                        <span class="bg-200 pr-3">Rapport des agences pour la période du <strong class="text-danger">'.$debut.' au '.$fin.'</strong> </span>
+                        <h5 class="mb-4 text-primary position-relative">
+                        <span class="bg-200 pr-3">Rapport des agences pour la période du <strong class="text-danger">'.$debut.' au '.$fin2.'</strong> </span>
                         <span class="border position-absolute absolute-vertical-center w-100 z-index--1 l-0">
                         </span>
-                        </h4></div>';
+                        </h5></div>';
 
             $output.='<div class="col-lg-12 col-sm-12 col-md-12 pl-lg-2 ">
             <div class="card mb-3">

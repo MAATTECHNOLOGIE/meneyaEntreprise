@@ -43,7 +43,7 @@
                                     <td>{{gerantSuc($succursale->user_id)['name'] }}</td>
                                     <td>{{ $succursale->datesucu }}</td>
                                     <td>
-                                      <span class="badge badge rounded-capsule d-block badge-soft-secondary text-warning fs-1">
+                                      <span class="badge badge rounded-capsule d-block badge-soft-secondary text-warning fs-0">
                                       {{formatPrice(getPrixPrdInStockSuc($succursale->id))}}
                                       </span>
                                     </td>

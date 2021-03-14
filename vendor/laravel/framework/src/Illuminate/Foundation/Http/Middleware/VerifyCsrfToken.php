@@ -68,8 +68,7 @@ class VerifyCsrfToken
      */
     public function handle($request, Closure $next)
     {
-        if (
-            $this->isReading($request) ||
+        if ($this->isReading($request) ||
             $this->runningUnitTests() ||
             $this->inExceptArray($request) ||
             $this->tokensMatch($request)

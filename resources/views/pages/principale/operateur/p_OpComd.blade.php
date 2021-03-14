@@ -79,21 +79,21 @@
                         </div>
                       </td>
                       <td class="py-2 align-middle  fs-0 font-weight-medium">
-                        <?php echo $value['operationCode']; ?>
+                        {{ $value['operationCode'] }}
                       </td>
                       <td class="py-2 align-middle  fs-0 font-weight-medium">
-                        <?php echo $value['OperationLibele']; ?>
+                        {{ $value['OperationLibele'] }}
                       </td>
                       <td class="py-2 align-middle  fs-0 font-weight-medium">
-                        <?php echo $value['Operationcomt']; ?>
+                        {{ $value['Operationcomt'] }}
                       </td>
                       <td>
-                        <a href="#" id="<?php echo $value['id']; ?>" 
+                        <a href="#" id="{{ $value['id'] }}" 
                           class="delete">
                           <i class="far fa-trash-alt fa-2x text-danger"></i>
                         </a>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="#" id="<?php echo $value['id']; ?>" class="updOp">
+                        <a href="#" id="{{ $value['id'] }}" class="updOp">
                           <i class="far far fa-edit fa-2x text-primary"></i>
                         </a>
                       </td>
@@ -119,10 +119,14 @@
 
       </div>
       <div class="modal-footer">
-        <button class="btn btn-danger btn-sm updVald" type="button">Valider</button>
+        {{-- <button class="btn btn-danger btn-sm updVald" type="button">Valider</button> --}}
+        <button class="btn btn-danger btn-sm updVald" type="button" data-dismiss="modal">
+          Valider
+        </button>
         <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">
           Fermer
         </button>
+        
       </div>
     </div>
   </div>
@@ -240,6 +244,7 @@
              dataType:'html',
              success:function(){
                 Swal.fire('Modifier avec succès');
+                $("#refresh").click();
               },
              error:function(){Swal.fire('Problème de connection internet');}
            });

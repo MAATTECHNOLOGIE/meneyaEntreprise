@@ -337,9 +337,13 @@ class ApprovisionnementController extends Controller
 
     public function allPrd(Request $request)
       {
-        $prd=  produits::paginate(50);
 
-        return view('pages/principale/approvision/allPrd')->with('produits',$prd);
+        $perPage = setDefault($request->perPage,25);
+        $prd=  produits::paginate($perPage);
+
+
+        return view('pages/principale/approvision/allPrd')->with('produits',$prd)
+                                                          ->with('perPage',$perPage);
       }
 
 

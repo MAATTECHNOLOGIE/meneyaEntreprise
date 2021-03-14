@@ -11,7 +11,7 @@
 
               <div class="row align-items-center text-center mb-3">
                 <div class="col-sm-6 text-sm-left">
-                  <img src="../assets/img/logos/logo-invoice.png" 
+                  <img src="{{ asset(getLogo()) }}" 
                        alt="invoice" width="150">
                 </div>
                 <div class="col text-sm-right mt-3 mt-sm-0">

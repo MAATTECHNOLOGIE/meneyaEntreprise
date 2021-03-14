@@ -1,3 +1,5 @@
+ @if(!$succ->isEmpty())
+
 <div class="card mb-3">
   <div class="bg-holder d-none d-lg-block bg-card" 
    style="background-image:url(../assets/img/illustrations/corner-4.png);">
@@ -41,7 +43,7 @@
                 </div>
                 <div class="col-4">
                   <label for="gerant">Succursales </label>
-                    @if(!$succ->isEmpty())
+                   
                       <select class="form-control" id="succ"  name="succ"> 
                             <option value="0" >
                               Toutes les succursales
@@ -52,11 +54,7 @@
                             </option>
                           @endforeach
                       </select>
-                    @else
-                      <div class="alert alert-warning">
-                        <input class="form-control" id="succ" name="succ" type="text" readonly="" value="">
-                      </div>
-                    @endif
+
                 </div>
                 <div class="col-2">
                   <div class="form-group">
@@ -118,3 +116,38 @@
   </script>
 
  
+
+
+@else
+ <div class="card">
+            <div class="card-body overflow-hidden text-center pt-5">
+              <div class="row justify-content-center">
+                <div class="col-7 col-md-5"><img class="img-fluid" src="../assets/img/illustrations/modal-right.png" alt="" /></div>
+              </div>
+              <h3 class="mt-3 font-weight-normal fs-2 mt-md-4 fs-md-3">
+                <b class="text-danger">Oupsss!!!!!!</b>, Vous n'avez aucune succursale.
+              </h3>
+              <p class="lead">Veuillez passer à la création de succursale.
+               <br class="d-none d-md-block"/> 
+                
+                  <a class="ml-1 btn btn-outline-primary rounded-capsule mr-1 mb-1 newSuc"  href="#">
+                          Nouvelle succursale
+                  </a>
+                <br class="d-none d-md-block"/>
+              </p>
+              
+            </div>
+            <div class="card-footer d-flex justify-content-center bg-light text-center pt-4">
+              <div class="col-10">
+                <p class="mb-2 fs--1"><a href="/dashboard">Avec Meneya gérer vos succursales en toute simplicité.</a></p>
+              </div>
+            </div>
+  </div>
+
+  <script type="text/javascript">
+    $('.newSuc').click(function()
+    {
+      $('#main_content').load('/mbo/addSuc')
+    })
+  </script>
+@endif
