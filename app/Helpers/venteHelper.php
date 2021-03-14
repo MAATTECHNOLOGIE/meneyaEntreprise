@@ -60,4 +60,29 @@ if(!function_exists('venteTotalSuc'))
 	}
 
 	
+//Recherche un prd en session d'achat
+
+	if(!function_exists('isInSession'))
+	{
+		function isInSession($mySessionIndex,$index,$idArticle,$qtInStck)
+		{
+			$qteInSession = 0;
+			if (isset($_SESSION[$mySessionIndex])) 
+			{
+				foreach ($_SESSION[$mySessionIndex] as $sessionEl) 
+				{
+					if ($sessionEl[$index] ==$idArticle ) 
+					{
+						$qteInSession+=$sessionEl['qte'];
+					}
+				}
+
+			}
+
+			$qteRst = $qtInStck - $qteInSession;
+			
+			return $qteRst;
+		}
+	}
+	
 

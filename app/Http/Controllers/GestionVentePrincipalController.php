@@ -63,7 +63,7 @@ class GestionVentePrincipalController extends Controller
                      'prix'     => $request->prix,
                      'article'     => $request->article,
                      );
-                    $_SESSION["achatP"][$count] = $item_array;
+                    $_SESSION["achatP"][] = $item_array;
                   }
               else{
 
@@ -74,7 +74,7 @@ class GestionVentePrincipalController extends Controller
                  );
 
                 //Création de session
-                 $_SESSION["achatP"][0] = $item_array;
+                 $_SESSION["achatP"][] = $item_array;
 
                   }
 
@@ -121,6 +121,7 @@ class GestionVentePrincipalController extends Controller
         {
           $nbr =(int)$request->idPrd; //conversion de la variable en entier
           unset($_SESSION['achatP'][$nbr]);
+          // dd(count($_SESSION['achatP']));
           return response()->json();
 
         }
@@ -148,10 +149,10 @@ class GestionVentePrincipalController extends Controller
                 $prdStck = stock_principales::where('produits_id','=',$prd->produits_id)->first();
                
                 $prdStck->stock_Qte = $prdStck->stock_Qte + $prd->qte;
-
+                $prdStck->save();
             }
 
-            $prdStck->save(); 
+ 
             $vente->save();
             
             $prd->delete();
@@ -186,7 +187,7 @@ class GestionVentePrincipalController extends Controller
                             prixFour="'.$produit->produitPrixFour.'"
                             prixFourFormat="'.formatPrice($produit->produitPrixFour).'"
                             value="'.$produit->prdId.'" 
-                            qteInStck="'.$produit->qte.'" >
+                            qteInStck="'.isInSession('achatP','article',$produit->prdId,$produit->qte).'" >
                       '.$produit->produitLibele.'</option>';
                       }
                     }

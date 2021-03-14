@@ -221,7 +221,9 @@
                   <div class="col-xl-4">
                     <a href="http://wa.me/{{whatsAppShop()}}?text=*je suis interressé(e) par {{$titre}}. Veuillez me contactez.*
                     {{$shareL}}">
-                     <button class="btn btn-falcon-default btn-block mb-2 mb-xl-0"><img src="../assets/img/icons/icona-whatsapp.png" width="20" alt="" /><span class="font-weight-medium ml-2">
+                     <button class="btn btn-falcon-default btn-block mb-2 mb-xl-0">
+                      <span class="fab fa-whatsapp text-success" data-fa-transform="grow-2"></span>
+                      <span class="font-weight-medium ml-2">
                       {{whatsAppShop()}}
                      </span></button>
                     </a>
@@ -230,7 +232,9 @@
                  
                   <div class="col-xl-4">
                     
-                    <button class="btn btn-falcon-default btn-block mb-2 mb-xl-0"><span class="fab fa-facebook-square text-facebook" data-fa-transform="grow-2"></span><span class="font-weight-medium ml-2">{{facebookShop()}}</span></button>
+                    <button class="btn btn-falcon-default btn-block mb-2 mb-xl-0">
+                      <span class="fab fa-facebook-square text-facebook" data-fa-transform="grow-2"></span>
+                      <span class="font-weight-medium ml-2">{{facebookShop()}}</span></button>
                     
                   </div>
 

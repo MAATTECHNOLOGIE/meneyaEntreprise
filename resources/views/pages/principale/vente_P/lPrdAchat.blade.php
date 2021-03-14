@@ -6,7 +6,8 @@
                 <div class="form-row justify-content-between no-print">
 
                   <div class="form-group col-4">
-                    <label for='chargeLibelle'> Description  charge</label>
+          
+                    <label for='chargeLibelle'> Description  charge {{ count($_SESSION['achatP']) }} </label>
                     <input class="form-control " id="chargeLibelle" name="chargeLibelle" type="text" placeholder="livraison, transport..." maxlength="100">
                   </div>
                   <div class="form-group col-2">
@@ -19,7 +20,7 @@
                     <input class="form-control datetimepicker" id="dateV" name="dateV" type="text" data-options='{"dateFormat":"d/m/Y"}'>
                   </div>                 
                   <div class="form-group col-1 ">
-                    <label for='retour'> Retourner </label>
+                    <label for='retour'> Retourner  </label>
                       <button class="btn btn-sm btn-secondary " id="retour">Retour</button>
                   </div> 
                   <div class="form-group col-2">
@@ -153,6 +154,7 @@
       //Retour au panier
         $('#retour').click(function()
           {
+
             $('#main_content').load('/mbo/venteP');
             // alert('cliquer');
           });

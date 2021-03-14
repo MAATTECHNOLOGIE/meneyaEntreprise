@@ -7,9 +7,14 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-lg-8">
-                  <h4 class="mb-0 text-primary"> <i class="fas fa-database"></i>  Gestion de stock <i class="fas fa-angle-right"></i> Contenue Stock </h4><p><b>Etat du Stock :</b><span class="text-danger"> 
-            
-                    {{ formatQte($stockProduits->sum('stock_Qte'))  }} produits</span>
+                  <h4 class="mb-0 text-primary"> <i class="fas fa-database"></i>  Gestion de stock <i class="fas fa-angle-right"></i> Contenue Stock </h4>
+
+                  <span class="fas fa-circle text-danger mr-3"></span>
+                    <b> Le produits est fini en stock</b> <br>
+                  <span class="fas fa-circle text-warning mr-3"></span></b>
+                    <b> Le stock du produit est en baisse</b><br>
+                  <span class="fas fa-circle mr-3"></span></b>
+                    <b> Le stock du produit est suffisant</b>
                 </div>
               </div>
             </div>

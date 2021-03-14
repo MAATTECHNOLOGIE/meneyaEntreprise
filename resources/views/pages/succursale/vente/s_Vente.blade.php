@@ -1,4 +1,4 @@
-<div class="card mb-3">
+<div class="card mb-3 no-print">
   <div class="bg-holder d-none d-lg-block bg-card" 
    style="background-image:url(../assets/img/illustrations/corner-4.png);">
   </div>
@@ -6,7 +6,7 @@
 
 
 </div>
-          <div class="card mb-3">
+          <div class="card mb-3 no-print">
             <div class="card-body">
               <div class="row justify-content-between align-items-center">
                 <div class="col-md">
@@ -142,8 +142,7 @@
     <!--    Fichier Facture pour operateur-->
     <!-- ===============================================-->
 
-      @include('pages/dash/facture/vntP')
-
+      @include('pages/dash/facture/ventSuc')
     <!-- ===============================================-->
     <!--    Fin Fichier Facture pour operateur -->
     <!-- ===============================================-->   
@@ -191,7 +190,7 @@
               var idV = $(this).attr('id');
               var idClt =$(this).attr('name');
               var token =$('input[name=_token]').val();
-             $("#main_content").load("mbo/editVntP",{ idV :idV,idClt :idClt,_token:token});
+             $("#sucCont").load("editVntSuc",{ idV :idV,idClt :idClt,_token:token});
 
 
             });
@@ -202,7 +201,7 @@
 
                     $.ajax({
                     method: "GET",
-                    url: "mbo/ajaxDetailVntP",
+                    url: "ajaxDetailVntSuc",
                     data: {NumVente:cmd_id,idClt:id_clt },
                       dataType: "html",
                   })
@@ -261,7 +260,7 @@
                   }).then((result) => {
                       if (result.value) {
                         $.ajax({
-                          url:'mbo/delVntP',
+                          url:'delVntSuc',
                           method:'GET',
                           data:{idVente:idVente},
                           dataType:'json',
@@ -271,10 +270,11 @@
                              'Produits suipprimé avec succès',
                              'success'
                             );
-                            $("#main_content").load("mbo/lfactuProP");
+                           $("#sucCont").load("s_Vente");
+                            
                           },
                           error:function(){
-                            Swal.fire('La suppression de produits est impossible');
+                            Swal.fire('Impossible ,Probleme de connexion');
                           }
                         });
                       }
@@ -381,7 +381,7 @@
        
                var idVnt = idVnt;              
           $.ajax({
-                 url:'mbo/recuVntP',
+                 url:'recuVntSuc',
                  method:'get',
                  data:{NumVente:idVnt},
                  dataType:'html',

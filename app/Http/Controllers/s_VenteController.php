@@ -426,19 +426,24 @@ class s_VenteController extends Controller
     //Validation d'une facture proformat
       public function validVntSuc(Request $request)
           {
+
             $vente= ventes_succursales::find($request->idVnt);
             $vente->typevente = 1;    // '0 => facture proformat / 1 => Vente'
-            $vente->save();
+
                 //Recuperation des produits vendu
                 $prdVnts = produits_has_ventes_succursales::where('ventes_succursales_id','=',$vente->id)->get();
+
                           //insertion de la vente
                           foreach ($prdVnts as $key => $value)
                               {
-                                   
                                       //Creation ou mise a jour du stock de ce produit
+                                          // dd($value);
+
                                           $produits = stock_succursales::firstOrCreate(
-                                          ['produits_id' => $value['article'],'succursale_id' =>$suc->id ],
+                                          ['produits_id' => $value['produits_id'],
+                                          'succursale_id' =>$vente->succursale_id ],
                                           ['stock_Qte' => 0 ]);
+
                                           if( $produits->stock_Qte >= $value['qte'])
                                           {
                                             $produits->stock_Qte = $produits->stock_Qte - $value['qte'];
@@ -457,7 +462,7 @@ class s_VenteController extends Controller
                                           }
 
                                             $produits->save();                                      
-                                    
+                                            $vente->save();
 
 
                               }
@@ -468,17 +473,180 @@ class s_VenteController extends Controller
           }
 
 
+  //Edition d'une vente 
+      public function editVntSuc(Request $request)
+      {
+        $vente= ventes_succursales::find($request->idV);
+        $clt = getClient($request->idClt);
+
+             $prd = DB::table('produits_has_ventes_succursales')
+            ->join('produits', 'produits.id', '=', 'produits_has_ventes_succursales.produits_id')
+            ->select('produits.*', 'produits_has_ventes_succursales.*')
+            ->where('ventes_succursales_id','=',$request->idV)
+            ->get();
+            return view('pages/succursale/vente/editVntSuc')->with('vente',$vente)
+                                                            ->with('clt',$clt)
+                                                            ->with('prd',$prd);
+      }
+
+    //Supression d'un produit dune vente deja enregistrer
+      public function delPrdVntSuc(Request $request)
+        {
+          $vente= ventes_succursales::find($request->idVnt);
+          $prd= produits_has_ventes_succursales::find($request->idPrd);
+
+          //Soustraction du montant du prd  et upd de la vnt
+            $prixVntPrd = $prd->prixvente * $prd->qte;
+            $coutAchaPrd = getPrd($prd->produits_id)->produitPrixFour * $prd->qte;
+            $vente->cout_achat_total = $vente->cout_achat_total- $coutAchaPrd;
+            $vente->prix_vente_total = $vente->prix_vente_total - $prixVntPrd;
+
+            $vente->mg_benef_brute = $vente->prix_vente_total - $vente->cout_achat_total;
+            $vente->mg_benef_rel = $vente->prix_vente_total - ($vente->cout_achat_total + $vente->charge);
+            $vente->qte = $vente->qte- $prd->qte;
+
+          //Verification du type de vente ( 0 => facture pro //  1 => vente)
+            if ($vente->typevente==1) 
+            {
+              # Actualisation du stock principale
+                $prdStck = stock_succursales::where('produits_id','=',$prd->produits_id)->first();
+               
+                $prdStck->stock_Qte = $prdStck->stock_Qte + $prd->qte;
+                $prdStck->save(); 
+
+            }
+
+
+            $vente->save();
+            
+            $prd->delete();
+
+            return response()->json();
+        }  
+
+    //Mis a jour d'un achat
+      public function updAchatSuc(Request $request)
+          {
+            $vente= ventes_succursales::find($request->idVnt);
+              $vente->charge = $request->charge;
+              $vente->description_charge = $request->chargeLibelle;
+              $vente->typevente = $request->type;
+              $vente->dateV = $request->dateV;
+              $vente->mg_benef_rel = $vente->prix_vente_total - ($vente->cout_achat_total + $request->charge);
+              $vente->save();
+                //Recuperation des produits vendu
+                $prdVnts = produits_has_ventes_succursales::where('ventes_succursales_id','=',$vente->id)->get();
+                          //insertion de la vente
+                          foreach ($prdVnts as $key => $value)
+                              {
+                                     //Verification du type d'operation
+                                      // '0 => facture proformat / 1 => Vente'
+                                      if($request->type == '1')
+                                      {
+
+                                        //Creation ou mise a jour du stock de ce produit
+                                          $produits = stock_succursales::firstOrCreate(
+                                          ['produits_id' => $value['produits_id']],
+                                          ['stock_Qte' => 0 ]);
+                                          if( $produits->stock_Qte >= $value['qte'])
+                                          {
+                                            $produits->stock_Qte = $produits->stock_Qte - $value['qte'];
+
+                                            //Compare le stock restant au seuil d'alert
+                                              if ($produits->stock_Qte <= getPrd($value['produits_id'])->seuilAlert ) 
+                                              {
+                                                  //Déclenchement d'alert
+
+                                              }
+                                          }
+                                          else
+                                          {
+                                            $produits->stock_Qte = 0;
+                                            //Declenchement d'alert
+                                          }
+
+                                            $produits->save();                                      
+                                      }
+
+
+                              }
 
 
 
+            return response()->json();
+          }
 
 
+  //supression vente de la pricipales
+    public function delVntSuc(Request $request)
+        {
+             // produits_has_vente_principales::where('vente_principales_id', '=', $request->idVente)->delete();
+             ventes_succursales::where('id','=',$request->idVente)->delete();
 
+            return response()->json();
+        }
 
+    //Detail d'une vente de la principale
+      public function ajaxDetailVntSuc(Request $request)
+      {
+        $vente= ventes_succursales::find($request->NumVente);
 
+             $OpTion = DB::table('produits_has_ventes_succursales')
+            ->join('produits', 'produits.id', '=', 'produits_has_ventes_succursales.produits_id')
+            ->select('produits.*', 'produits_has_ventes_succursales.*')
+            ->where('ventes_succursales_id','=',$request->NumVente)
+            ->get();
 
-
-
+                $total= 0;
+             $output ='';
+             $output.='
+                <div class="table-responsive fs--1">
+                    <table class="table table-striped border-bottom">
+                      <thead class="bg-200 text-900">
+                        <tr>
+                          <th class="border-0">Article</th>
+                          <th class="border-0 text-center">Prix de vente </th>
+                          <th class="border-0 text-center">Qté</th>
+                          <th class="border-0 text-right">Prix Net(Fcfa)</th>
+                        
+                        </tr>
+                      </thead>
+                      <tbody>';
+                    for ($i=0; $i < count($OpTion) ; $i++){
+                     $output.='
+                        <tr>
+                          <td class="align-middle">'.$OpTion[$i]->produitLibele.'</td>
+                          <td class="text-center">'.$OpTion[$i]->prixvente.'</td>
+                          <td class="text-center">'.$OpTion[$i]->qte.'</td>
+                          <td class=" text-right">'.$OpTion[$i]->prixvente * $OpTion[$i]->qte .'</td>
+                        </tr>';
+                        $total += $OpTion[$i]->prixvente * $OpTion[$i]->qte; 
+                     }
+                $output.='
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="row no-gutters justify-content-end">
+                    <div class="col-auto">
+                      <table class="table table-sm table-borderless fs--1 text-right">';
+                    $total = $total+$vente->charge;
+                    $output.='
+                        <tr class="">
+                          <th class="text-900 ">Charge:</th>
+                          <td class="font-weight-semi-bold">'.$vente->charge.'</td>
+                        </tr>
+                        <tr class="text-danger">
+                          <th class="text-900 text-danger">Total TTC:</th>
+                          <td class="font-weight-semi-bold">'.$total.'</td>
+                        </tr>';
+                    $output.='    
+                      </table>
+                    </div>
+                  </div>
+             ';
+             // dd($output);
+             return $output;
+      }
 
 
 

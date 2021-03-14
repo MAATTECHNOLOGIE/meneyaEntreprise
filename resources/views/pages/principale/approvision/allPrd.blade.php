@@ -56,25 +56,17 @@
                     
                   </h5>
                 </div>
-                <div class="col-8 col-sm-auto text-right pl-2">
-                  <div class="d-none" id="customers-actions">
-                    <div class="input-group input-group-sm">
-                      <select class="custom-select cus" aria-label="Bulk actions">
-                        <option selected="">Bulk actions</option>
-                        <option value="Delete">Delete</option>
-                        <option value="Archive">Archive</option>
-                      </select>
-                      <button class="btn btn-falcon-default btn-sm ml-2" type="button">Apply</button>
-                    </div>
-                  </div>
+                @include('pages/dash/pagnMod')
 
-                </div>
               </div>
             </div>
-            <div class="card-body p-0">
+
+
+
+            <div class="card-body p-0" id="loaderContent">
               @if(!$produits->isEmpty())
               <div class="falcon-data-table mytable">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":50,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>"}'>
+                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>"}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-middle no-sort pr-3">
@@ -128,10 +120,16 @@
                       @endforeach
                   </tbody>
                 </table>
-                  <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                  <div class="row no-gutters px-1 py-3 align-items-center               justify-content-center">
                     {{ $produits->links() }}
+                    
                     <input type="hidden" id='lastPrd' value="{{ $produits->last()->id }}">
+
+                   {{--  <input type="number" name="" min="1" id="gotTo"> --}}
+                   
+                   
               </div>
+
               </div>
                     @endif
               
@@ -143,15 +141,7 @@
             {{-- ***** MODULE AJOUT PRODUIT & CATGORIE**** --}}
 
 @csrf
-<div class="d-none" id='spiner'>
-<div class="spinner-border text-primary" role="status">
-  <span class="sr-only">Loading...</span>
-</div>
-<div class="spinner-border text-info" role="status">
-  <span class="sr-only">Loading...</span>
-</div>
-  
-</div>
+
 
 <!-- Button trigger modal-->
 {{-- <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Launch demo modal</button> --}}
@@ -178,10 +168,6 @@
 
 
 
- <script src="{{ asset('assets/js/theme.js') }}"></script>
-
-
-<script src="{{ asset('assets/lib/jquery-validation/jquery.validate.min.js') }}"></script>
 
 
 <script type="text/javascript">
@@ -191,10 +177,10 @@
 
       
       //click sur btn de trie par categrie
-      $('.byCatg').click(function()
-      {
-        $('#mesCategorie').attr('class','card mb-3 no-print');
-      })
+        $('.byCatg').click(function()
+        {
+          $('#mesCategorie').attr('class','card mb-3 no-print');
+        })
 
       //Choix d'une categorie pour trie
           $('.categorie').click(function()
@@ -217,22 +203,6 @@
             //req ajax 
             ajaxListCatg();
           });
-
-      // Code pour enlever le paginate de JS
-          $('.mytable .table-responsive').next().hide();
-
-      //Action des bouton paginate de Laravel
-        $('.page-item > .page-link').click(function()
-        {
-            event.preventDefault();
-            var valeur = parseInt($(this).text());
-            if(valeur>= 1)
-            {
-              var page = $('#lastPrd').val();
-            $('#main_content').load('mbo/allPrd?page='+valeur+'&idPage='+page);
-      
-            }
-        });
 
 
       //Ajax recup list des categories
@@ -259,10 +229,8 @@
 
       
       //Ajax suprime produits
-        function ajaxDeleteProduit(idProduit)
+        function delPrd(idProduit)
         {
-
-
                 Swal.fire({
                   title: 'Produit',
                   text: "Voulez vous supprimer ce produits ?",
@@ -350,8 +318,4 @@
 
 
     })
-
-
-
-
     </script>
