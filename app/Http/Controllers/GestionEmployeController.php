@@ -22,6 +22,7 @@ class GestionEmployeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('AccesToUser');
     }
 
     /**
@@ -37,14 +38,16 @@ class GestionEmployeController extends Controller
         }
     
     //List Empl
-        public function listEmpl()
+        public function listEmpl(Request $request)
         {
-            $users = User::orderBy('id','desc')->get();
             $access = acces::all();
-            // $user = DB::table('vente_principales')->orderBy('prix','desc')->get();
-
-            return view('pages/principale/rh/listEmpl')->withUsers($users)
-                                                    ->withAccess($access);
+            $pagePath =  $request->path();
+            $perPage = setDefault($request->perPage,25);
+            $elmts=  User::orderBy('id', 'desc')->paginate($perPage);
+            return view('pages/principale/rh/listEmpl')->with('users',$elmts)
+                                           ->with('pagePath',$pagePath)
+                                           ->with('perPage',$perPage)
+                                           ->withAccess($access);
         }
 
 
@@ -144,7 +147,10 @@ class GestionEmployeController extends Controller
 
     public function ajaxDelEmpl(Request $request)
     {
-        User::where('id','=',$request->idEmpl)->delete();
+        if ($request->idEmpl != 1) 
+        {
+            User::where('id','=',$request->idEmpl)->delete();   
+        }
         return response()->json();
     }
 
@@ -194,6 +200,13 @@ class GestionEmployeController extends Controller
 
         // return view('pages/principale/employe/editEmpl')->withEmploye($employe);
        return response()->json();
+    }
+
+
+    public function delAllAcces()
+    {
+        $acs = user_has_acces::where('user_id','!=',1)->update(['status' =>0]);
+        return response()->json();
     }
 
    

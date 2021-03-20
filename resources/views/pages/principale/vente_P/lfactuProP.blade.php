@@ -31,26 +31,19 @@
             </div>
           </div>
 
-
+        @if(!$ventes->isEmpty())
           <div class="card mb-3  no-print">
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
                 <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
                   <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Liste de vos différentes factures <a href="" data-toggle="modal" data-target="#exampleModalRight"></a></h5>
                 </div>
-                <div class="col-8 col-sm-auto ml-auto text-right pl-0">
-
-                  <div id="dashboard-actions">
-                   
-{{--                     <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Filtre</span></button>
-                    <button class="btn btn-falcon-default btn-sm" type="button"><span class="fas fa-external-link-alt" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Imprimer</span></button> --}}
-                  </div>
-                </div>
+                       @include('pages/dash/pagnMod')
               </div>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0" id="loaderContent">
               <div class="falcon-data-table">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":true,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":true,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-left sort">N° </th>
@@ -63,7 +56,6 @@
                       </th>
                     </tr>
                   </thead>
-                  @if(!$ventes->isEmpty())
                   <tbody id="orders">
                     @foreach($ventes as $vente)
                       <tr class="fs-0">
@@ -102,12 +94,18 @@
                       </tr>
                     @endforeach
                   </tbody>
-                  @else
-                  @endif
+
                 </table>
+                <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                       {{ $ventes->links() }}
+                   </div>
               </div>
             </div>
           </div>
+
+        @else
+        <div class="alert alert-warning text-center h5">Aucunes Factures proformats</div>
+        @endif
 
 
     <!-- ===============================================-->
@@ -145,13 +143,11 @@
     <!--    JavaScripts-->
     <!-- ===============================================-->
 
-
-
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
-
     <script type="text/javascript">
       $(function()
       {
+        // Faire disparaitre les paginate de Javascript
+          $(".mytable").parent().next().hide();
         //Nouvelle vente 
           $('#newVente').click(function()
           {

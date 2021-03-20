@@ -7,7 +7,7 @@
               <div class="row">
                 <div class="col-lg-8 d-flex justify-content-between">
                   <h4 class="mb-0 text-primary"> <i class="fas fa-database"></i>  Gestion de stock <i class="fas fa-angle-right"></i> Nouvel arrivage </h4>
-                  <button class="btn btn-warning mr-1 mb-1" type="button" 
+                  <button class="btn btn-warning mr-1 mb-1 d-none" type="button" 
                     id="btnActualiser">Actualiser<i class="fas fa-sync-alt"></i>
                   </button>
                 </div>
@@ -62,24 +62,18 @@
                               
                                       @csrf
                                   <div class="form-group">
-                                        <label for="idClient">Produits</label>
-                                        <select class="selectpicker"  id="articleLib" name="article">
-                                          <option value="choix" id="choix">--Choisir--</option>
-                                            <option class="text-primary" value="new" >
-                                             <span class="bg-warning">Nouvel article</span>
-                                            </option>
-                                          @if(!$prds->isEmpty())
-                                            @foreach( $prds as $prd)
-                                            <option class="text-900" value="{{ $prd->id}}" 
-
-                                              coutAchat="{{ $prd->produitPrixFour }}" 
-                                              prixVente="{{ $prd->produitPrix }}" >
-                                              {{ $prd->produitLibele}}
-                                            </option>
-                                            @endforeach
-                                          @endif  
+                                        <label for="idClient" class="d-flex justify-content-between">Produits
+                                          <button class="btn btn-falcon-danger btn-sm ml-2" id="newPrd" type="button">
+                                            <i class="fas fa-cart-plus"></i>
+                                            <span class="d-none d-sm-inline-block ml-1">Nouvel article</span>
+                                            </button>
+                                        </label>
+                                        <select class="articleLib"  id="articleLib" name="article">
+                                          
+    
                                         </select>
-                                  </div>              
+                                  </div> 
+{{--                                   <div class="form-row justify-content-around">
                                     <div class="form-group">
                                       <label for="prix">Coût d'achat</label>
                                             <input class="form-control" type="number" name="prix" id="prix"  aria-label="Cout d'acaht l'article" min="1">
@@ -87,18 +81,30 @@
                                     <div class="form-group">
                                       <label for="prixV">Prix de vente</label>
                                             <input class="form-control" type="number" name="prixV" id="prixV" aria-label="Prix de l'article" min="1">
-                                    </div>
-                          
-                                    <div class="input-group mb-3 col-12">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text">Qte</span>
-                                      </div>
-                                      <input class="form-control"  name="quantite" id="quantite" type="number" aria-label="Quantite" min="1">
-                                    </div>
-                                    <div class="col-12" style="display: flex;justify-content: flex-end;">
-                                      <button class="btn btn-warning mr-1 mb-1" type="button" 
-                                        id="ajoutProduitArrivage">Ajouter </button> 
-                                    </div>
+                                    </div>   
+                                  </div>   --}}           
+                <div class="form-row justify-content-around">
+                 <div class="form-group col-5">
+                   <label for="prix">Coût d'achat</label>
+                    <input class="form-control" type="number" name="prix" id="prix"  aria-label="Cout d'acaht l'article" min="1">
+                 </div>
+                <div class="form-group col-6">
+                   <label for="prixV">Prix de vente</label>
+                   <input class="form-control" type="number" name="prixV" id="prixV" aria-label="Prix de l'article" min="1">
+                 </div>
+                </div>
+                <div class="form-row justify-content-center">
+                 <div class="form-group col-5 ">
+                   {{-- <label for="prixV">Quantité</label> --}}
+                  <input class="form-control"  name="quantite" id="quantite" type="number" aria-label="Quantite" min="1" placeholder="Quantité">
+                 </div>
+                <div class="form-group col-2">
+                    <button class="btn btn-warning mr-1 mb-1" type="button" 
+                      id="ajoutProduitArrivage">Ajouter 
+                    </button>
+                 </div>
+                </div>
+                        
                             </form>
                         </div>
                     </div>
@@ -155,25 +161,40 @@
     <script src="{{ asset('assets/js/theme.js') }}"></script>
  <script type="text/javascript">
 
+        //Fonction permetant de valider avec la touche entré
+            $('#quantite').keydown(function(event)
+            {
+              if(event.keyCode == 13 || event.keyCode == 9)
+                {
+                  if ($.isNumeric($('#quantite').val())) 
+                  {
+                    $('#ajoutProduitArrivage').click();
+                  }
+                  else
+                  {
+                    toastr.error('Quantité invalide');
+                  }
+                }
+            });
+
+        //Au clic de entré dans input arrivageName
+            $('#arrivageName').keydown(function(event)
+            {
+              if(event.keyCode == 13 || event.keyCode == 9)
+                {
+                  $('#enregistreArrivage').click();
+                }
+            });
+            
+
         //Desactiver l'autocomplete 
           $('input').attr('autocomplete',"off");
 
-        //Choix d'un produit
-          $('#articleLib').change(function()
+        //Clique sur nouveau produits
+          $('#newPrd').click(function()
           {
-
-            if($('#articleLib').val() == 'new')
-            {
                $('#modalAddProd').modal('show');
-            }
-            else 
-            {
-              var cout = $('#articleLib option:selected').attr('coutAchat');
-              var prixVn = $('#articleLib option:selected').attr('prixVente');
-              $("#prix").val(cout);
-              $("#prixV").val(prixVn);
-              
-            }
+
           })
 
 
@@ -198,7 +219,7 @@
 
 		        .done(function(data) 
 		                {
-
+                      articleformClassInit();
 		                  toastr.success("Article ajouté avec succès  ");
 		                  var compteur_panier = parseInt($('#compteur_panier').text());
 		                 $('#compteur_panier').text(compteur_panier+1)
@@ -230,7 +251,7 @@
 		        $('#prix').val('').attr('class','form-control');
             $('#quantite').val('').attr('class','form-control');  
             $('#prixV').val('').attr('class','form-control');  
-		        // $('#articleLib').val('').attr('class','form-control');  
+		        $('#articleLib').html('');  
 		      };
 
 
@@ -274,7 +295,7 @@
                 // $('#inputVal').attr('class', 'form-control is-valid');
 
 
-	          if ($('#articleLib').val() != "" && $('#articleLib').val() != 'choix' && $('#articleLib').val() != 'new' ) 
+	          if ($('#articleLib').val() != null ) 
 		          {
 
 		            if ($('#prix').val() != "") 
@@ -284,23 +305,16 @@
 		                if ($('#quantite').val() != "") 
 		                {
 		                  $('#quantite').attr('class', 'form-control is-valid');
-                      if (parseInt($('#prixV').val()) > parseInt($('#prix').val())) 
+                      if (parseInt($('#prixV').val()) > parseInt($('#prix').val()))
                         {
-
-                      $('#prixV').attr('class', 'form-control is-valid');
-
-                        ajaxProduitSave();
-
-                       articleformClassInit();
+                        $('#prixV').attr('class', 'form-control is-valid');
+                          ajaxProduitSave();
                         }
                         else
                         {
                           toastr.error('Veuillez saisir un prix de vente supérieur ou égal au cout d\'achat');
                           $('#prixV').addClass('is-invalid');
-
-                        }
-
-		                 
+                        }		                 
 		                }
 		                else
 		                {
@@ -339,3 +353,74 @@
 	       });
 	     
     </script>
+<script src="assets/lib/select2/select2.min.js"></script>
+<script type="text/javascript">
+$("#articleLib").select2({
+  ajax: {
+    // url: "https://api.github.com/search/repositories",
+    url: "mbo/ajaxPrdAll",
+    dataType: 'json',
+    delay: 250,
+    data: function (params) {
+      return {
+        q: params.term, // search term
+        page: params.page
+      };
+    },
+    processResults: function (data, params) {
+      // parse the results into the format expected by Select2
+      // since we are using custom formatting functions we do not need to
+      // alter the remote JSON data, except to indicate that infinite
+      // scrolling can be used
+      params.page = params.page || 1;
+
+      return {
+        results: data.items,
+        pagination: {
+          more: (params.page * 30) < data.total_count
+        }
+      };
+    },
+    cache: true
+  },
+  placeholder: 'Recherhe de produits',
+  minimumInputLength: 3,
+  templateResult: formatRepo,
+  templateSelection: formatState
+});
+
+function formatRepo (repo) {
+  if (repo.loading) {
+    return repo.text;
+  }
+
+  var $container = $(
+                  '<div class="media"><a href="#!"><img class="img-fluid" src="'+repo.image+'" alt="" width="56" /></a><div class="media-body position-relative pl-3"><h6 class="fs-0 mb-0">'+repo.libelle+' ( Code : '+repo.matricule+')<small class="fas fa-check-circle text-primary ml-1" data-toggle="tooltip" data-placement="top" title="Verified" data-fa-transform="shrink-4 down-2"></small></h6><p class="mb-1">Prix fournisseur : <b>'+repo.prixFourFormat+'</b> <u></u></p></div></div>'
+  );
+
+  return $container;
+}
+
+function formatState (repo) {
+  // if (!repo.id) {
+  //   return repo.text;
+  // }
+  var baseUrl = repo.image;
+  var $state = $(
+    '<span> <span></span></span>'
+  );
+
+  // Use .text() instead of HTML string concatenation to avoid script injection issues
+  $state.find("span").text(repo.text);
+  if (repo.id != 0) 
+  {
+    $('#article option:selected').attr('value', repo.id);
+    $('#article option:selected').attr('coutAchat', repo.prixFour);
+    $('#article option:selected').attr('prixVente', repo.prixPrd);
+    $("#prix").val(repo.prixFour);
+    $("#prixV").val(repo.prixPrd);
+  }
+
+  return $state;
+};
+</script>

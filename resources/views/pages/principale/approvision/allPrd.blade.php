@@ -65,8 +65,8 @@
 
             <div class="card-body p-0" id="loaderContent">
               @if(!$produits->isEmpty())
-              <div class="falcon-data-table mytable">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>"}'>
+              <div class="falcon-data-table ">
+                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>"}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-middle no-sort pr-3">
@@ -100,7 +100,7 @@
                             <a href="#"  class="editProduit mr-2 text-danger" 
                             data-toggle="modal" data-target="#modalAddProd" 
                             id="{{ $produit->id }}" data-backdrop="static"      
-                            produitMat = "{{ $produit->id }}"
+                            produitMat = "{{ $produit->produitMat }}"
                             produitLibele = "{{ $produit->produitLibele }}"
                             produitPrix = "{{ $produit->produitPrix }}"
                             produitPrixFour = "{{ $produit->produitPrixFour }}"
@@ -112,9 +112,6 @@
                             >
                               <span class="far fa-edit fa-2x" ></span>
                             </a>
-                           {{--  <a href="#"   class="deleteProduit"  id={{ $produit->id }} >
-                              <span class="far fa-trash-alt text-danger mr-2"></span>
-                            </a> --}}
                           </th>
                         </tr>
                       @endforeach
@@ -174,7 +171,8 @@
     $(function()
     {
 
-
+      // Faire disparaitre les paginate de Javascript
+          $(".mytable").parent().next().hide();
       
       //click sur btn de trie par categrie
         $('.byCatg').click(function()

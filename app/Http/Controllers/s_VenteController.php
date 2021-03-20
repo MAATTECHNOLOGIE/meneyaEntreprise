@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Model\ventes_succursales;
 use App\Model\produits_has_ventes_succursales;
 use App\Model\stock_succursales;
+use App\Model\clients;
+use App\Model\credits;
 // use App\Model\produits_has_ventes_succursales;
 
 
@@ -45,22 +47,41 @@ class s_VenteController extends Controller
               case 0:
                 $type= 0;
                 $typeName ='Factures proformat';
+                $typeVnt = 'Facture proformat';
+                break;
+              case 1:
+                $type= 1;
+                $typeName ='Mes Ventes Soldées';
+                $typeVnt = 'Facture d\'achat';
                 break;
               case 2:
                 $type= 2;
                 $typeName ='Ventes Non Soldées';
+                $typeVnt = 'Facture de crédit';
                 break;
               default:
                 $type= 1;
                 $typeName ='Mes Ventes Soldées';
+                $typeVnt = 'Facture d\'achat';
+
                 break;
             }
+            $suc = userHasSucc(Auth::id());     //Recup succursae info
+            $pagePath =  $request->path();      //Recu path url for paginate
+            $perPage = setDefault($request->perPage,25);
 
+          //Selection des vente selon le type demande
             $ventes = ventes_succursales::where('typevente','=',$type)
-                        ->where('succursale_id','=',userHasSucc(Auth::id())->id)
-                        ->orderBy('id','desc')->get();
-            return view('pages.succursale.vente.s_Vente')->withVentes($ventes)
-                                                        ->withTypevente($typeName);
+                        ->where('succursale_id','=',$suc->id)
+                        ->orderBy('id','desc')
+                        ->paginate($perPage);
+                        // dd($ventes);
+          return view('pages.succursale.vente.s_Vente')
+                              ->withVentes($ventes)
+                              ->withTypevente($typeName)
+                              ->withFactureTitre($typeVnt)
+                              ->with('pagePath',$pagePath)
+                              ->with('perPage',$perPage);
         }
 
 
@@ -69,12 +90,8 @@ class s_VenteController extends Controller
         {
 
                 //Recup Clients de  la succursale 
-                     
-                $clt = DB::table('succursale_has_clients')
-                    ->join('clients','clients.id','=','succursale_has_clients.clients_id')
-                    ->select('clients.*', 'clients.id as clientId')
-                    ->where('succursale_has_clients.succursale_id','=',userHasSucc(Auth::id())->id)
-                    ->orderBy('id','desc')->get();
+                $suc = userHasSucc(Auth::id());
+                $clt = allCltSuc($suc->id);
 
             return view('pages.succursale.vente.addVente')->with('Clt',$clt);
         }
@@ -82,37 +99,45 @@ class s_VenteController extends Controller
     //Recuperation des prds
       public function ajaxRecupPrdSuc( Request $request)
         {
-          
-            // selection des produits du stock de la succursales 
+
+            $search = htmlentities($request->q);
+            $search = htmlspecialchars($search);
             $produits = DB::table('stock_succursales')
                 ->join('produits', 'produits.id', '=', 'stock_succursales.produits_id')
-                ->select('produits.*','produits.id as prdId','stock_succursales.stock_Qte as qte')
+                ->select('produits.*','produits.id as prdId','stock_succursales.*')
+                ->where('stock_Qte','>=',1)
                 ->where('stock_succursales.succursale_id','=',userHasSucc(Auth::id())->id)
-                ->where('stock_succursales.stock_Qte','>=',1)
+                ->where('produits.produitLibele','LIKE','%'.$search.'%')
                 ->get();
-                // dd($produits);
-                $outputDetail = "";
-                    if (count($produits)!= 0) 
-                    {
-                       $outputDetail.=' <option value="choix">-- Articles --</option>';
-                      foreach($produits as $produit)
-                      {
-                        $outputDetail.=' <option 
-                            prixPrd="'.$produit->produitPrix.'" 
-                            prixFour="'.$produit->produitPrixFour.'"
-                            prixFourFormat="'.formatPrice($produit->produitPrixFour).'"
-                            value="'.$produit->prdId.'" 
-                            qteInStck="'.$produit->qte.'" >
-                      '.$produit->produitLibele.'</option>';
-                      }
-                    }
-                    else
-                    {
-                       $outputDetail.=' <option>Stock Vide</option>';
-                    }
-                             
+                $data = array();
+                foreach ($produits as  $produit) 
+                {
+                  if ($produit->image =="") 
+                  {
+                    $produit->image = "assets/img/illustrations/falcon.png";
+                  }
+                  $data[] = array(
+                          "id" => $produit->prdId,
+                        "node_id" =>'node'.$produit->prdId,
+                          "libelle" => $produit->produitLibele,
+                          "text" => $produit->produitLibele,
+                          "prixPrd" =>$produit->sucCoutAchat ,
+                          "sucId" =>$produit->succursale_id ,
+                        "prixPrdFormat" =>formatPrice($produit->sucCoutAchat),
+                        "qteInStck" => isInSession('achatP','article',$produit->prdId,$produit->stock_Qte),
+                        'image' =>$produit->image,
+                      );
 
-              return $outputDetail;
+                }
+
+                $tab = ["total_count" => 1,"incomplete_results" => false,'items'=>$data];
+
+
+             echo json_encode($tab);
+             exit();
+
+
+
 
         }
 
@@ -120,20 +145,16 @@ class s_VenteController extends Controller
       public function savePrdAchatSuc(Request $request)
         {
             // Ajax validation et retour
-            // $validator = $this->validator($request->all())->validate();
-            //Generation de clé unique
-            $idProduit = $request->article.rand(0,10000);
             //Verification de la quantite du produit en stock
             //Création des panier 
              if (isset($_SESSION['achatP'])) 
                  {
-                    $count = count($_SESSION["achatP"]);
                     $item_array = array(
                      'qte'      => $request->quantite,
                      'prix'     => $request->prix,
                      'article'     => $request->article,
                      );
-                    $_SESSION["achatP"][$count] = $item_array;
+                    $_SESSION["achatP"][] = $item_array;
                   }
               else{
 
@@ -144,19 +165,14 @@ class s_VenteController extends Controller
                  );
 
                 //Création de session
-                 $_SESSION["achatP"][0] = $item_array;
+                 $_SESSION["achatP"][] = $item_array;
+
+                 //Info commande
+                    $_SESSION["clientId"] = $request->clientId;
+                    $_SESSION["clientNom"] = trim($request->clientNom);
 
                   }
 
-                  //Enregistrement de l'id client session
-
-            if (empty($_SESSION["clientId"])) 
-                    {
-                       $_SESSION["clientId"] = $request->clientId;
-                       $_SESSION["clientNom"] = trim($request->clientNom);
-                    }
-                    
-            $_SESSION["libelleCmd"] = "VNT#".date("d/m/y")."#".rand(0,100); 
                    return response()->json();
            }
 
@@ -168,7 +184,6 @@ class s_VenteController extends Controller
              return view('pages/succursale/vente/lPrdAchat'); 
           }
 
-
     //Supression de la vente en session
       public function delAchatSuc()
         {
@@ -176,9 +191,15 @@ class s_VenteController extends Controller
             unset($_SESSION['clientId']);
             unset($_SESSION['clientNom']);
 
-            if(isset($_SESSION['idVente']))
+            if(isset($_SESSION['typeVente']))
             {
-                return $_SESSION['idVente'];
+                $tab =[
+                        'idVnt' => $_SESSION['idVnt'],
+                        'type'  => $_SESSION['typeVente'],
+                      ];
+                unset($_SESSION['idVnt']);
+                unset($_SESSION['typeVente']);
+                return json_encode($tab);
             }
             else
             {
@@ -203,54 +224,56 @@ class s_VenteController extends Controller
                 $suc =userHasSucc(Auth::id());
                   if (!empty($_SESSION['achatP']))
                       {
-                          //Generation du matricule de la commande
-                          $matricule = $_SESSION["libelleCmd"]; 
-                          // dd($matricule);
-                          //insertion de la vente
-                          $arrivage = ventes_succursales::create([
-                                      'NumVente'=> $matricule,
+                        //Generation du matricule vente                        
+                          $id = ventes_succursales::max('id') + 1;
+                          $mat = "Vnt".$id.'#'.date('d/m/y');
+                          //creation de la vente
+                            $vente = ventes_succursales::create([
+                                      'NumVente'=> $mat,
                                       'clients_id' => $_SESSION['clientId'],
                                       'dateV' => $request->dateV,
                                       'charge' => setDefault($request->charge,0),
-                                      'description_charge' => setDefault($request->chargeLibelle,"livraison"),
+                                      'description_charge' => setDefault($request->chargeLibelle,""),
                                       'typevente' => setDefault($request->type,"0"),
                                       'succursale_id' =>$suc->id,
                                     ]);
+                          //Intialisation de variable pour les totaux
                                   $prix_vente_total = 0;
                                   $qte = 0;
                                   $cout_achat_total = 0;
                           foreach ($_SESSION['achatP'] as $key => $value)
                               {
+                                //recuperation du stock du prd
+                                  $produit = stock_succursales::where('succursale_id','=', $suc->id)->where('produits_id','=',$value['article'])->first();
 
-                                 $arrayPrdArriv = ["prixvente" => $value['prix'],
-                                                      "qte" => $value['qte'],
-                                              "ventes_succursales_id"  => $arrivage->id,
-                                              "produits_id"  =>$value['article'],
-                                              "tva" => getPrd($value['article'])->tva,
+                                        $prdVnte = ["prixvente" => $value['prix'],
+                                                    "coutAchat"=>$produit->sucCoutAchat,
+                                                          "qte"=> $value['qte'],
+                                            "ventes_succursales_id" => $vente->id,
+                                                "produits_id"  =>$value['article'],
+                                                         "tva" => getPrd($value['article'])->tva,
                                                   ];
                                       //Cumul des valeur pour les totaux
                                         $prix_vente_total += $value['prix']*$value['qte'];
-                                        $cout_achat_total += getPrd($value['article'])->produitPrixFour*$value['qte'];
+                                        $cout_achat_total += $produit->sucCoutAchat*$value['qte'];
                                         $qte += $value['qte'];
 
+
                                       //Enregistrement du produits vendu
-                                      produits_has_ventes_succursales::create($arrayPrdArriv);
+                                      produits_has_ventes_succursales::create($prdVnte);
 
                                       //Verification du type d'operation
                                       // '0 => facture proformat / 1 => Vente'
-                                      if($request->type == '1')
+                                      if($request->type == '1' || $request->type == '2' )
                                       {
 
-                                        //Creation ou mise a jour du stock de ce produit
-                                          $produits = stock_succursales::firstOrCreate(
-                                          ['produits_id' => $value['article'],'succursale_id' =>$suc->id ],
-                                          ['stock_Qte' => 0 ]);
-                                          if( $produits->stock_Qte >= $value['qte'])
+                                        //mise a jour du stock de ce produit
+                                          if( $produit->stock_Qte >= $value['qte'])
                                           {
-                                            $produits->stock_Qte = $produits->stock_Qte - $value['qte'];
+                                            $produit->stock_Qte = $produit->stock_Qte - $value['qte'];
 
                                             //Compare le stock restant au seuil d'alert
-                                              if ($produits->stock_Qte <= getPrd($value['article'])->seuilAlert ) 
+                                              if ($produit->stock_Qte <= getPrd($value['article'])->seuilAlert ) 
                                               {
                                                   //Déclenchement d'alert
 
@@ -258,26 +281,54 @@ class s_VenteController extends Controller
                                           }
                                           else
                                           {
-                                            $produits->stock_Qte = 0;
+                                            $produit->stock_Qte = 0;
                                             //Declenchement d'alert
                                           }
 
-                                            $produits->save();                                      
                                       }
+
+                                  $produit->save(); 
 
 
                               }
 
-                        $arrivage->qte = $qte;
-                        $arrivage->cout_achat_total = $cout_achat_total;
-                        $arrivage->prix_vente_total = $prix_vente_total;
-                        $arrivage->mg_benef_brute = $prix_vente_total - $cout_achat_total;
-                        $arrivage->mg_benef_rel = $prix_vente_total - ($cout_achat_total + $arrivage->charge);
-                        $arrivage->save();
+
+                            if ($request->type != '0') 
+                            {
+                              $clt = clients::find($_SESSION['clientId']);
+                              $clt->statutClt = 1;
+                              $clt->save();
+                            }
+                            //Type = 2  enregistrement du credit contracté
+                            if($request->type == '2')
+                                {
+                                  $creditInfo = [
+                                        'creditEcheance' =>$request->dateEch,
+                                        'creditMontant' =>$request->mntCrd,
+                                        'creditStatut'=>0,
+                                        'creditDate' =>$request->dateV,
+                                        'description' => 'Crédit pour la vente '.$mat,
+                                        'vente_id' =>$vente->id,
+                                        'sucId' =>$suc->id,
+                                                          ];
+
+                                          credits::create($creditInfo);
+                                }
+
+                            $vente->qte = $qte;
+                            $vente->cout_achat_total = $cout_achat_total;
+                            $vente->prix_vente_total = $prix_vente_total;
+                            $vente->mg_benef_brute = $prix_vente_total - $cout_achat_total;
+                            $vente->mg_benef_rel = $prix_vente_total - ($cout_achat_total);
+                            $vente->save();
                       }
-              $_SESSION['idVente'] = $arrivage->id;
-            return $this->delAchatSuc();
-          }
+
+                  //Pour Retour front end     
+                    $_SESSION['typeVente'] = $vente->typevente;
+                    $_SESSION['idVnt'] = $vente->id;
+
+                return $this->delAchatSuc();
+            }
 
 
       //Impression reçu d'une vente
@@ -299,9 +350,8 @@ class s_VenteController extends Controller
                 <div class="col">
                   <h6 class="text-500">Facture à </h6>
                   <h5>'.$cltNom->nom.'</h5>
-                  <p class="fs--1">'.$cltNom->nom.'<br></p>
                   <p class="fs--1">
-                   <a href="tel:'.$cltNom->contact.'">'.$cltNom->contact.'</a>
+                   <b style="color:red"><u>'.$cltNom->contact.'</u></b>
                   </p>
                 </div>
                 <div class="col-sm-auto ml-auto">
@@ -326,7 +376,7 @@ class s_VenteController extends Controller
                         </tr>-->
                         <tr class="alert-success font-weight-bold">
                           <th class="text-sm-right">Montant dû:</th>
-                          <td>'.$vente->prix_vente_total.' '.getMyDevise().'</td>
+                          <td>'.formatPrice($vente->prix_vente_total+$vente->charge).'</td>
                         </tr>
                       </tbody>
                     </table>
@@ -341,8 +391,7 @@ class s_VenteController extends Controller
                     <tr>
                       <th class="border-0">Produit</th>
                       <th class="border-0 text-center">Qte</th>
-                      <th class="border-0 text-center">Prix de vente/ unité</th>
-                      <th class="border-0 text-center">TVA /unité</th>
+                      <th class="border-0 text-center">Prix de vente unitaire</th>
                       <th class="border-0 text-right">Montant Total</th>
                     </tr>
                   </thead>
@@ -355,28 +404,34 @@ class s_VenteController extends Controller
                       </td>
                       <td class="align-middle text-center">
                        '.$prdVnt[$i]->qte.' 
-                        ('.$prdVnt[$i]->unite_mesure.')</td>
+                         '.$prdVnt[$i]->unite_mesure.'</td>
                       <td class="align-middle text-center">
                        '.$prdVnt[$i]->prixvente.' '.getMyDevise().'</td>
-                      <td class="align-middle text-center">
-                       '.$prdVnt[$i]->tva.' '.getMyDevise().'</td>
                       <td class="align-middle text-right">
-                       '.$prdVnt[$i]->qte * $prdVnt[$i]->prixvente.' '.getMyDevise().'
+                       '.formatPrice($prdVnt[$i]->qte * $prdVnt[$i]->prixvente).'
                       </td>
                     </tr>';
                      $somTotal += $prdVnt[$i]->prixvente * $prdVnt[$i]->qte;
                   }
 
       // Calcul de la charges liées à la sorties
-           if ($vente->charge!=null) {$charges = $vente->charge;}
-           else{$charges = 0;}
+           if ($vente->charge!= 0) 
+            {
+              $charges = $vente->charge;
+              $charge_description = $vente->description_charge;
+                    $out= '<tr>
+                                <th class="text-900">'.$charge_description.'</th>
+                                <td class="font-weight-semi-bold">'.
+                                 formatPrice($charges).'
+                                </td>
+                              </tr>';
+
+            }
+           else{$out=''; $charges = 0; }
 
 
-
-      // Calcul du montant total TTC
-         $tva = 0;
-         $ttc = $tva+$charges+$somTotal;
-
+                // Calcul du montant total TTC
+                  $ttc = $charges+$somTotal;
           $output .='</tbody>
                 </table>
               </div>
@@ -387,32 +442,12 @@ class s_VenteController extends Controller
                     <tr>
                       <th class="text-900">Sous-total:</th>
                       <td class="font-weight-semi-bold">
-                        '.$somTotal.' '.getMyDevise().'
+                        '.formatPrice($somTotal).'
                        </td>
-                    </tr>
-
-                    <tr>
-
-                      <th class="text-900">Autres:</th>
-                      <td class="font-weight-semi-bold">'.
-                       $charges.' '.getMyDevise().'
-                      </td>
-                    </tr>
-
-                    <!--<tr>
-                      <th class="text-900">tva 
-                      ('.$tva.'%) : </th>
-                      <td class="font-weight-semi-bold">
-                        '.$tva .' 
-                        '.getMyDevise().'
-                       </td>
-                    </tr>-->
-
-                    
-                   
+                    </tr>'.$out.'               
                     <tr class="border-top text-danger">
                       <th class="text-900">Montant TTC:</th>
-                      <td class="font-weight-semi-bold text-danger"> '.$ttc.' '.getMyDevise().'</td>
+                      <td class="font-weight-semi-bold text-danger"> '.formatPrice($ttc).'</td>
                     </tr>
                   </table>
                 </div>
@@ -429,7 +464,9 @@ class s_VenteController extends Controller
 
             $vente= ventes_succursales::find($request->idVnt);
             $vente->typevente = 1;    // '0 => facture proformat / 1 => Vente'
-
+                    $clt = clients::find($vente->clients_id);
+                    $clt->statutClt = 1;
+                    $clt->save();
                 //Recuperation des produits vendu
                 $prdVnts = produits_has_ventes_succursales::where('ventes_succursales_id','=',$vente->id)->get();
 
@@ -477,7 +514,7 @@ class s_VenteController extends Controller
       public function editVntSuc(Request $request)
       {
         $vente= ventes_succursales::find($request->idV);
-        $clt = getClient($request->idClt);
+        $clt = getClient($vente->clients_id);
 
              $prd = DB::table('produits_has_ventes_succursales')
             ->join('produits', 'produits.id', '=', 'produits_has_ventes_succursales.produits_id')
@@ -497,19 +534,22 @@ class s_VenteController extends Controller
 
           //Soustraction du montant du prd  et upd de la vnt
             $prixVntPrd = $prd->prixvente * $prd->qte;
-            $coutAchaPrd = getPrd($prd->produits_id)->produitPrixFour * $prd->qte;
+            $coutAchaPrd = $prd->coutAchat * $prd->qte;
+
             $vente->cout_achat_total = $vente->cout_achat_total- $coutAchaPrd;
             $vente->prix_vente_total = $vente->prix_vente_total - $prixVntPrd;
 
             $vente->mg_benef_brute = $vente->prix_vente_total - $vente->cout_achat_total;
-            $vente->mg_benef_rel = $vente->prix_vente_total - ($vente->cout_achat_total + $vente->charge);
+            $vente->mg_benef_rel = $vente->prix_vente_total - ($vente->cout_achat_total);
             $vente->qte = $vente->qte- $prd->qte;
 
           //Verification du type de vente ( 0 => facture pro //  1 => vente)
             if ($vente->typevente==1) 
             {
               # Actualisation du stock principale
-                $prdStck = stock_succursales::where('produits_id','=',$prd->produits_id)->first();
+              $prdStck =stock_succursales::
+                                  where('succursale_id','=',$vente->succursale_id)
+                                  ->where('produits_id','=',$prd->produits_id)->first();
                
                 $prdStck->stock_Qte = $prdStck->stock_Qte + $prd->qte;
                 $prdStck->save(); 
@@ -605,9 +645,10 @@ class s_VenteController extends Controller
                       <thead class="bg-200 text-900">
                         <tr>
                           <th class="border-0">Article</th>
+                          <th class="border-0 text-center">Cout d\'achat </th>
                           <th class="border-0 text-center">Prix de vente </th>
                           <th class="border-0 text-center">Qté</th>
-                          <th class="border-0 text-right">Prix Net(Fcfa)</th>
+                          <th class="border-0 text-right">Prix Net</th>
                         
                         </tr>
                       </thead>
@@ -616,6 +657,7 @@ class s_VenteController extends Controller
                      $output.='
                         <tr>
                           <td class="align-middle">'.$OpTion[$i]->produitLibele.'</td>
+                          <td class="text-center">'.$OpTion[$i]->coutAchat.'</td>
                           <td class="text-center">'.$OpTion[$i]->prixvente.'</td>
                           <td class="text-center">'.$OpTion[$i]->qte.'</td>
                           <td class=" text-right">'.$OpTion[$i]->prixvente * $OpTion[$i]->qte .'</td>
@@ -630,14 +672,18 @@ class s_VenteController extends Controller
                     <div class="col-auto">
                       <table class="table table-sm table-borderless fs--1 text-right">';
                     $total = $total+$vente->charge;
+                          if($vente->charge !=0)
+                          {
+                            $output.='
+                                <tr class="">
+                                  <th class="text-900 ">'.$vente->description_charge.' :</th>
+                                  <td class="font-weight-semi-bold">'.formatPrice($vente->charge).'</td>
+                                </tr>';
+                          }
                     $output.='
-                        <tr class="">
-                          <th class="text-900 ">Charge:</th>
-                          <td class="font-weight-semi-bold">'.$vente->charge.'</td>
-                        </tr>
                         <tr class="text-danger">
                           <th class="text-900 text-danger">Total TTC:</th>
-                          <td class="font-weight-semi-bold">'.$total.'</td>
+                          <td class="font-weight-semi-bold">'.formatPrice($total).'</td>
                         </tr>';
                     $output.='    
                       </table>

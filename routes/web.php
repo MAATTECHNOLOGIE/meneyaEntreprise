@@ -337,17 +337,10 @@ Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
         GESTION DES ARRIVAGES
 -----------------------------*/
         //Ajout arrivage
-    Route::get('addArriv','p_ArrivController@addArriv')->name('addArriv');
+    // Route::get('addArriv','p_ArrivController@addArriv')->name('addArriv');
 
        //Enregistre produit arrivage
-    Route::post('saveArrivPrd','p_ArrivController@saveArrivPrd')->name('saveArrivPrd');
-
-/*--------- ------------------------------
-     GESTION DES PRODUITS ET CATEGORIES
-----------------------------------------*/
-  //Ajout de categorie
-    Route::get('ajaxAddCatg','p_ArrivController@ajaxAddCatg')->name('ajaxAddCatg');
-
+    // Route::post('saveArrivPrd','p_ArrivController@saveArrivPrd')->name('saveArrivPrd');
 
 
 

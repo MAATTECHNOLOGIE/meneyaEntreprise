@@ -1,19 +1,4 @@
 
-<div class="card mb-3">
-  <div class="bg-holder d-none d-lg-block bg-card" 
-   style="background-image:url(../assets/img/illustrations/corner-4.png);">
-  </div>
-  <!--/.bg-holder-->
-
-    <div class="card-body">
-      <div class="row">
-        <div class="col-lg-8">
-          <h4 class="mb-0 text-primary"><i class="fas fa-money-bill-wave"></i> Gestion des ventes > Nouvelle vente</h4>
-        </div>
-      </div>
-    </div>
-</div>
-
 
 <div class="container">
     <div class="row">
@@ -60,7 +45,6 @@
                       </div>
                     @endif
                 </div>
-
                  <button class="ml-1 btn btn-outline-primary rounded-capsule mr-1 mb-1 nav-bar-item px-3" id='validClientIdentite' type="button">
                   Suivant <i class="fas fa-angle-right"></i>
                  </button>
@@ -74,11 +58,8 @@
 
                 <div class="form-group">
                   <label for="basic-example">Produit</label>
-                  <select class="selectpicker" id="article" name="article">
-                    <option value="choix">Recherche en cours ...</option>
-
-                  </select>
-
+                     <select class="js-example-data-ajax"  id="article" name="article"> 
+                    </select> 
                 </div>
                 <div class="form-row justify-content-around">
                  <div class="form-group col-6">
@@ -88,7 +69,7 @@
                  </div>
                 <div class="form-group col-4">
                    <label for="quantite">Quantité</label>
-                   <input class="form-control" id="quantite" name="quantite" type="number" placeholder="">
+                   <input class="form-control" id="quantite" name="quantite" type="number" placeholder="" min="1" max="">
                  </div>
                 </div>
 
@@ -148,56 +129,11 @@
 
 </div>
 
+{{-- MODAL AJOUT DE CLIENT  --}}
+  @include('pages/dash/addCltMod')
+{{-- MODAL AJOUT DE CLIENT  --}}
 
-      {{-- modal ajout de client --}}
-              <div class="modal fade" id="modAddClt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Nouveau Client</h5>
-                      <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <form  id="formAddClt" >
-                          <input type="hidden" id="myIdEch" name="idEch" value="">
-                          @csrf
-                            
-                                    <div class="form-row">
-                                      <div class="col-12">
-                                        <div class="form-group">
-                                          <label for="name">Nom & Prénoms</label>
-                                          <input class="form-control" id="name" name="name" type="text" required>
-                                        </div>
-                                      </div>
-                                      <div class="col-12">
-                                        <div class="form-group">
-                                          <label for="montant">Contact</label>
-                                          <input class="form-control " required id="contact" name="contact" type="number" >
-                                        </div>
-                                      </div>
-                                      <div class="col-6">
-                                        <div class="form-group">
-                                          <label for="date">Date </label>
-                                          <input class="form-control datetimepicker" id="date" name="date" type="text" data-options='{"dateFormat":"d/m/Y"}' value="{{ date('d/m/Y') }}">
-                                        </div>
-                                      </div>
-                                      <div class="col-6">
-                                        <div class="form-group">
-                                          <label for="lieu">Lieu </label>
-                                          <input class="form-control " id="lieu" name="lieu" type="text"  value="">
-                                        </div>
-                                      </div>
-                                    </div>
-                      </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal" id="payeModClose" >Fermer</button>
-                      <button class="btn btn-primary btn-sm addClt" type="button">Valider</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-      {{-- modal ajout de client --}}
+
 <script src="{{ asset('assets/js/theme.js') }}"></script>
 
 
@@ -205,18 +141,18 @@
 
 $(function()
 {
-
+    //Disable autocomplete
+      $("input").attr('autocomplete', 'off');
 
         //Fonction permetant de valider avec la touche entré
             $('#quantite').keydown(function(event)
             {
-              if(event.keyCode == 13)
+              if(event.keyCode == 13 || event.keyCode == 9)
                 {
-                  if ($.isNumeric($('#quantite').val())) 
+                 
+                  if ($.isNumeric( $('#quantite').val())) 
                   {
-
                   verifInput();
-
                   }
                   else
                   {
@@ -226,21 +162,11 @@ $(function()
             });
 
 
-        // Passer a la quantite au clic de Entrer 
-            $('#prix').keydown(function(event)
-            {
-              if(event.keyCode == 13)
-                {
-                  $('#quantite').focus();
-                }
-            });
-
-
         //Fonction de verification des entrées 
           function verifInput()
           {
 
-            if($('#article').val() != "choix") 
+            if($('#article').val() != null) 
             {
               if($("#quantite").val() != "")
                 {
@@ -249,17 +175,15 @@ $(function()
                   //recup la qte en stock l'article choisit
                     var selectedPrdQte = $('#article option:selected').attr('qteInStck');
 
-                    var prdPrixFour = $('#article option:selected').attr('prixFour');
+                  var prdPrixFour = $('#article option:selected').attr('prixPrd');
                     var prixSaisi = parseInt($('#prix').val());
-
-
                     if(prixSaisi>=parseInt(prdPrixFour))
                     {
                     $('#prix').attr('class','form-control');
                     if (qte <= parseInt(selectedPrdQte)) 
                       {
                         toastr.options.positionClass = "toast-top-right";
-                        ajaxSaveProduit();
+                        ajaxSaveProduitSuc();
                       }
                       else
                       {
@@ -288,33 +212,14 @@ $(function()
             }
           }
 
-        //Clic sur option select nouveau produit
-          $('#article').change(function()
-          {
-              
-              if($('#article').val() == 'choix')
-              {
-                 toastr.warning('Veuillez choisir un article');
-                $("#formatPrixFour").text('00');             
-
-
-              }
-              else
-              {
-                var prixPrd = $('#article option:selected').attr('prixPrd');
-                var prixFourFormat = $('#article option:selected').attr('prixFourFormat');
-                $("#prix").val(prixPrd);
-                $("#formatPrixFour").text(prixFourFormat);             
-              }
-          })
-
         //Clic sur option select nouveau
           $('#idClient').change(function()
           {
 
             if($('#idClient').val() == 'new')
             {
-               $('#modAddClt').modal('show');
+               // $('#modAddClt').modal('show');
+               $("#modAddClt").modal({ backdrop: 'static', keyboard: false });
             }
           })
 
@@ -338,10 +243,11 @@ $(function()
           $('#validClientIdentite').click(function()
           {
 
-            if($("#idClient").val() != "choix")
+            if($("#idClient").val() != "choix" &&
+               $("#idClient").val() != "new")
               {
                         //Liste des produits
-                          ajaxRecupPrdP();
+                          // ajaxRecupPrdP();
 
                           $('#idClient').attr('class','form-control is-valid');
                           $("#navIdentificationClient").removeClass('active');
@@ -385,11 +291,10 @@ $(function()
 
               .done(function(data) 
                       {
-
                           toastr.success("Client ajouté avec succès");
                           $("#formAddClt").trigger("reset");
                           $('#modAddClt').modal('hide');
-                          $('#sucCont').load('/Addvente');
+                          $('#sucCont').load('Addvente');
 
 
 
@@ -401,7 +306,7 @@ $(function()
                         });
           }
 
-      function ajaxSaveProduit()
+      function ajaxSaveProduitSuc()
           {
             //envoie de la commande dans une requete ajax 
             //enregistrement de la commande en session
@@ -411,7 +316,6 @@ $(function()
                 $.ajax(
                   {
                        method: "POST",
-                      // url: "/ajaxEnregistreProduitAchat",
                       url: "savePrdAchatSuc",
                       data: $('#formulaire').serialize(),
                         dataType: "json",
@@ -419,7 +323,12 @@ $(function()
 
               .done(function(data) 
                       {
-
+                        //Calcul quantite restante du prd 
+                          var qte = parseInt($('#quantite').val());
+                        //recup la qte en stock l'article choisit
+                          var selectedPrdQte = $('#article option:selected').attr('qteInStck');
+                          var qteRst = parseInt(selectedPrdQte)-qte;
+                          $('#article option:selected').attr('qteInStck',qteRst);
                         toastr.success("Article ajouté avec succès  ");
                         var compteur_panier = $('#compteur_panier').text();
                         compteur_panier = parseInt(compteur_panier)+1;
@@ -455,35 +364,7 @@ $(function()
               });
           }
 
-      function ajaxRecupPrdP()
-          {
-            //envoie de la commande dans une requete ajax 
-            //enregistrement de la commande en session
-            //notification du succes d'envoie
-            //initialisation du formulaire
 
-                $.ajax(
-                  {
-                       method: "GET",
-                      url: "ajaxRecupPrdSuc",
-                      data: {idSuc : 'ND'},
-                        dataType: "html",
-                  })
-
-              .done(function(data) 
-                      {
-                        $('#article').html('');
-
-                        $('#article').html(data);
-                        $('#nameSuccu').attr('disabled');
-
-                       })
-              .fail(function(data) 
-              {
-                toastr.error('Veuilez choisir un client');
-
-              });
-          }
 
 
         function articleformClassInit()
@@ -491,6 +372,7 @@ $(function()
           $('#formatPrixFour').text('00');
           $('#prix').val('').attr('class','form-control');
           $('#quantite').val('').attr('class','form-control');  
+          $('#article').html('');  
         };
 
 
@@ -500,7 +382,7 @@ $(function()
             var panier = $('#compteur_panier').text();
             if (parseInt(panier) != 0) 
             {
-            $('#sucCont').load('/lPrdAchat');
+            $('#sucCont').load('lPrdAchat');
 
             }
             else
@@ -514,3 +396,73 @@ $(function()
 </script>
 
 <script src="assets/lib/select2/select2.min.js"></script>
+<script type="text/javascript">
+$(".js-example-data-ajax").select2({
+  ajax: {
+    // url: "https://api.github.com/search/repositories",
+    url: "ajaxRecupPrdSuc",
+    dataType: 'json',
+    delay: 250,
+    data: function (params) {
+      return {
+        q: params.term, // search term
+        page: params.page
+      };
+    },
+    processResults: function (data, params) {
+      // parse the results into the format expected by Select2
+      // since we are using custom formatting functions we do not need to
+      // alter the remote JSON data, except to indicate that infinite
+      // scrolling can be used
+      params.page = params.page || 1;
+
+      return {
+        results: data.items,
+        pagination: {
+          more: (params.page * 30) < data.total_count
+        }
+      };
+    },
+    cache: true
+  },
+  placeholder: 'Recherhe de produits',
+  minimumInputLength: 2,
+  templateResult: formatRepo,
+  templateSelection: formatState
+});
+
+function formatRepo (repo) {
+  if (repo.loading) {
+    return repo.text;
+  }
+
+  var $container = $(
+                  '<div class="media"><a href="#!"><img class="img-fluid" src="'+repo.image+'" alt="" width="56" /></a><div class="media-body position-relative pl-3"><h6 class="fs-0 mb-0">'+repo.libelle+' ( Qte : '+repo.qteInStck+' )<small class="fas fa-check-circle text-primary ml-1" data-toggle="tooltip" data-placement="top" title="Verified" data-fa-transform="shrink-4 down-2"></small></h6><p class="mb-1">Coût : <b>'+repo.prixPrdFormat+'</b> <u></u></p></div></div>'
+  );
+
+  return $container;
+}
+
+function formatState (repo) {
+  // if (!repo.id) {
+  //   return repo.text;
+  // }
+  var baseUrl = repo.image;
+  var $state = $(
+    '<span> <span></span></span>'
+  );
+
+  // Use .text() instead of HTML string concatenation to avoid script injection issues
+  $state.find("span").text(repo.text);
+  if (repo.id != 0) 
+  {
+    $('#article option:selected').attr('prixPrd', repo.prixPrd);
+    $('#article option:selected').attr('prdId', repo.id);
+    $('#article option:selected').attr('qteInStck', repo.qteInStck);
+    $("#prix").val(repo.prixPrd);
+    $("#formatPrixFour").text(repo.prixPrdFormat);
+  }
+
+  return $state;
+};
+</script>

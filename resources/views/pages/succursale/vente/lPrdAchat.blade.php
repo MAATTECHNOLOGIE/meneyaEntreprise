@@ -87,7 +87,7 @@
                     </tr>
                     <tr class="border-top border-2x font-weight-bold text-900">
                       <th>Total TTC </th>
-                      <td class="valeurTTC"> {{ formatPrice($total) }} </td>
+                      <td class="valeurTTC" > {{ formatPrice($total) }} </td>
                     </tr>
                   </tbody></table>
                 </div>
@@ -103,30 +103,27 @@
                     {{-- <label for='retour'>  </label> --}}
                 <button class="btn btn-falcon-danger btn-sm mr-2 fs-1" role="button">
                   Total: 
-                 <span class="valeurTTC"> {{ formatPrice($total) }} </span>
+                 <span class="valeurTTC"  > {{ formatPrice($total) }} </span>
                 </button>
                   </div>
 
                   <div class="form-group col-4">
                     {{-- <label for="exampleFormControlSelect1">Type </label> --}}
                     <select class="form-control" id="type">
-                      <option value="0" typeFacture ='Facture Proformat'>Facture Proformat</option>
-                      <option value="1" typeFacture ="Facture d'achat">Vente</option>
+                      <option value="0" id="proformat" typeFacture ='Facture Proformat'>Facture Proformat
+                      </option>
+                      <option value="1" typeFacture ="Facture d' achat ">
+                      Vente
+                    </option>
+                       <option value="2" typeFacture ="Facture de crédit">
+                         Vente à crédit
+                      </option>
                     </select>
                   </div>
                   <div class="form-group col-2">
                   <button class="btn btn-sm btn-primary fs-1" id="enregistreAchat">Enregistrer
                   </button>
                   </div> 
-              {{-- </div> --}}
-
-
-{{--                   <button class="btn btn-sm btn-primary fs-1" id="enregistreAchat">Enregistrer
-                  </button>
-                   <div class="form-group ">
-                      <label for="idClient">Liste client</label>
-
-                  </div> --}}
             </div>
           </div>
 
@@ -145,6 +142,64 @@
     <!-- ===============================================-->
     <!--    Fin Fichier Facture pour operateur -->
     <!-- ===============================================--> 
+
+              {{-- modal ajout de client --}}
+                      <div class="modal fade" id="modAddCrd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">   Ajout créance
+                              </h5>
+                              <button class="close addCrdClose" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <form  id="formAddCrd" >
+                                  @csrf
+                                    <div class="form-row">
+                                      <div class="col-6">
+                                                <div class="form-group">
+                                                  <label for="cltName">Nom du client</label>
+                                                  <input class="form-control " required id="cltName" name="cltName" value="{{ getClient($_SESSION["clientId"])->nom }}" readonly >
+                                                 
+
+                                                </div>
+                                      </div>
+                                      <div class="col-6">
+                                                <div class="form-group">
+                                                  <label for="montant">Montant</label>
+                                                  <input class="form-control " required id="montantCrd" name="montantCrd" type="number" placeholder="Valeur crédit" value="{{ $total }}" >
+                                                </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                                <div class="col-6">
+                                                  <div class="form-group">
+                                                    <label for="date">Date d'enregistrement</label>
+                                                    <input class="form-control datetimepicker" id="dateCrd" name="dateCrd" type="text" data-options='{"dateFormat":"d/m/Y"}' value="{{ date('d/m/Y') }}">
+                                                  </div>
+                                                </div>
+                                                <div class="col-6">
+                                                  <div class="form-group">
+                                                    <label class="text-danger" for="date">Date Echeance</label>
+                                                    <input class="form-control datetimepicker" id="dateEch" name="dateEch" type="text" data-options='{"dateFormat":"d/m/Y"}' value="">
+                                                  </div>
+                                                </div>
+                                    </div>
+                                   
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button class="btn btn-secondary btn-sm addCrdClose" type="button" data-dismiss="modal"  >Fermer</button>
+                              <button class="btn btn-primary btn-sm addCrd" type="button">Enregistrer</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+              {{-- modal ajout de client --}}
+
+
 
     <script src="{{ asset('assets/js/theme.js') }}"></script>
 
@@ -193,6 +248,7 @@
                          var chargeVal = parseInt($('#chargeVal').val());
                          var sousTotal = parseInt($('#sousTotal').attr('value'));
                          var ttc = chargeVal+sousTotal;
+                         $('#montantCrd').val(ttc); //Input montant du modal 
                          chargeCol.text(chargeVal);
                          valeurTTC.text(ttc);
 
@@ -213,7 +269,57 @@
                   }
         }
 
-    //Enregistrement achat cliquer
+    // Au choix du type de la vente
+    $('#type').change(function()
+    {
+      if($('#type').val() == 2)   //Vente à crédit 
+      {
+        // $('#modAddCrd').modal('show');
+        $('#modAddCrd').modal({ backdrop: 'static', keyboard: false });
+        $('#enregistreAchat').hide();
+        
+        if($("#dateV").val() != '')
+        {
+          $("#dateCrd").val($("#dateV").val());
+        }
+
+
+      }
+    })
+
+    //A la fermeture du modal de creance
+    $('.addCrdClose').click(function()
+    {
+        $('#enregistreAchat').show();
+        $('#type').html('<option value="0" id="proformat" typeFacture ="Facture Proformat">Facture Proformat</option><option value="1" typeFacture ="Facture d\' achat ">Vente</option><option value="2" typeFacture ="Facture de crédit">Vente à crédit</option>');
+    })
+
+      //Ajout credit 
+        $('.addCrd').click(function()
+        {
+              var dateCrd =  $("#dateCrd").val();
+                    if( $('#montantCrd').val() != '')
+                      {
+                         if( $('#dateEch').val() != '')
+                          {
+                                  $("#dateV").val(dateCrd);
+                                  $('#enregistreAchat').click();
+
+                          }
+                          else
+                          {
+                            toastr.error('Champ date Echeance Manquant');
+                          }
+
+                      }
+                      else
+                      {
+                        toastr.error('Champ montant crédit Manquant');
+                      }
+
+        })
+
+
     //Enregistrement achat cliquer
       $('#enregistreAchat').click(function()
         {
@@ -225,6 +331,12 @@
           var chargeLibelle = $('#chargeLibelle').val();
           var type = $('#type').val();
           var date = $('#dateV').val();
+
+          //Si le formulaire de credi a ete rempli
+              var mntCrd = $('#montantCrd').val();
+              var dateEch = $('#dateEch').val();
+          //Fermetture du modal de credit 
+            $('#modAddCrd').modal('hide');
 
           if($('#dateV').val() != "")
           {
@@ -242,17 +354,17 @@
                   $.ajax({
                     url:'saveAchatSuc',
                     method:'GET',
-                    data:{charge:charge,dateV:date,chargeLibelle:chargeLibelle,type:type},
-                    dataType:'text',
+                    data:{charge:charge,dateV:date,chargeLibelle:chargeLibelle,type:type,mntCrd:mntCrd,dateEch:dateEch},
+                    dataType:'json',
                     success:function(data){
                       //Impression de recu
-                        printRecu(parseInt(data)); 
+                        printRecu(parseInt(data.idVnt)); 
                           //mise en atente du mesage de succes pour
                           //pouvoir afficher le recu en chargement
-                        setTimeout(msgSucces, 5000); 
+                        setTimeout(msgSucces, 3000); 
 
                         //Retourner la vue des facture proformat
-                        $("#sucCont").load("s_Vente");
+                        $("#sucCont").load("s_Vente?type="+data.type);
 
                     },
                     error:function(){
@@ -356,8 +468,7 @@
     //Impression du recu
         function printRecu(data)
         {
-       
-               var idVnt = data;              
+         var idVnt = data;              
           $.ajax({
                  url:'recuVntSuc',
                  method:'get',

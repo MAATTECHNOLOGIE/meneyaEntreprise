@@ -38,7 +38,11 @@
             <div class="card-header">
               <div class="row justify-content-between">
                 <div class="col-md-auto">
-                  <h5 class="mb-3 mb-md-0">(@if (!empty($_SESSION['arrivageP'])) {{$_SESSION["arrivageName"] }} &nbsp; <i class='fas fa-angle-double-right'></i> &nbsp;{{ count($_SESSION['arrivageP'])  }} @endif articles)</h5>
+                  <h5 class="mb-3 mb-md-0">
+                    @if($_SESSION['sucId'])
+                    {{ getSuccInfo($_SESSION['sucId'])->succursaleLibelle }}
+                    @endif
+                  </h5>
                 </div>
                 <div class="col-md-auto">
                   <button class="btn btn-sm btn-outline-secondary border-300 mr-2" id="retourArrivage" > 
@@ -65,15 +69,15 @@
                       </tr>
                     </thead>
                     <tbody id="customers">
-                      <?php if (!empty($_SESSION['arrivageP'])){
+                      <?php if (!empty($_SESSION['approvSuc'])){
                         $i=0;
                         $total = 0;
                         $qteT = 0;
-                          foreach ($_SESSION['arrivageP'] as $key => $value)
+                          foreach ($_SESSION['approvSuc'] as $key => $value)
                            {$i +=1; ?>  
                       <tr>
                         <th class="align-middle sort">{{ $i }}</th>
-                        <th class="align-middle sort">{{ $value['article']  }}</th>
+                        <th class="align-middle sort">{{ getPrd($value['article'])->produitLibele  }}</th>
                         <th class="align-middle sort">{{ $value['qte']  }}</th>
                         <th class="align-middle sort">{{ $value['prix']  }}</th>
                         <th class="align-middle no-sort">{{ formatPrice($value['prix']* $value['qte']) }}</th>
@@ -123,7 +127,7 @@
             </div>
           </div>
           <div id="mytoken">
-            <input type="hidden" name="id_succursale" id="idSuc" value="{{ $_SESSION['arrivageid'] }}">
+            <input type="hidden" name="id_succursale" id="idSuc" value="{{ $_SESSION['sucId'] }}">
             @csrf
           </div>
 

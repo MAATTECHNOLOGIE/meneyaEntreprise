@@ -74,12 +74,7 @@
                         </div>
                       </form>
                 </div>
-                
-
-
-
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
-  
+ 
 
   <script type="text/javascript">
     $(function()

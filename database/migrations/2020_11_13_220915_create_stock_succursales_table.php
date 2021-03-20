@@ -20,6 +20,7 @@ class CreateStockSuccursalesTable extends Migration
             $table->foreign('produits_id')->references('id')->on('produits')
                                             ->onDelete('cascade');
             $table->unsignedBigInteger('succursale_id');
+            $table->integer('sucCoutAchat')->nullable();
             $table->foreign('succursale_id')->references('id')->on('succursales')
                                             ->onDelete('cascade');
             $table->timestamps();

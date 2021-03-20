@@ -357,7 +357,7 @@
                            'success'
                           );
                           var token = $('input[name=_token]').val();
-                          $("#sucCont").load("editVntSuc",{idPrd:idPrd,idVnt:idV, _token:token});
+                          $("#sucCont").load("editVntSuc",{idV:idV, _token:token});
                         },
                         error:function(){
                           Swal.fire('Problème de connexion internet');

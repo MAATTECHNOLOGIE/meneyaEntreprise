@@ -15,8 +15,6 @@
 //Helper dees approvisionnements
  include 'approviHelper.php';
 
-//Helper dees Employes
- include 'emplHelper.php';
 
  //Helper dees Clients
  include 'HelperClient.php';

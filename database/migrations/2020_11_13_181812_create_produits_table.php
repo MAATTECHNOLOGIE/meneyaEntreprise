@@ -17,6 +17,7 @@ class CreateProduitsTable extends Migration
             $table->id();
             $table->string('produitMat')->comment('code de l\'article');
             $table->string('produitLibele');
+            $table->string('image')->default('assets/img/illustrations/falcon.png');
             $table->integer('seuilAlert')->default(10);
             $table->integer('produitPrix')->comment('Prix de vente du produit');
             $table->integer('produitPrixFour')->comment('Cout d\' achat du produit');

@@ -7,6 +7,9 @@ use App\Model\credits;
 
 use App\Model\produits;
 use App\Model\versement;
+use App\Model\credits_historiques;
+use App\Model\ventes_succursales;
+use App\Model\vente_principales;
 
 use Auth;
 use Schema;
@@ -42,36 +45,59 @@ class s_CreditController extends Controller
     //Liste credit succursale 
         public function s_credits(Request $request)
             {
-              $suc = userHasSucc(Auth::id());
-              $credits = credits::where('succursale_id','=',$suc->id)->get();
-                    //Recup Clients de  la succursale 
-                $Clt = DB::table('client_entites')
-                    ->join('clients','clients.id','=','client_entites.client_id')
-                    ->select('clients.*', 'clients.id as clientId')
-                    ->where('client_entites.succursale_id','=',Auth::user()->succursale_id)
-                    ->get(); 
-              return view('pages.succursale.vente.s_credit')->with('crds',$credits)->with('Clt',$Clt);
+              //Info pour le paginate
+                  $pagePath =  $request->path();
+                  $perPage = setDefault($request->perPage,25);
+              //Slection des credit liée a la suc
+                $suc = userHasSucc(Auth::id());
+                $clt = allCltSuc($suc->id);
+                $credits = DB::table('credits')
+                    ->join('ventes_succursales','ventes_succursales.id','=','credits.vente_id')
+                    ->select('credits.id as creditId','credits.*', 'ventes_succursales.*')
+                    ->where('credits.sucId','=',$suc->id)
+                    ->orderBy('credits.id', 'desc')
+                    ->paginate($perPage); 
+
+              return view('pages.succursale.vente.s_credit')
+                                        ->with('crds',$credits)
+                                        ->with('Clt',$clt)                 
+                                        ->with('pagePath',$pagePath)
+                                       ->with('perPage',$perPage);
 
             }
     //Payement credit succursale 
         public function s_payCrd(Request $request)
             {
+            $suc = userHasSucc(Auth::id());
+            $idCredit= (int)$request->idCrd;
+            $info = [
+                      'montantPaye' =>$request->mntPaye,
+                      'datePaiement' =>$request->date,
+                      'typepaiement' =>$request->typePaiement,
+                      'credit_id'    =>$request->idCrd,
+                    ];
 
-              $idCredit= (int)$request->idCrd;
-
-              $info = ['montantPaye' =>$request->montant,'datePaiement' =>$request->date,'typePaiement' => $request->typePaiement,'credit_id'=>$idCredit];
-
-              $credit = credit::find($idCredit);
-
-
-             $totalPaye =  getSommeCrdPaye($idCredit) + $request->montant;
-              $histCr = creditHistorique::create($info);
+              $credit = credits::find($idCredit);
+             $totalPaye =  getSommeCrdPaye($idCredit) + $request->mntPaye;
+              $histCr = credits_historiques::create($info);
 
                   if($totalPaye >= $credit->creditMontant )
                       {
-                         
+                          //Actualisation du statut du credit
                           $credit->creditStatut = 'Soldée';
                           $credit->save();
+                          //Actualisation du statut de la vente
+                            if ($suc->id == 1)  //Vente Principal 
+                            {
+                              $vente = vente_principales::find($credit->vente_id);
+                            }
+                            else                //Vente Succursal
+                            {
+                              $vente = ventes_succursales::find($credit->vente_id);
+                            }
+
+                            $vente->typevente = 1;
+                            $vente->save();
                       }
              
               return response()->json();
@@ -82,7 +108,7 @@ class s_CreditController extends Controller
             public function histCrd(Request $request)
               {
                  $idCrd = (int)$request->idCrd;
-                  $hists = creditHistorique::where('credit_id','=',$idCrd)->get();
+                  $hists = credits_historiques::where('credit_id','=',$idCrd)->get();
 
                   if(count($hists) >= 1)
                   {
@@ -101,8 +127,8 @@ class s_CreditController extends Controller
                             {
                             $output.='<tr>
                                 <td class="align-middle text-center">'.$hist->datePaiement.'</td>
-                                <td class="align-middle text-center">'.number_format($hist->montantPaye,0,',','. ').' FCFA</td>
-                                <td class="align-middle text-center">'.$hist->typePaiement.'</td>
+                                <td class="align-middle text-center">'.formatPrice($hist->montantPaye).'</td>
+                                <td class="align-middle text-center">'.$hist->typepaiement.'</td>
                               </tr>';   
                             }
 
@@ -124,16 +150,9 @@ class s_CreditController extends Controller
     //Suprimer une creance
       public function delCrd(Request $request)
 
-      {
-
-          
-          creditHistorique::where('credit_id','=',$request->idCrd)->delete();
-
-            credit::where('id','=',$request->idCrd)->delete();
+      {    
+            credits::where('id','=',$request->idCrd)->delete();
             return response()->json();
-
-            // fournisseur::where('id','=',$request->IdF)->delete();
-
 
       }
 

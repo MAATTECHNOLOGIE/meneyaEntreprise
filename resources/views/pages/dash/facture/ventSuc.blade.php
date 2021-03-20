@@ -14,10 +14,12 @@
                   <img src="{{asset(getLogo())}}" 
                        alt="invoice" width="150">
                 </div>
-                <div class="col text-sm-right mt-3 mt-sm-0">
-                  <h2 class="mb-3" id="typeVente">Facture d'achat</h2>
+                <div class="col text-sm-right mt-sm-0">
+                  <h2 class="">@if(isset($factureTitre)){{ $factureTitre }}
+                              @else <span id="typeVente"></span>@endif
+                  </h2>
                   <h5>{{getEntreprise()}}</h5>
-                  <h5> Meneya<span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span></h5>
+                  <h6> Meneya<span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span></h6>
                   <p class="fs--1 mb-0">
                     {{getLocal()}}<br>
                     {{getContact()}}<br>
@@ -31,20 +33,13 @@
 
             </div>
           </div>
-          <div class="card mb-3">
+          <div class="card ">
             <div class="card-body" id="recu_content">
 
 
             </div>
           </div>
-          <footer>
-            <div class="card-footer bg-light">
-              <p class="fs--1 mb-0"><strong>*Autres:</strong> 
-                
-                <span id="descritptionCharge"></span>
-              </p>
-            </div>
-          </footer>
+
         </div>
       </div>
     </main>

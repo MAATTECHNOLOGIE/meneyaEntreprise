@@ -13,7 +13,7 @@
           </div>
           <div style="display: flex; justify-content: space-around; ">
             <div class="card mb-2 col-lg-5 ">
-              <div class="card-body bg-light overflow-hidden ">
+              {{-- <div class="card-body bg-light overflow-hidden "> --}}
 
                   <ul class="nav nav-pills" id="pill-myTab" role="tablist">
                     <li class="nav-item">
@@ -30,18 +30,18 @@
                     <div class="tab-pane fade show active" id="pill-tab-home" role="tabpanel" aria-labelledby="home-tab">
                           <div class="col-12">
                             <div class="form-group">
-                          <label for="arrivageName">Succursales</label>
-                          @if(empty($_SESSION['arrivageName']))
-                              <select class="form-control" id="arrivageName" name="arrivageName" >
+                          <label for="sucId">Succursales</label>
+                          @if(empty($_SESSION['sucId']))
+                              <select class="form-control" id="sucId" name="sucId" >
                                 @foreach($succursales as $succursale)
-                                <option value="{{ $succursale->id }}" libelle="{{ $succursale->id }}">
+                                <option value="{{ $succursale->id }}" >
                                   {{ $succursale->succursaleLibelle }}
                                 </option>
                                 @endforeach
                               </select>
                               @else
 
-                              <input class="form-control" id="arrivageName" type="text" value="{{ $_SESSION['arrivageName'] }}" readonly>
+                              <input class="form-control" id="sucId" type="text" value="{{ getSuccInfo($_SESSION['sucId'])->succursaleLibelle }}" readonly>
 
                           @endif
                             </div>
@@ -55,43 +55,39 @@
                     <div class="tab-pane fade " id="pill-tab-profile" role="tabpanel" aria-labelledby="profile-tab">
                         <form id="formProduit">
                           {{-- recuperation des valeur arrivage  par id --}}
-                          <input type="hidden" name="arrivageNom" id="arrivageNom" value="">
-                          <input type="hidden" name="arrivageLibelle" id="arrivageid" value="">
-
+                          <input type="hidden" name="sucId" id="mySucId" >
                           
                         @csrf
-
                           <div class="form-group">
                             <label for="basic-example">Produit</label>
-                            <select class="selectpicker" id="inputVal" name="article">
-                              <option value="choix">-- Article --</option>
-                              @foreach($produits as $produit)
-                              <option idduPrd="{{ $produit->id }}" title="{{ $produit->produitPrix }}" coutachat="{{ $produit->produitPrixFour }}" >{{ $produit->produitLibele }}</option>
-                              @endforeach
+                            <select class="" id="inputVal" name="article">
                             </select>
-                            <input type="hidden" name="idArticle" id="produitId" value="">
-                            <input type="hidden" name="coutachat" id="coutachat" value="">
-                          </div>                              
-                                <div class="input-group mb-3  col-12">
-                                  <div class="input-group-prepend"><span class="input-group-text">$ </span></div>
-                                  <input class="form-control" type="number" name="prix" id="prix" aria-label="Prix de l'article">
-                                </div>
-                                <div class="input-group mb-3 col-12">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text">Qte</span>
-                                  </div>
-                                  <input class="form-control"  name="quantite" id="quantite" type="number" aria-label="Quantite" min="1">
-                                </div>
-                                <div class="col-12" style="display: flex;justify-content: flex-end;">
-                                  <button class="btn btn-warning mr-1 mb-1" type="button" 
-                                    id="ajoutProduitArrivage">Ajouter </button> 
-                                </div>
-                          </form>
+                          </div> 
+                 <div class="form-group col-12">
+                   <label for="prix">Prix fournisseur ( vendu à : <span class="badge badge rounded-capsule badge-soft-secondary text-danger" id="formatPrixFour"> 00 </span> )
+                   </label>
+                   <input class="form-control" type="number" name="prix" id="prix" aria-label="Coût d'achat">
+                 </div>
+
+                               
+
+                            <div class="form-row justify-content-center">
+                             <div class="form-group col-5 ">
+                               {{-- <label for="prixV">Quantité</label> --}}
+                              <input class="form-control"  name="quantite" id="quantite" type="number" aria-label="Quantite" min="1" placeholder="Quantité">
+                             </div>
+                            <div class="form-group col-2">
+                                <button class="btn btn-warning mr-1 mb-1" type="button" 
+                                  id="addPrdAprovi">Ajouter 
+                                </button>
+                             </div>
+                            </div>
+              </form>
                                 
    
                   </div>
                   </div>
-              </div>
+              {{-- </div> --}}
             </div>
             <div class="card mb-2 col-lg-4 pt-2">
 
@@ -119,8 +115,8 @@
   <div class="avatar avatar-4xl">
   <div class="avatar-name bg-primary rounded-circle " style="cursor: pointer;">
     <span id="compteur_panier">
-  @if(!empty($_SESSION['arrivageP'])) 
-    {{ count($_SESSION['arrivageP']) }} 
+  @if(!empty($_SESSION['approvSuc'])) 
+    {{ count($_SESSION['approvSuc']) }} 
     @else {{ "00" }} 
     @endif
     </span></div>
@@ -128,7 +124,7 @@
 
 </div>
 <div class="d-flex justify-content-center">
-    <button class="btn btn-warning mr-1 mt-2" type="button" id="listeArrivageProduit">
+    <button class="btn btn-warning mr-1 mt-2" type="button" id="listApprovPrd">
       <span class="fas fa-eye mr-2" data-fa-transform="shrink-2" ></span>
       Consulter listes
     </button>
@@ -148,21 +144,27 @@
     <script src="{{ asset('assets/js/theme.js') }}"></script>
     <script type="text/javascript">
 
-        //Clic sur option select nouveau produit
-          $('#inputVal').change(function()
-          {
+        //Desactiver l'autocomplete 
+          $('input').attr('autocomplete',"off");
+          
+        //Fonction permetant de valider avec la touche entré
+            $('#quantite').keydown(function(event)
+            {
+              if(event.keyCode == 13 || event.keyCode == 9)
+                {
+                  if ($.isNumeric($('#quantite').val())) 
+                  {
+                    $('#addPrdAprovi').click();
+                  }
+                  else
+                  {
+                    toastr.error('Quantité invalide');
+                  }
+                }
+            });
 
-            if($('#inputVal').val() == 'choix')
-            {
-               toastr.error('Veuillez choisir un articles');
-            }
-            else
-            {
-              var selecText = $('#inputVal option:selected').attr('title');
-              $("#prix").val(selecText);
-              
-            }
-          })
+            
+
 
       function ajaxProduitSave()
       {
@@ -177,7 +179,9 @@
                 {
 
                   toastr.success("Article ajouté avec succès  ");
-
+                  var compteur_panier = parseInt($('#compteur_panier').text());
+                 $('#compteur_panier').text(compteur_panier+1)
+                   articleformClassInit();
                  })
         .fail(function(data) 
         {
@@ -203,7 +207,7 @@
 
       function articleformClassInit()
       {
-        // $('#inputVal').val('').attr('class','form-control');
+        $('#inputVal').html('');
         $('#prix').val('').attr('class','form-control');
         $('#quantite').val('').attr('class','form-control');  
       };
@@ -217,14 +221,11 @@
         $('#enregistreArrivage').click(function()
           {
 
-            if($("#arrivageName").val() != "")
+            if($("#sucId").val() != "")
             {
-              $('#arrivageNom').attr('value',$("#arrivageName").val());
-              // $('#arrivageid').attr('value',$("#arrivageName").attr('Cmd'));
-              var selecText = $('#arrivageName option:selected').text(); 
-              $('#arrivageid').attr('value', $.trim(selecText));
+              $('#mySucId').val($("#sucId").val());
 
-              $('#arrivageName').removeClass('is-invalid').addClass('is-valid');
+              $('#sucId').removeClass('is-invalid').addClass('is-valid');
               $("#pill-home-tab").attr('class', 'nav-link');
               $("#pill-tab-home").attr('class', 'tab-pane fade');
 
@@ -233,15 +234,15 @@
             }
             else
               {
-                $('#arrivageName').addClass('is-invalid');
+                $('#sucId').addClass('is-invalid');
               }
 
 
           });
 
-        $('#ajoutProduitArrivage').click(function()
+        $('#addPrdAprovi').click(function()
          {
-          if($('#inputVal').val() != 'choix')
+          if($('#inputVal').val() != null )
           {
             if ($('#prix').val() != "") 
             {
@@ -257,9 +258,6 @@
                 $('#produitId').attr('value',selectedId);
                 $('#coutachat').attr('value',coutachat);
                     ajaxProduitSave();
-                  var compteur_panier = parseInt($('#compteur_panier').text());
-                 $('#compteur_panier').text(compteur_panier+1)
-                   articleformClassInit();
                  
                 }
                 else
@@ -278,6 +276,7 @@
           {
             toastr.error('Produits invalide');
 
+
           }
 
           })
@@ -291,7 +290,7 @@
  Ajax liste de produits ajouter au panier
 -----------------------------------------*/
     // Affiche liste
-     $("#listeArrivageProduit").click(function()
+     $("#listApprovPrd").click(function()
        {
           if (parseInt($('#compteur_panier').text()) >=1) 
             {
@@ -311,4 +310,78 @@
     </script>
 
 <script src="assets/lib/select2/select2.min.js"></script>
+<script type="text/javascript">
+$("#inputVal").select2({
+  ajax: {
+    // url: "https://api.github.com/search/repositories",
+    url: "mbo/ajaxPrdAll",
+    dataType: 'json',
+    delay: 250,
+    data: function (params) {
+      return {
+        q: params.term, // search term
+        page: params.page
+      };
+    },
+    processResults: function (data, params) {
+      // parse the results into the format expected by Select2
+      // since we are using custom formatting functions we do not need to
+      // alter the remote JSON data, except to indicate that infinite
+      // scrolling can be used
+      params.page = params.page || 1;
 
+      return {
+        results: data.items,
+        pagination: {
+          more: (params.page * 30) < data.total_count
+        }
+      };
+    },
+    cache: true
+  },
+  placeholder: 'Recherhe de produits',
+  minimumInputLength: 1,
+  templateResult: formatRepo,
+  templateSelection: formatState
+});
+
+function formatRepo (repo) {
+  if (repo.loading) {
+    return repo.text;
+  }
+
+  var $container = $(
+                  '<div class="media"><a href="#!"><img class="img-fluid" src="'+repo.image+'" alt="" width="56" /></a><div class="media-body position-relative pl-3"><h6 class="fs-0 mb-0">'+repo.libelle+' ( Code : '+repo.matricule+' )<small class="fas fa-check-circle text-primary ml-1" data-toggle="tooltip" data-placement="top" title="Verified" data-fa-transform="shrink-4 down-2"></small></h6><p class="mb-1">Prix de vente : <b>'+repo.prixPrdFormat+'</b> <u></u></p></div></div>'
+  );
+
+  return $container;
+}
+
+function formatState (repo) {
+  // if (!repo.id) {
+  //   return repo.text;
+  // }
+  var baseUrl = repo.image;
+  var $state = $(
+    '<span> <span></span></span>'
+  );
+
+  // Use .text() instead of HTML string concatenation to avoid script injection issues
+  $state.find("span").text(repo.text);
+  if (repo.id != 0) 
+  {
+    $('#article option:selected').attr('prixPrd', repo.prixPrd);
+    $('#article option:selected').attr('coutachat', repo.prixFour);
+    $('#article option:selected').attr('prixPrdFormat', repo.prixPrdFormat);
+    $('#article option:selected').attr('idduPrd', repo.id);
+    $('#article option:selected').attr('qteInStck', repo.qteInStck);
+
+
+    $("#prix").val(repo.prixFour);
+    $('#formatPrixFour').text(repo.prixPrdFormat);
+
+  }
+
+  return $state;
+};
+</script>

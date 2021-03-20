@@ -37,11 +37,14 @@ class p_VersController extends Controller
     // }
 
     //Liste des versement génére
-        public function p_LVer()
+        public function p_LVer(Request $request)
         {
-            $versL = versement::all()->sortByDesc('id');
-           
-            return view('pages.succursale.p_LVer')->with('versL',$versL);
+            $pagePath =  $request->path();
+            $perPage = setDefault($request->perPage,25);
+            $versL=  versement::orderBy('id', 'desc')->paginate($perPage);
+            return view('pages.succursale.p_LVer')->with('versL',$versL)
+                                           ->with('pagePath',$pagePath)
+                                           ->with('perPage',$perPage);
         }
 
     // Generer Rapprot de ventes des succursae
@@ -148,8 +151,8 @@ class p_VersController extends Controller
                               
                               <th scope="col">Libelle Succursale</th>
                               <th scope="col">Vente total </th>
-                              <th scope="col">Marge Brute T.</th>
                               <th scope="col">Frais livraison T.</th>
+                              <th scope="col">Marge Brute T.</th>
                               <th scope="col">Bénéfice Rél T.</th>
                               <th class="white-space-nowrap" scope="col">Actions</th>
                       </tr>
@@ -174,7 +177,7 @@ class p_VersController extends Controller
                                           nomSucVrs="'.readSurc($oneSuc['Idsucu'])->succursaleLibelle.'" 
                                           mntanVrs="'.$oneSuc['bnfRel'].'"mntanVrsFrm="'.formatPrice($oneSuc['bnfRel']).'"
                                           debutVers="'.$debut.'"
-                                          finVers="'.$fin.'">
+                                          finVers="'.$fin2.'">
                                           Reclamer versement
                                           </button>
                                 

@@ -1,7 +1,7 @@
 
 @if(userHasSucc(Auth::id()))
 
-<div class="card mb-3 no-print">
+<div class="card mb-3 no-print enteteSuc">
             <div class="card-header position-relative min-vh-25 mb-7">
               <div class="bg-holder rounded-soft rounded-bottom-0" style="background-image:url(../assets/img/generic/40.jpg);">
               </div>
@@ -18,24 +18,7 @@
                   <h5 class="fs-0 font-weight-normal">
                     Gestionnaire de la succursale <span class="h4 text-primary">{{ $sucInfo->succursaleLibelle }}</span>
                   </h5>
-                  <p class="text-500"></p>
-
-                  <button class="btn btn-falcon-primary btn-sm px-3" 
-                   type="button" id="s_stock">Stock
-                  </button>
-
-                  <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
-                  type="button" id="s_vente">Vente</button>
-
-                  <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
-                  type="button" id="s_client">Client</button>
-
-                  <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
-                  type="button" id="s_credit">Crédit</button>
-
-                  <button class="btn btn-falcon-default active btn-sm px-3 ml-2" 
-                  type="button" id="s_stats">Statistique</button>
-
+                
                   <hr class="border-dashed my-4 d-lg-none" />
                 </div>
                 <div class="col pl-2 pl-lg-3">
@@ -62,6 +45,40 @@
             </div>
 </div>
 
+          <div class="card mb-3 no-print">
+            <div class="card-body">
+              <div class="row justify-content-center align-items-center">
+                <div class="col-md">
+                  <a href='/appSuc' class="mb-0 text-primary h4"> <i class="fas fa-bars mr-3"></i>Menu</a>
+
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-falcon-primary btn-sm px-3" 
+                   type="button" id="s_stock">Mon Stocks
+                  </button>  
+                </div>
+                <div class="col-2">
+  
+                    <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
+                  type="button" id="s_vente">Mes Ventes</button>                
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
+                  type="button" id="s_client">Mes Clients</button>     
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-falcon-primary btn-sm px-3 ml-2" 
+                  type="button" id="s_credit">Gestion Crédit</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-falcon-default active btn-sm px-3 ml-2" 
+                  type="button" id="s_stats">Statistique</button>  
+                </div>
+       
+
+              </div>
+            </div>
+          </div>
 
 <div id="sucCont">
   {{-- verification si Stock non vide --}}
@@ -76,9 +93,9 @@
                 
                 <div class="col-auto">
                   <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-chart-pie mr-1 text-900 "></i>Catégorie de produits : 
-                    {{ $stockSuccursales->count('produits_id') }} </button>
-                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-sort-numeric-up mr-1 text-900 "></i>Qté :{{ number_format($stockSuccursales->sum('stock_Qte'),0,',','. ') }}  produits</button>
-                  <button class="btn btn-falcon-danger btn-sm" role="button"><i class="fas fa-money-check-alt mr-1 text-900"></i> Montant : &nbsp; {{number_format( getPrixPrdInStockSuc($stockSuccursales[0]->succursale_id),0,',',' .') }}  FCFA</button>
+                    {{ formatQte($stockSuccursales->count('produits_id')) }} </button>
+                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-sort-numeric-up mr-1 text-900 "></i>Qté :{{ formatQte($stockSuccursales->sum('stock_Qte')) }}  produits</button>
+                  <button class="btn btn-falcon-danger btn-sm" role="button"><i class="fas fa-money-check-alt mr-1 text-900"></i> Montant : &nbsp; {{ formatPrice(getPrixPrdInStockSuc($stockSuccursales[0]->succursale_id)) }}</button>
                   {{-- <button class="btn btn-falcon-primary btn-sm" role="button"></button> --}}
                 </div>
               </div>
@@ -114,6 +131,9 @@
                     @if(!$stockSuccursales->isEmpty())
                    <tbody id="customers">
                     @foreach($stockSuccursales as $stockProduit)
+                      @php
+                        $prd = getPrd($stockProduit->produits_id)
+                      @endphp
                       <tr class="{{ produitManquant($stockProduit->stock_Qte) }}">
                         <td class="align-middle no-sort pr-3">
                           <div class="custom-control custom-checkbox">
@@ -122,19 +142,19 @@
                           </div>
                         </td>
                           <td class="align-middle sort">
-                            {{ recupInfoProduitSuccu($stockProduit->produits_id)->produitMat }}
+                            {{ $prd->produitMat }}
                           </td>
                           <td class="align-middle sort">
-                            {{ recupInfoProduitSuccu($stockProduit->produits_id)->produitLibele }}
+                            {{ $prd->produitLibele }}
                           </td>
                           <td class="align-middle sort">
                             {{ $stockProduit->stock_Qte }} 
                           </td>
                           <td class="align-middle sort">
-                            {{ recupInfoProduitSuccu($stockProduit->produits_id)->produitPrix}}
+                            {{$stockProduit->sucCoutAchat}}
                           </td>
                           <th class="align-middle sort">
-                            {{ $stockProduit->stock_Qte * recupInfoProduitSuccu($stockProduit->produits_id)->produitPrix}}  Fcfa
+                            {{ formatPrice($stockProduit->stock_Qte * $stockProduit->sucCoutAchat)}}
                           </th>
                       </tr>
                     @endforeach
@@ -144,13 +164,7 @@
               </div>
             </div>
           </div>
-                          <div class="col-auto d-flex justify-content-center">
-                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-chart-pie mr-1 text-900 "></i>Catégorie de produits : 
-                    {{ $stockSuccursales->count('produits_id') }} </button>
-                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-sort-numeric-up mr-1 text-900 "></i>Qté :{{ number_format($stockSuccursales->sum('stock_Qte'),0,',','. ') }}  produits</button>
-                  <button class="btn btn-falcon-danger btn-sm" role="button"><i class="fas fa-money-check-alt mr-1 text-900"></i> Montant : &nbsp; {{number_format( getPrixPrdInStockSuc($stockSuccursales[0]->succursale_id),0,',',' .') }}  FCFA</button>
 
-                </div>
       @else
 
 <div class="alert alert-danger text-center h5">
@@ -178,30 +192,44 @@ $(function()
     // Ventes
      $("#s_vente").click(function(){
       $('#sucCont').load('/s_Vente');
+      hideEntete();
+
 
      });
 
      //New Vente
      $("#Addvente").click(function(){
       $('#sucCont').load('/Addvente');
+      hideEntete();
+
      });
 
 
     // Clients
      $("#s_client").click(function(){
-      $('#sucCont').load('/s_Client');
+      $('#sucCont').load('/mbo/s_Client');
+      hideEntete();
+
      });
 
     // Crédits
      $("#s_credit").click(function(){
        $('#sucCont').load('/s_credits');
+      hideEntete();
+
      });
 
     // Statis
      $("#s_stats").click(function(){
        $('#sucCont').load('/s_stats');
+      hideEntete();
+
      });
 
+function hideEntete()
+{
+  $('.enteteSuc').hide();
+}
 
 })
 </script>
