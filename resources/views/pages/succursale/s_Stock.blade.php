@@ -56,10 +56,10 @@
                 <div class="col-auto">
                   <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-chart-pie mr-1 text-900 "></i>Catégorie de produits : 
                     {{ $stockSuccursales->count('produits_id') }} </button>
-                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-sort-numeric-up mr-1 text-900 "></i>Qté :{{ number_format($stockSuccursales->sum('stock_Qte'),0,',','. ') }}  produits</button>
+                  <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> <i class="fas fa-sort-numeric-up mr-1 text-900 "></i>Qté :{{formatQte($stockSuccursales->sum('stock_Qte'))}}  produits</button>
                   <button class="btn btn-falcon-danger btn-sm" role="button">
                     <i class="fas fa-money-check-alt mr-1 text-900"></i>Montant : &nbsp; 
-                    {{number_format( getPrixPrdInStockSuc($stockSuccursales[0]->succursale_id),0,',',' .') }}  FCFA</button>
+                    {{formatPrice(getPrixPrdInStockSuc($stockSuccursales[0]->succursale_id))}}  </button>
                   {{-- <button class="btn btn-falcon-primary btn-sm" role="button"></button> --}}
                 </div>
               </div>
@@ -95,6 +95,9 @@
                     @if(!$stockSuccursales->isEmpty())
                    <tbody id="customers">
                     @foreach($stockSuccursales as $stockProduit)
+                      @php
+                        $prd = getPrd($stockProduit->produits_id)
+                      @endphp
                       <tr 
                       @if($stockProduit->stock_Qte > getSeuilPrd($stockProduit->produits_id))
                         class="h6"
@@ -108,20 +111,22 @@
                             <label class="custom-control-label" for="checkbox-bulk-customers-select"></label>
                           </div>
                         </td>
+               
                           <td class="align-middle sort">
-                            {{ recupInfoProduitSuccu($stockProduit->produits_id)->produitMat }}
+                           {{ $prd->produitMat  }}
                           </td>
                           <td class="align-middle sort">
-                            {{ recupInfoProduitSuccu($stockProduit->produits_id)->produitLibele }}
+                            {{ $prd->produitLibele }}
                           </td>
                           <td class="align-middle sort">
                             {{ formatQte($stockProduit->stock_Qte) }} 
                           </td>
                           <td class="align-middle sort">
-                            {{formatPrice( recupInfoProduitSuccu($stockProduit->produits_id)->produitPrix)}}
+                            {{formatPrice( $stockProduit->sucCoutAchat)}}
                           </td>
                           <th class="align-middle sort">
-                            {{ formatPrice($stockProduit->stock_Qte * recupInfoProduitSuccu($stockProduit->produits_id)->produitPrix)}}
+                            {{ formatPrice($stockProduit->sucCoutAchat * $stockProduit->stock_Qte )
+                            }}
                           </th>
                       </tr>
                     @endforeach

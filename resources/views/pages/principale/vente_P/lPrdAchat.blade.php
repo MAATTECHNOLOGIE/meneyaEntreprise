@@ -216,7 +216,6 @@
         }
 
     //Enregistrement achat cliquer
-    //Enregistrement achat cliquer
       $('#enregistreAchat').click(function()
         {
         //Affectation au recu 
@@ -290,6 +289,7 @@
 
           delAchat();
         })
+
 
     //Supression du panier
         function delAchat()

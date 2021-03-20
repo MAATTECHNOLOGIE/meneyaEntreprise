@@ -1,12 +1,12 @@
 <?php
   use App\Model\credit;
-use App\Model\creditHistorique;
+use App\Model\credits_historiques;
 
 if(!function_exists('getSommeCrdPaye'))
 {
 	function getSommeCrdPaye($idCrd)
 	{
- 		 $histPaiement = creditHistorique::where('credit_id','=',$idCrd)->sum('montantPaye');
+ 		 $histPaiement = credits_historiques::where('credit_id','=',$idCrd)->sum('montantPaye');
  		return $histPaiement;
 
 	}

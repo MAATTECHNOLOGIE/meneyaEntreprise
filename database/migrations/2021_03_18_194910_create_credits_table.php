@@ -20,10 +20,11 @@ class CreateCreditsTable extends Migration
             $table->string('creditStatut');
             $table->string('creditDate');
             $table->string('description');
-            $table->unsignedBigInteger('factureavoir_id');
-            $table->foreign('factureavoir_id')->references('id')->on('factureavoirs')
+            $table->string('vente_id');
+            $table->unsignedBigInteger('sucId');
+            $table->foreign('sucId')->references('id')
+                            ->on('succursales')
                             ->onDelete('cascade');
-
             $table->timestamps();
         });
     }

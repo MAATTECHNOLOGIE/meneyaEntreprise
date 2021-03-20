@@ -22,15 +22,15 @@ if(!function_exists('prdTotalP'))
 	}
 }
 
-if(!function_exists('venteTotalS'))
-{
-	function prdTotalS($id_suc)
-	{
+// if(!function_exists('venteTotalS'))
+// {
+// 	function prdTotalS($id_suc)
+// 	{
 		
-		$prdT = DB::table('produits')->get();
-		return $prdT;
-	}
-}
+// 		$prdT = DB::table('produits')->get();
+// 		return $prdT;
+// 	}
+// }
 
 //Donne la valeur $default a une variable  si elle est  vide
 if(!function_exists('setDefault'))

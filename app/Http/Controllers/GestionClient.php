@@ -31,9 +31,6 @@ class GestionClient extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-
-
-
     // fonction de validation
 
         protected function validator(array $data)
@@ -76,80 +73,118 @@ class GestionClient extends Controller
           }
 
 
-    // //Affiche liste des client de succ
+    //Affiche liste des clients
 
-    //     public function s_Client()
-    //         {
-
-    //                 //Recup Clients de  la succursale 
-    //             $clts = DB::table('client_entites')
-    //                 ->join('clients','clients.id','=','client_entites.client_id')
-    //                 ->select('clients.*', 'clients.id as clientId')
-    //                 ->where('client_entites.succursale_id','=',Auth::user()->succursale_id)
-    //                 ->get();  
-    //             return view('pages.succursale.vente.s_Client')->with('clts',$clts);
-    //         }
-    // //Requete ajax de validation d'ajout de client
-    
-
-
-    // //Recup liste des achat d'un client
-    //     public function listAchatClt(Request $request)
-    //     {
-    //         $listeAch = ventes_succursale::where('succursale_id','=',Auth::user()->succursale_id)
-    //                                     ->where('client_id','=',$request->idClt)->get();
-    //         // Détails de la vente 
-    //             $total= 0;
-    //          $output ='';
-    //          $output.='
-    //             <div class="table-responsive fs--1">
-    //                 <table class="table table-striped border-bottom">
-    //                   <thead class="bg-200 text-900">
-    //                     <tr>
-    //                       <th class="border-0">Client</th>
-    //                       <th class="border-0 text-center">Coût </th>
-    //                       <th class="border-0 text-center">Qté Prd</th>
-    //                       <th class="border-0 text-right">Date</th>
-    //                     </tr>
-    //                   </thead>
-    //                   <tbody>';
-    //                 for ($i=0; $i < count($listeAch) ; $i++){
-    //                  $output.='
-    //                     <tr>
-    //                       <td class="align-middle">'.getClient($listeAch[$i]->client_id)->nom.'</td>
-    //                       <td class="text-center">'.$listeAch[$i]->prix.'</td>
-    //                       <td class="text-center">'.$listeAch[$i]->qte.'</td>
-    //                       <td class=" text-right">'.$listeAch[$i]->dateV.'</td>
-    //                     </tr>';
-    //                     $total += $listeAch[$i]->prix; 
-    //                  }
-    //             $output.='
-    //                   </tbody>
-    //                 </table>
-    //               </div>
-    //               <div class="row no-gutters justify-content-end">
-    //                 <div class="col-auto">
-    //                   <table class="table table-sm table-borderless fs--1 text-right">';
-    //                 // $total = 0;  
-    //                 // for ($i=0; $i < count($listeAch) ; $i++){  
-    //                 //     $total = $total+$listeAch[$i]->montant;
-    //                 //  }
-    //                 $output.='
-    //                     <tr class="text-danger">
-    //                       <th class="text-900 text-danger">Total(Fcfa):</th>
-    //                       <td class="font-weight-semi-bold">'.$total.'</td>
-    //                     </tr>';
-    //                 $output.='    
-    //                   </table>
-    //                 </div>
-    //               </div>
-    //          ';
-    //          // dd($output);
-    //          return $output;
+        public function listClt(Request $request)
+            {
+                //Recuperation valeur soumises
+                    $pagePath =  $request->path();
+                    $perPage = setDefault($request->perPage,25);
+                    $suc = userHasSucc(Auth::id());
+                //Recup Clients de  la succursale 
+                $clts = DB::table('clients')
+                    ->join('succursale_has_clients','clients.id','=','succursale_has_clients.clients_id')
+                    ->select('clients.*', 'clients.id as clientId')
+                ->where('succursale_has_clients.succursale_id','=',$suc->id)
+                ->where('clients.statutClt','=',1)
+                    ->orderBy('id', 'desc')->paginate($perPage);
 
 
-    //     }
-    
+                return view('pages.succursale.vente.s_Client')
+                                            ->with('clts',$clts)
+                                            ->with('pagePath',$pagePath)
+                                            ->with('perPage',$perPage);
+            }
+
+    //Recup liste des achat d'un client
+        public function listAchatClt(Request $request)
+        {
+            $suc = userHasSucc(Auth::id());
+                if ($suc->id == 1) 
+                {
+                    $listeAch = vente_principales::
+                            where('clients_id','=',$request->idClt)
+                            ->orderBy('id', 'desc')
+                            ->get(); 
+                }
+                else
+                {
+                    $listeAch = ventes_succursales::
+                            where('succursale_id','=',$suc->id)
+                            ->where('clients_id','=',$request->idClt)
+                            ->orderBy('id', 'desc')
+                            ->get(); 
+                }
+
+
+            // Détails de la vente 
+                $totalVnt= 0;
+                $totalCou=0;
+             $output ='';
+             $output.='
+                <div class="table-responsive fs--1">
+                    <table class="table table-striped border-bottom">
+                      <thead class="bg-200 text-900">
+                        <tr>
+                          <th class="border-0">N° vente</th>
+                          <th class="border-0 text-center">Coût </th>
+                          <th class="border-0 text-center">Qté Prd</th>
+                          <th class="border-0 text-right">Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>';
+                      foreach ($listeAch as $achat) {
+                     $output.='
+                        <tr>
+                          <td class="align-middle">'.$achat->NumVente.'</td>
+                      <td class="text-center text-danger">'.formatPrice($achat->prix_vente_total).'</td>
+                          <td class="text-center">'.$achat->qte.'</td>
+                          <td class=" text-right">'.$achat->dateV.'</td>
+                        </tr>';
+                        $totalVnt += $achat->prix_vente_total; 
+                        $totalCou += $achat->cout_achat_total; 
+                     }
+                $output.='
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="row no-gutters justify-content-end">
+                    <div class="col-auto">
+                      <table class="table table-sm table-borderless fs--1 text-right">';
+
+                    $output.='
+                        <tr >
+                          <th class=" text-primary">Total Achat:</th>
+                          <td class="font-weight-semi-bold">'.formatPrice($totalVnt).'</td>
+                        </tr>
+                        <tr class="text-danger">
+                          <th class=" text-danger"><b>Total Bénéf:</b></th>
+                          <td class="font-weight-semi-bold">'.formatPrice($totalVnt - $totalCou).'</td>
+                        </tr>
+                        ';
+                    $output.='    
+                      </table>
+                    </div>
+                  </div>
+             ';
+             // dd($output);
+             return $output;
+
+
+        }
+
+
+    //Modifier un client un client et ses ventes
+        public function UpdClt(Request $request)
+        {
+
+            $tab = ['nom' =>$request->name,'contact'=>$request->contact,'lieu'=>$request->lieu,'date'=>$request->date];
+             clients::where('id','=',$request->idClt)->update($tab);
+
+            return response()->json();
+        }
+
+
     // //Suprimer un client et ses ventes
     //     public function delClt(Request $request)
     //     {

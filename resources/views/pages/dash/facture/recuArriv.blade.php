@@ -15,9 +15,9 @@
                        alt="invoice" width="150">
                 </div>
                 <div class="col text-sm-right mt-3 mt-sm-0">
-                  <h2 class="mb-3" id="typeVente">Facture d'approvisionnement</h2>
+                  <h2 class="mb-3" id="typeVente">Facture </h2>
                   <h5>{{getEntreprise()}}</h5>
-                  <h5> Meneya<span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span></h5>
+{{--                   <h5> Meneya<span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span></h5> --}}
                   <p class="fs--1 mb-0">
                     {{getLocal()}}<br>
                     {{getContact()}}<br>
@@ -31,19 +31,22 @@
 
             </div>
           </div>
-          <div class="card mb-3">
+          <div class="card ">
+            <div class="d-flex justify-content-center">
+                      <u class="text-900 h5"><i class="fas fa-shopping-cart"></i> Reçu d'approvisionnement </u>
+                    </div>
             <div class="card-body" id="recu_content">
 
 
             </div>
           </div>
           <footer>
-            <div class="card-footer bg-light">
+{{--             <div class="card-footer bg-light">
               <p class="fs--1 mb-0"><strong>*Autres:</strong> 
                 
                 <span id="descritptionCharge"></span>
               </p>
-            </div>
+            </div> --}}
           </footer>
         </div>
       </div>

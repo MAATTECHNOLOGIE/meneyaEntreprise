@@ -1,5 +1,5 @@
-{{-- donner cet ID id="loaderContent"  au <div> parent du <div> dont <table> est enfant --}}
-{{-- SUIVRE LES ETAPES DE PAGINATION DEFINIT DANS LE FICHIER paginatation.txt --}}
+
+{{-- SUIVRE LES ETAPES DE PAGINATION DEFINIT DANS LE FICHIER pagination.txt --}}
 
                 <div class="col-3">
                       <label>N° de page</label>
@@ -84,6 +84,8 @@
   </div>
 </div>
 
+{{-- HIDDEN NECESSAIRE POUR RECUPERATION DE DONNE --}}
+<input type="hidden" id="pagePath" value="{{ $pagePath }}">
 
 
  <script src="{{ asset('assets/js/theme.js') }}"></script>
@@ -94,10 +96,15 @@
 <script type="text/javascript">
     $(function()
     {
+      //VARIABLE GLOBAL (url de la page en cour)
+       var pagePath = $('#pagePath').val();
+        //Conteneur a loader (id =1 obligatoire pour la Principal)
+         @if (userHasSucc(Auth::id())->id == 1)
+         var conteneur = $('#main_content');
+          @else
+         var conteneur = $('#sucCont');
+         @endif
 
-
-      // Code pour enlever le paginate de JS
-          $('.mytable .table-responsive').next().hide();
 
       //Action des bouton paginate de Laravel
         $('.page-item > .page-link').click(function()
@@ -108,8 +115,9 @@
             {
               var perPage = $('#perPage').val();
               var page = $('#lastPrd').val();
+              var urlCible = pagePath+'?page='+valeur+'&idPage='+page+'&perPage='+perPage;
               $('#loaderContent').html($('.loadModBody').html());
-            $('#main_content').load('mbo/allPrd?page='+valeur+'&idPage='+page+'&perPage='+perPage);
+            conteneur.load(urlCible);
       
             }
         });
@@ -124,8 +132,9 @@
             {
               var perPage = $('#perPage').val();
               var page = $('#lastPrd').val();
+              var urlCible = pagePath+'?page='+valeur+'&idPage='+page+'&perPage='+perPage;
                $('#loaderContent').html($('.loadModBody').html());
-            $('#main_content').load('mbo/allPrd?page='+valeur+'&idPage='+page+'&perPage='+perPage);
+            conteneur.load(urlCible);
       
             }
  
@@ -138,7 +147,8 @@
   {
     var perPage = $('#perPage').val();
     $('#loaderContent').html($('.loadModBody').html());
-    $('#main_content').load('mbo/allPrd?perPage='+perPage);
+    var urlCible =pagePath+'?perPage='+perPage;
+    conteneur.load(urlCible);
   })
 
 

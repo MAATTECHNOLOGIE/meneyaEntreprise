@@ -1,11 +1,4 @@
-<div class="card mb-3 no-print">
-  <div class="bg-holder d-none d-lg-block bg-card" 
-   style="background-image:url(../assets/img/illustrations/corner-4.png);">
-  </div>
-  <!--/.bg-holder-->
 
-
-</div>
           <div class="card mb-3 no-print">
             <div class="card-body">
               <div class="row justify-content-between align-items-center">
@@ -47,22 +40,17 @@
           <div class="card mb-3  no-print">
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
+                    @include('pages/dash/pagnMod')
 
-                <div class="col-8 col-sm-auto ml-auto text-right pl-0">
-
-                  <div id="dashboard-actions">
-                   
-  
-                  </div>
-                </div>
               </div>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0" id="loaderContent">
               <div class="falcon-data-table">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":true,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class=" mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":true,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-left sort">N° </th>
+                      <th class="align-left sort">Code </th>
                       <th class="align-middle sort ">Date </th>
                       <th class="align-middle sort" >Client</th>
                       <th class="align-middle sort" >Qte article</th>
@@ -76,7 +64,12 @@
                   <tbody id="orders">
                     @foreach($ventes as $vente)
                       <tr class="fs-0">
-                          <th class="align-left sort">{{ $loop->iteration }}</th>
+                          <th class="align-left sort">
+                            {{ $loop->iteration }}
+                          </th>
+                          <th class="align-left sort">
+                            {{ $vente->NumVente }}
+                          </th>
                           <th class="align-middle sort  ">{{ $vente->dateV }}</th>
                           <th class="align-middle sort" >
                             {{ getClient($vente->clients_id)->nom}}
@@ -112,14 +105,18 @@
                   @else
                   @endif
                 </table>
+                  <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                         {{ $ventes->links() }}
+                     </div>
               </div>
             </div>
           </div>
 
-
     <!-- ===============================================-->
     <!--    MODALS-->
     <!-- ===============================================-->
+
+
 
 <!-- Button trigger modal-->
 
@@ -151,21 +148,19 @@
     <!--    JavaScripts-->
     <!-- ===============================================-->
 
-
-
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
-
     <script type="text/javascript">
       $(function()
       {
-    //Au choix du type
-      $('#type').change(function()
-      {
+        // Faire disparaitre les paginate de Javascript
+          $(".mytable").parent().next().hide();
+        //Au choix du type
+          $('#type').change(function()
+          {
 
-        var token = $('input[name=_token]').val();
-        var type = $('#type').val();
-        $('#sucCont').load('s_Vente',{type:type,_token:token});
-      })
+            var token = $('input[name=_token]').val();
+            var type = $('#type').val();
+            $('#sucCont').load('s_Vente',{type:type,_token:token});
+          })
 
       //Scroll l'affichage a la page charge
         scrollContent();

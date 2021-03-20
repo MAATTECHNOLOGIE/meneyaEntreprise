@@ -82,6 +82,7 @@
                 </form>
                 <div class="modal-footer">
                   <button class="btn btn-secondary btn-sm btnClse" type="button" data-dismiss="modal">Fermer</button>
+
                   <button class="btn btn-primary btn-sm" id="addProdBtn" type="button">Enregistrer</button>
                 </div>
               </div>

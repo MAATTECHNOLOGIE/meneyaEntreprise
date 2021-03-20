@@ -99,7 +99,45 @@ class produitsControl extends Controller
 	    	return response()->json();
 	    }
 
+   // ****************************************
+    //       TEXT DE REUCPERATION IN SELECT2
+    // ****************************************
+          public function ajaxPrdAll(Request $request)
+          {
+            $search = htmlentities($request->q);
+            $search = htmlspecialchars($search);
+            $produits = DB::table('produits')
+                ->select('produits.*')
+                ->where('produits.produitLibele','LIKE','%'.$search.'%')
+                ->get();
+                $data = array();
+                foreach ($produits as  $produit) 
+                {
+                  if ($produit->image =="") 
+                  {
+                    $produit->image = "assets/img/illustrations/falcon.png";
+                  }
+                  $data[] = array(
+                          "id" => $produit->id,
+                        "tva" =>$produit->tva,
+                          "libelle" => $produit->produitLibele,
+                          "text" => $produit->produitLibele,
+                          "prixPrd" =>$produit->produitPrix ,
+                          "prixFour" =>$produit->produitPrixFour,
+                          "matricule" =>$produit->produitMat,
+                        "prixPrdFormat" =>formatPrice($produit->produitPrix),
+                        "prixFourFormat" =>formatPrice($produit->produitPrixFour),
+                        'image' =>$produit->image,
+                      );
 
+                }
+
+                $tab = ["total_count" => 1,"incomplete_results" => false,'items'=>$data];
+
+
+             echo json_encode($tab);
+             exit();
+          }
 
 
 

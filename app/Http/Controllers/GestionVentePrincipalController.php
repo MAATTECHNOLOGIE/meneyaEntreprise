@@ -166,40 +166,83 @@ class GestionVentePrincipalController extends Controller
              return view('pages/principale/vente_P/lPrdAchat'); 
           }
 
-    //Recuperation des prds
-      public function ajaxRecupPrdP( Request $request)
-        {
-            // selection des produits du stock de la succursales 
+    // ****************************************
+    //       TEXT DE REUCPERATION IN SELECT2
+    // ****************************************
+          public function ajaxRecupPrdP(Request $request)
+          {
+            $search = htmlentities($request->q);
+            $search = htmlspecialchars($search);
             $produits = DB::table('stock_principales')
                 ->join('produits', 'produits.id', '=', 'stock_principales.produits_id')
                 ->select('produits.*','produits.id as prdId','stock_principales.stock_Qte as qte')
                 ->where('stock_Qte','>=',1)
+                ->where('produits.produitLibele','LIKE','%'.$search.'%')
                 ->get();
-                // dd($produits);
-                $outputDetail = "";
-                    if (count($produits)!= 0) 
-                    {
-                       $outputDetail.=' <option value="choix">-- Articles --</option>';
-                      foreach($produits as $produit)
-                      {
-                      $outputDetail.=' <option 
-                            prixPrd="'.$produit->produitPrix.'" 
-                            prixFour="'.$produit->produitPrixFour.'"
-                            prixFourFormat="'.formatPrice($produit->produitPrixFour).'"
-                            value="'.$produit->prdId.'" 
-                            qteInStck="'.isInSession('achatP','article',$produit->prdId,$produit->qte).'" >
-                      '.$produit->produitLibele.'</option>';
-                      }
-                    }
-                    else
-                    {
-                       $outputDetail.=' <option>Stock Vide</option>';
-                    }
+                $data = array();
+                foreach ($produits as  $produit) 
+                {
+                  if ($produit->image =="") 
+                  {
+                    $produit->image = "assets/img/illustrations/falcon.png";
+                  }
+                  $data[] = array(
+                          "id" => $produit->prdId,
+                        "node_id" =>'node'.$produit->prdId,
+                          "libelle" => $produit->produitLibele,
+                          "text" => $produit->produitLibele,
+                          "prixPrd" =>$produit->produitPrix ,
+                          "prixFour" =>$produit->produitPrixFour ,
+                        "prixPrdFormat" =>formatPrice($produit->produitPrix),
+                        "prixFourFormat" =>formatPrice($produit->produitPrixFour),
+                        "qteInStck" => isInSession('achatP','article',$produit->prdId,$produit->qte),
+                        'image' =>$produit->image,
+                        "name" =>"meneyaEntreprise".$produit->prdId,
+                      );
+
+                }
+
+                $tab = ["total_count" => 1,"incomplete_results" => false,'items'=>$data];
+
+
+             echo json_encode($tab);
+             exit();
+          }
+
+    // //Recuperation des prds
+    //   public function ajaxRecupPrdP( Request $request)
+    //     {
+    //         // selection des produits du stock de la succursales 
+    //         $produits = DB::table('stock_principales')
+    //             ->join('produits', 'produits.id', '=', 'stock_principales.produits_id')
+    //             ->select('produits.*','produits.id as prdId','stock_principales.stock_Qte as qte')
+    //             ->where('stock_Qte','>=',1)
+    //             ->get();
+    //             // dd($produits);
+    //             $outputDetail = "";
+    //                 if (count($produits)!= 0) 
+    //                 {
+    //                    $outputDetail.=' <option value="choix">-- Articles --</option>';
+    //                   foreach($produits as $produit)
+    //                   {
+    //                   $outputDetail.=' <option 
+    //                         prixPrd="'.$produit->produitPrix.'" 
+    //                         prixFour="'.$produit->produitPrixFour.'"
+    //                         prixFourFormat="'.formatPrice($produit->produitPrixFour).'"
+    //                         value="'.$produit->prdId.'" 
+    //                         qteInStck="'.isInSession('achatP','article',$produit->prdId,$produit->qte).'" >
+    //                   '.$produit->produitLibele.'</option>';
+    //                   }
+    //                 }
+    //                 else
+    //                 {
+    //                    $outputDetail.=' <option>Stock Vide</option>';
+    //                 }
                              
 
-              return $outputDetail;
+    //           return $outputDetail;
 
-        }
+    //     }
 
 
     //Enregistrer un achat 
@@ -526,23 +569,31 @@ class GestionVentePrincipalController extends Controller
 
 
     //Liste des ventes principale
-      public function lventeP()
+      public function lventeP(Request $request)
         {
-            $ventes= vente_principales::where('typevente','=','1')
-                                ->orderBy('id','desc')->get();
-            // dd($ventes);
-            return view('pages/principale/vente_P/lventeP')
-                    ->with('ventes',$ventes);
+        $pagePath =  $request->path();
+        $perPage = setDefault($request->perPage,25);
+        $ventes=  vente_principales::where('typevente','=','1')
+                                      ->orderBy('id', 'desc')->paginate($perPage);
+
+          return view('pages/principale/vente_P/lventeP')
+                                      ->with('ventes',$ventes)
+                                       ->with('pagePath',$pagePath)
+                                       ->with('perPage',$perPage);
         }
 
     //Liste des facture proformat 
-      public function lfactuProP()
+      public function lfactuProP(Request $request)
         {
-            $ventes= vente_principales::where('typevente','=','0')
-                                ->orderBy('id','desc')->get();
-            // dd($ventes);
-            return view('pages/principale/vente_P/lfactuProP')
-                    ->with('ventes',$ventes);
+        $pagePath =  $request->path();
+        $perPage = setDefault($request->perPage,25);
+        $ventes=  vente_principales::where('typevente','=','0')
+                                      ->orderBy('id', 'desc')->paginate($perPage);
+
+          return view('pages/principale/vente_P/lfactuProP')
+                                      ->with('ventes',$ventes)
+                                       ->with('pagePath',$pagePath)
+                                       ->with('perPage',$perPage);
         }
 
 
@@ -646,10 +697,17 @@ class GestionVentePrincipalController extends Controller
       }
   
   //Stock de la principal
-      public function stockP()
+      public function stockP(Request $request)
       {
-            $produits_stock = stock_principales::all();
-            return view('pages/principale/stock_P/stockP')->with('stockProduits',$produits_stock);
+
+        $pagePath =  $request->path();
+        $perPage = setDefault($request->perPage,25);
+        $elmts=  stock_principales::orderBy('id', 'desc')->paginate($perPage);
+
+        return view('pages/principale/stock_P/stockP')
+                                      ->with('stockProduits',$elmts)
+                                       ->with('pagePath',$pagePath)
+                                       ->with('perPage',$perPage);
       }
 
 }

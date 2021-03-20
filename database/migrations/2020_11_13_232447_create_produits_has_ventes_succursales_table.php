@@ -16,6 +16,7 @@ class CreateProduitsHasVentesSuccursalesTable extends Migration
         Schema::create('produits_has_ventes_succursales', function (Blueprint $table) {
             $table->id();
             $table->integer('prixvente');
+            $table->integer('coutAchat')->default(0)->comment('Le prix auquel la succursal a obtenu le produit');
             $table->integer('qte');
             $table->integer('tva')->comment('Le pourcentage de la tva, une addition sur le prix de vente');
             $table->unsignedBigInteger('produits_id');

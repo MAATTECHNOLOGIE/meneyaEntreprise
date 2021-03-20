@@ -11,6 +11,7 @@ use App\Model\stock_succursales;
 use App\Model\ressources_hums;
 
 use DB;
+use Auth;
 use Validator;
 
 session_start();
@@ -25,6 +26,8 @@ class ApprovisionnementController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('AccesToPrincipale');
+
     }
 
     /**
@@ -39,8 +42,8 @@ class ApprovisionnementController extends Controller
 
           // session_unset();
             $succursales = succursale::where("id",'>',1)->get();
-            $produits = produits::all();
-            return view('pages/principale/approvision/approvi')->withSuccursales($succursales)->withProduits($produits);
+            // $produits = produits::all();
+            return view('pages/principale/approvision/approvi')->withSuccursales($succursales);
 
         }
 
@@ -48,49 +51,35 @@ class ApprovisionnementController extends Controller
     //Ajout produit approvisionnement
         public function addPrdAprovi(Request $request)
             {
+
                 // Ajax validation et retour
                 $validator = $this->validator($request->all())->validate();
 
-                //Generation de clé unique
-                $idProduit = $request->article.rand(0,10000);
-                
                 //Création des panier 
-                 if (isset($_SESSION['arrivageP'])) 
+                 if (isset($_SESSION['approvSuc'])) 
                      {
-                        $count = count($_SESSION["arrivageP"]);
+                        // $count = count($_SESSION["approvSuc"]);
                         $item_array = array(
                          'qte'      => $request->quantite,
                          'prix'     => $request->prix,
-                         'coutachat'     => $request->coutachat,
                          'article'     => $request->article,
-                         'idArticle'     => $request->idArticle,
-
-
                          );
-                        $_SESSION["arrivageP"][$count] = $item_array;
+                        $_SESSION["approvSuc"][] = $item_array;
                       }
                   else{
 
                         $item_array = array(
                          'qte'      => $request->quantite,
-                         'coutachat'     => $request->coutachat,
                          'prix'     => $request->prix,
                          'article'  => $request->article,
-                        'idArticle' => $request->idArticle,
-
                          );
 
                         //Création de session
-                         $_SESSION["arrivageP"][0] = $item_array;
+                         $_SESSION["approvSuc"][] = $item_array;
+
+                         //Enregistrement de la succursale
+                          $_SESSION["sucId"] = $request->sucId;
                       }
-                        if (empty($_SESSION["arrivageName"])) 
-                        {
-
-                           $_SESSION["arrivageName"] = $request->arrivageLibelle;
-                           $_SESSION["arrivageid"] = $request->arrivageNom;
-                        }
-
-
 
                 return response()->json();
             }
@@ -115,16 +104,15 @@ class ApprovisionnementController extends Controller
             {
                 $nbr =(int)$request->NumArt; //conversion de la variable en entier
                 //(-1) pour compter dans l'odre du tableau
-                unset($_SESSION['arrivageP'][$nbr]);
+                unset($_SESSION['approvSuc'][$nbr]);
                 return response()->json();
             }
 
     //Delete Approvision
         public function delAprovi(Request $request)
             {
-                unset($_SESSION['arrivageP']); // vidage de session panier
-                unset($_SESSION['arrivageName']); // vidage de session panier
-                unset($_SESSION['arrivageid']); // vidage de session panier
+                unset($_SESSION['approvSuc']); // vidage de session panier
+                unset($_SESSION['sucId']); // vidage de session panier
                 return response()->json();
 
             }
@@ -132,7 +120,7 @@ class ApprovisionnementController extends Controller
         public function saveAprovi (Request $request)
             {
 
-                if (!empty($_SESSION['arrivageP']))
+                if (!empty($_SESSION['approvSuc']))
                     {
                         //Generation du matricule de l'approvisionnement
                         $matricule = "APR#".date("d/m/y")."#".rand(0,1000); 
@@ -144,32 +132,34 @@ class ApprovisionnementController extends Controller
                         //insertion de l'approvisionnement dans table appro
                         $arrivage = approvisionnement::create([
                                     'approvisionMat'=> $matricule,
-                                    'succursale_id' => $_SESSION['arrivageid'],
+                                    'succursale_id' => $_SESSION['sucId'],
                                     'dateApro'  => $dateV,
                                     'charge'    =>$charge,
                                     'description_charge' =>$chargeDesc,
                                     ]);
                                 $prixTotal = 0;
                                 $qteTotal = 0;
-                        foreach ($_SESSION['arrivageP'] as $key => $value)
+                        foreach ($_SESSION['approvSuc'] as $key => $value)
                             {
 
                                $arrayPrdArriv = [
 
-                                            "coutachat" => $value['coutachat'],
+                                            "coutachat" => $value['prix'],
                                             "prixvente" => $value['prix'],
                                             "qteproduits" => $value['qte'],
                                     "approvisionnement_id"  => $arrivage->id,
-                                            "produits_id"  =>$value['idArticle'],'succursale_id' => $arrivage->succursale_id
+                                            "produits_id"  =>$value['article'],'succursale_id' => $arrivage->succursale_id
                                                 ];
                                     $prixTotal += $value['prix']*$value['qte'];
                                     $qteTotal += $value['qte'];
                                     produits_has_approvisionnement::create($arrayPrdArriv);
 
                                     $produits = stock_succursales::where('succursale_id','=',$arrivage->succursale_id)->firstOrCreate(
-                                    ['produits_id' => $value['idArticle']],
-                                        ['stock_Qte' => 0 ,'succursale_id' => $arrivage->succursale_id]);
+                                    ['produits_id' => $value['article']],
+                                        ['stock_Qte' => 0 ,'succursale_id' => $arrivage->succursale_id,'sucCoutAchat' =>$value['prix']]);
+
                                         $produits->stock_Qte = $value['qte'] + $produits->stock_Qte;
+                                        $produits->sucCoutAchat = $value['prix'];
                                         $produits->save();
 
                             }
@@ -186,14 +176,15 @@ class ApprovisionnementController extends Controller
 
 
     // Page Liste des approvision
-      public function listAprovi()
+      public function listAprovi(Request $request)
         {
-
-            //Lecture des approvisionnement 
-            $approvi = DB::table('approvisionnements')->orderBy('id','desc')->get();
-            // $approvisionnement = approvisionnement::all();
-
-            return view('pages/principale/approvision/listAprovi')->withApprovisionnement($approvi);
+          $pagePath =  $request->path();
+          $perPage = setDefault($request->perPage,25);
+          $approvi=  approvisionnement::orderBy('id', 'desc')->paginate($perPage);
+          return view('pages/principale/approvision/listAprovi')
+                                         ->withApprovisionnement($approvi)
+                                         ->with('pagePath',$pagePath)
+                                         ->with('perPage',$perPage);
         }
 
 
@@ -337,13 +328,13 @@ class ApprovisionnementController extends Controller
 
     public function allPrd(Request $request)
       {
-
+        $pagePath =  $request->path();
         $perPage = setDefault($request->perPage,25);
-        $prd=  produits::paginate($perPage);
-
-
-        return view('pages/principale/approvision/allPrd')->with('produits',$prd)
-                                                          ->with('perPage',$perPage);
+        $produits=  produits::orderBy('id', 'desc')->paginate($perPage);
+        return view('pages/principale/approvision/allPrd')
+                                        ->with('produits',$produits)
+                                       ->with('pagePath',$pagePath)
+                                       ->with('perPage',$perPage);
       }
 
 

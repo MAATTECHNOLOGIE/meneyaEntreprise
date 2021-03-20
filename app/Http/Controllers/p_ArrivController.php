@@ -1,18 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Http\Request;
 use Session;
 use Validator;
 use  App\Model\produits;
 use App\Model\stock_principales;
-// use App\Model\stock_succursale; //
+
 use App\Model\arrivage;
 use App\Model\arrivage_has_produits;
-// use App\Model\produits_has_approvisionnement; //
-// use App\Model\approvisionnement; //
+
 use DB;
+use Auth;
 session_start();
 
 
@@ -22,14 +23,15 @@ class p_ArrivController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('AccesToArrivage');
     }
 
     //Form d'Ajout nouveau arrivage
         public function addArriv(Request $request)
         {
 
-        	$prd = produits::all();
-            return view('pages/principale/stock_P/addArriv')->with('prds',$prd);
+        	// $prd = produits::all();
+            return view('pages/principale/stock_P/addArriv');
 
         }
 
@@ -215,8 +217,8 @@ class p_ArrivController extends Controller
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="border-0">Article</th>
+                      <th class="border-0 text-center">Cout d\'achat  </th>
                       <th class="border-0 text-center">Prix vente </th>
-                      <th class="border-0 text-center">Cout d\'achat </th>
                       <th class="border-0 text-center">Qté</th>
                       <th class="border-0 text-right">Prix Net(Fcfa)</th>
                     </tr>
@@ -304,13 +306,14 @@ class p_ArrivController extends Controller
        }    
 
    // Liste de mes Arrivages valide
-       public function arrivOk()
+       public function arrivOk(Request $request)
        {
-
-        $arrivs = DB::table('arrivages')->where('statut','=',1)
-                                        ->orderBy('arrivageDate','desc')->get();
-
-        return view('pages/principale/stock_P/arrivOk')->with('arrivs',$arrivs);
+        $pagePath =  $request->path();
+        $perPage = setDefault($request->perPage,25);
+        $arrivs=  arrivage::orderBy('id', 'desc')->paginate($perPage);
+        return view('pages/principale/stock_P/arrivOk')->with('arrivs',$arrivs)
+                                       ->with('pagePath',$pagePath)
+                                       ->with('perPage',$perPage);
        }
 
 

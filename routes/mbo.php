@@ -188,6 +188,9 @@ use Illuminate\Support\Facades\Route;
 
       //Delete Catégorie
       Route::get('/delCatgo','produitsControl@delCatgo')->name('delCatgo');
+
+      //Search in all produit
+      Route::get('/ajaxPrdAll','produitsControl@ajaxPrdAll')->name('ajaxPrdAll');
       
 
 
@@ -218,6 +221,8 @@ use Illuminate\Support\Facades\Route;
           //update  employer
           Route::post('UpdEmpl', 'GestionEmployeController@UpdEmpl');
 
+          //Demetre les access
+          Route::get('delAllAcces','GestionEmployeController@delAllAcces');
 
 
 /*-----------------------
@@ -298,6 +303,9 @@ use Illuminate\Support\Facades\Route;
        Route::get('ajaxRecupPrdP','GestionVentePrincipalController@ajaxRecupPrdP');
 
 
+ //Recup produit de la principal 
+       Route::get('ajaxRecupPrdPTest','GestionVentePrincipalController@ajaxRecupPrdPTest');
+
         //Facture proformat => Vente  
        Route::get('factVnt','GestionVentePrincipalController@factVnt')->name('factVnt');
 
@@ -314,8 +322,12 @@ use Illuminate\Support\Facades\Route;
         // Delete client
          Route::get('/delClt','GestionClient@delClt')->name('delClt');
 
+        //Updtate client 
+         Route::post('/UpdClt','GestionClient@UpdClt')->name('UpdClt');
+
+
         //CLient succursales liste
-          Route::get('/s_Client', 'GestionClient@s_Client')->name('s_Client');
+          Route::get('/s_Client', 'GestionClient@listClt')->name('listClt');
 
         //Liste Achat d'un CLient de la succursales
           Route::get('/listAchatClt', 'GestionClient@listAchatClt')->name('listAchatClt');

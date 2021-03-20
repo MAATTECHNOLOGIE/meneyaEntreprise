@@ -1,38 +1,44 @@
 
+<div class="card mb-3">
+            <div class="bg-holder d-none d-lg-block bg-card" style="background-image:url(../assets/img/illustrations/corner-4.png);">
+            </div>
+            <!--/.bg-holder-->
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-8">
+                  <h4 class="mb-0 text-primary"> <i class="fas fa-users"></i>    Utlisateurs et Droits d'accès
+                  </h4>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="card">
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
-                <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
-                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Liste des Utilisateurs </h5>
-                </div>
+
                 <div id="mytoken">
                   @csrf
                 </div>
-                
+                @include('pages/dash/pagnMod')
                 <div class="col-8 col-sm-auto text-right pl-2">
-                  <div class="d-none" id="customers-actions">
-                    <div class="input-group input-group-sm">
-                      <select class="custom-select cus" aria-label="Bulk actions">
-                        <option selected="">Bulk actions</option>
-                        <option value="Delete">Delete</option>
-                        <option value="Archive">Archive</option>
-                      </select>
-                      <button class="btn btn-falcon-default btn-sm ml-2" type="button">Apply</button>
-                    </div>
-                  </div>
                   <div id="customer-table-actions">
                     <button class="btn btn-falcon-default btn-sm" type="button" id="btnAdd">
                       <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
                       <span class="d-none d-sm-inline-block ml-1">Nouveau</span>
                     </button>
-
+                    <button class="btn btn-falcon-danger btn-sm" type="button" id="btnAdd">
+                      
+                      <span class=" d-sm-inline-block ml-1 btnAllAccess">Demettre les accès</span>
+                      <i class="fas fa-lock-open text-danger"></i>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0" id="loaderContent">
               <div class="falcon-data-table">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":50,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-middle no-sort pr-3">
@@ -82,7 +88,7 @@
                           @if(getUserRole($user->id)->roleId ==1 )
                           class="btn btn-primary mr-1 mb-1 btnAcces" 
                             data-toggle="modal" data-target="#modalAccess"
-
+                            data-backdrop="static" data-keyboard="false"
                           @else
                           class="btn btn-info mr-1 mb-1 btnAcessOff" 
                           @endif
@@ -98,7 +104,7 @@
                             idUser = "{{  $user->id }}"
 
                             > Accès
-                             <i class="fas fa-lock text-danger"></i>
+                             <i class="fas fa-user-lock text-danger"></i>
                           </button>                      
                       </td>
                       <td class="align-middle white-space-nowrap">
@@ -123,6 +129,9 @@
                     @endforeach
                   </tbody>
                 </table>
+                <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                       {{ $users->links() }}
+                   </div>
               </div>
             </div>
           </div>
@@ -144,7 +153,7 @@
 
                 <div class="modal-footer ">
                   <button class="btn btn-secondary btn-sm modalUserCls" type="button" data-dismiss="modal">Fermer</button>
-{{--                   <button class="btn btn-primary btn-sm" id="addProdBtn" type="button">Enregistrer</button> --}}
+
                 </div>
               </div>
             </div>
@@ -205,12 +214,12 @@
 
 
 
-    {{-- <script src="{{ asset('assets/js/theme.js') }}"></script> --}}
-
     <script type="text/javascript">
       $(function()
       {
 
+        // Faire disparaitre les paginate de Javascript
+          $(".mytable").parent().next().hide();
 
         //Acces gerant succu
         $('.btnAcessOff').click(function()
@@ -271,7 +280,11 @@
             ajaxUpdAcces();
 
           })
-
+        //Demettre tous les accès 
+        $('.btnAllAccess').click(function()
+        {
+          ajaxDelAllAcces();
+        })
 
         //supression
           $('.btnDel').click(function()
@@ -280,7 +293,7 @@
             var idEmpl= $(this).attr('id');
             if(isAdminSuc == "1")
             {
-              toastr.error("Cet utilisateur est un admnistrateur de succursale. Veuillez le démettre avant de le suprimé");
+              toastr.error("Cet utilisateur est un gerant de succursale ou Super Admin. Veuillez le démettre avant de le suprimé");
             }
             else
             {
@@ -389,6 +402,46 @@
         
         }
 
+
+      //Supression de tous des access
+        function ajaxDelAllAcces()
+        {
+                Swal.fire({
+                  title: 'URGENT !!!',
+                  text: "La validation de cette action vas démettre tous les droits d'accès de tous vos utilisateurs sauf le super Administrateur",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#d33',
+                  cancelButtonColor: '#3085d6',
+                  cancelButtonText: 'Annuler',
+                  confirmButtonText: 'oui , Valider!',
+                   backdrop: `rgba(240,15,83,0.4)`
+                }).then((result) => {
+                    if (result.value) {
+                      $.ajax({
+                        url:'mbo/delAllAcces',
+                        method:'GET',
+                        data:{action:'delAllAcces'},
+                        dataType:'json',
+                        success:function(){
+                          
+                          Swal.fire(
+                           'Operation Effectuer avec succès!',
+                           'Opération fait avec succès',
+                           'success'
+                          );
+
+                          location.replace("/home");
+                          // $("#myNav").load("mbo/refreshNav");
+                        },
+                        error:function(){
+                          Swal.fire('Problème de connexion internet');
+                        }
+                      });
+                    }
+                })
+        
+        }
 
       })
     </script>
