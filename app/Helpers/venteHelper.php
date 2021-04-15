@@ -13,6 +13,19 @@ if(!function_exists('venteJourP'))
 }
 
 
+if(!function_exists('venteHierP'))
+{
+	function venteHierP()
+	{
+		$hier = date_create_from_format('d-m-Y', date('d-m-Y'))
+		    ->modify('-1 day')
+		    ->format('d/m/Y');
+		$venteH = DB::table('vente_principales')
+		->where('dateV','=', $hier)->get();
+		return $venteH;
+	}
+}
+
 if(!function_exists('venteTotalP'))
 {
 	function venteTotalP()
@@ -54,7 +67,7 @@ if(!function_exists('venteTotalSuc'))
 		function bestVente()
 		{
 	
-			$bVente = DB::table('vente_principales')->orderBy('prix','desc')->get();
+			$bVente = DB::table('vente_principales')->orderBy('prix_vente_total','desc')->get();
 			return $bVente;
 		}
 	}

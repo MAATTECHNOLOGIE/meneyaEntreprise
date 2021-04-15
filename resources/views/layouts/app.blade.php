@@ -19,3 +19,9 @@
     <!-- ===============================================-->
 
 @include('layouts.partials.footer')
+<script type="text/javascript">
+  $(function()
+  {
+    $(".bestVnt").parent().next().hide();
+  })
+</script>

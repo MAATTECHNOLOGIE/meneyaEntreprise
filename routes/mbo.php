@@ -238,7 +238,7 @@ use Illuminate\Support\Facades\Route;
 -------------------------------------*/
 
       //Notification de demande de versement 
-      Route::post('alertVers', 'GestionAlertController@alertVers');
+      Route::get('alertVers', 'GestionAlertController@alertVers');
       
 
 

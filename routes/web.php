@@ -422,3 +422,22 @@ Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
 
         //Succursale ajoute credit
           Route::post('/s_addCrd','s_CreditController@s_addCrd')->name('s_addCrd');
+
+
+    /*--------- --------------------------
+        SETTING DU COMPTE USER
+    ----------------------------------------*/
+        //Afficher form de config
+       Route::get('setting','SettingController@setting')->name('setting');
+
+        //Mis a jour de l'utilisateur
+       Route::post('updUser','SettingController@updUser')->name('updUser');
+
+       //Mis a jour des taxes
+       Route::post('updTaxe','SettingController@updTaxe')->name('updTaxe');
+
+       //Mis a jour des seuil d'alertes
+       Route::post('updAlert','SettingController@updAlert')->name('updAlert');
+
+       //Mis a du resume des parametres
+       Route::get('lSetting','SettingController@lSetting')->name('lSetting');

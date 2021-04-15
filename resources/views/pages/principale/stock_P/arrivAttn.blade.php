@@ -148,7 +148,7 @@
     <script src="{{ asset('assets/js/theme.js') }}"></script>
 
     {{-- FIN MODAL DES DETAILS DE L'APPROVISIONNEMENT  --}}
-        @include('pages/dash/facture/recuArriv');
+        @include('pages/dash/facture/recuArriv')
 
     {{-- FIN MODAL DES DETAILS DE L'APPROVISIONNEMENT  --}}
 <script type="text/javascript">

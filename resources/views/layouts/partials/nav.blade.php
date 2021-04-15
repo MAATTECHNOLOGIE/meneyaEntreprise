@@ -211,7 +211,7 @@
                       aria-controls="navbarVerticalCollapse" 
                       aria-expanded="false" 
                       aria-label="Toggle Navigation">
-                      <a class="nav-link" href="#main_content">Opération</a>
+                      <a class="nav-link" href="#main_content">Type Opération</a>
                     </li>
 
                   </ul>
@@ -251,7 +251,7 @@
                       aria-controls="navbarVerticalCollapse" 
                       aria-expanded="false" 
                       aria-label="Toggle Navigation">
-                      <a class="nav-link" href="#main_content"> Affecter Echeance </a>
+                      <a class="nav-link" href="#main_content"> Achat </a>
                     </li>
                   </ul>
                 </li>

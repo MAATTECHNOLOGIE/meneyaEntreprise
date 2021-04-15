@@ -1,191 +1,137 @@
+          <div class="card mb-3">
+            <div class="card-body rounded-soft bg-gradient">
+              <div class="row text-white align-items-center no-gutters">
+                <div class="col">
+                  <h4 class="text-white mb-0">Aujourd'hui {{ formatPrice(venteJourP()->sum('prix_vente_total')) }}</h4>
+                  <p class="fs--1 font-weight-semi-bold">Hier <span class="opacity-50">{{
+                  formatPrice(venteHierP()->sum('prix_vente_total')) }}</span></p>
+                </div>
+                <div class="col-auto d-none d-sm-block">
+                  <select class="custom-select custom-select-sm mb-3" id="dashboard-chart-select">
+                    <option value="all" selected="selected">Mes ventes</option>
+                    <option value="successful" >Arrivages</option>
+                    <option value="failed"></option>
+                  </select>
+                </div>
+              </div>
+              <canvas class="max-w-100 rounded" id="chart-line" width="1618" height="375" aria-label="Line chart" role="img"></canvas>
+            </div>
+          </div>
 
- <div class="row no-gutters">
-            <div class="col-md-6 col-xxl-3 mb-3 pr-md-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Mes ventes du jour<span class="ml-1 text-400" data-toggle="tooltip" data-placement="top" title="Calculated according to last week's sales">
-                  </span>
-                  </h6>
-                </div>
-                <div class="card-body d-flex align-items-end">
-                  <div class="row flex-grow-1">
-                    <div class="col">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
-                         125444
-                      </div><span class="badge badge-pill fs--2 badge-soft-success">CFA</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <img class="mr-3" src="../assets/img/icons/weather-icon.png" alt="" height="60" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+          
+          <div class="card bg-light mb-3 ">
+            <div class="card-body p-3 d-flex justify-content-center">
+              <p class="h5 text-info">
+                Le renouvellement de votre abonnement est prévu pour  <strong class="text-danger"> Mardi 10 Mars 2021</strong>
+              </p>
             </div>
-            <div class="col-md-6 col-xxl-3 mb-3 pr-md-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Toutes mes ventes<span class="ml-1 text-400" data-toggle="tooltip" data-placement="top" title="Calculated according to last week's sales">
-                  </span>
-                  </h6>
-                </div>
-                <div class="card-body d-flex align-items-end">
-                  <div class="row flex-grow-1">
-                    <div class="col">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
-                         1570000
-                      </div><span class="badge badge-pill fs--2 badge-soft-success">CFA</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <img class="mr-3" src="../assets/img/icons/weather-icon.png" alt="" height="60" />
-                    </div>
-                  </div>
-                </div>
+          </div>
+          <div class="card-deck">
+            <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+              <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-1.png);">
               </div>
-            </div>
-            <div class="col-md-6 col-xxl-3 mb-3 pr-md-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Nos clients<span class="ml-1 text-400" data-toggle="tooltip" data-placement="top" title="Calculated according to last week's sales">
-                  </span>
-                  </h6>
-                </div>
-                <div class="card-body d-flex align-items-end">
-                  <div class="row flex-grow-1">
-                    <div class="col">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
-                        15478000
-                      </div><span class="badge badge-pill fs--2 badge-soft-success">clients</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <img class="mr-3" src="../assets/img/icons/customer.png" alt="" height="60" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-xxl-3 mb-3 pr-md-2 pl-xxl-2">
-              <div class="card h-md-100">
-                <div class="card-body">
-                  <div class="row h-100 justify-content-between no-gutters">
-                    <div class="col-5 col-sm-6 col-xxl pr-2">
-                      <h6 class="mt-1">Notre stock (produits)</h6>
-                      <div class="fs--2 mt-3">
-                        <div class="d-flex flex-between-center mb-1">
-                          <div class="d-flex align-items-center"><span class="dot bg-primary"></span><span class="font-weight-semi-bold">
-                          <b>Principale</b></span></div>
-                          <div class="d-xxl-none">4579 </div>
-                        </div>
-                        <div class="d-flex flex-between-center mb-1">
-                          <div class="d-flex align-items-center">
-                            <span class="dot bg-300"></span>
-                            <span class="font-weight-semi-bold">
-                             <b>Succursales</b>
-                            </span>
-                          </div>
-                          <div class="d-xxl-none"> 0</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <div class="echart-doughnut"></div>
-                      <div class="absolute-centered font-weight-medium text-dark fs-2">
-                        100
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <!--/.bg-holder-->
 
-            <div class="col-md-6 col-xxl-3 mb-3 pl-md-2 pr-xxl-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2">Nos Fournisseurs</h6>
-                </div>
-                <div class="card-body pt-0">
-                  <div class="row h-100">
-                    <div class="col align-self-end">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1">
-                       2
-                      </div><span class="badge badge-pill fs--2 bg-200 text-primary"><span class="fas fa-caret-up mr-1"></span>fournisseurs</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <div class="echart-line-total-order h-100"></div>
-                    </div>
-                  </div>
+              <div class="card-body position-relative">
+                <h6>Ventes<span class="badge badge-soft-warning rounded-capsule ml-2"></span></h6>
+                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-warning" >
+                  <i class="far fa-money-bill-alt"></i> {{ formatPrice(venteTotalP()->sum('prix_vente_total')) }}
                 </div>
               </div>
             </div>
-            <div class="col-md-6 col-xxl-3 mb-3 pl-md-2 pr-xxl-2">
-              <div class="card h-md-100">
-                <div class="card-header pb-0">
-                  <h6 class="mb-0 mt-2 d-flex align-items-center">Installé depuis<span class="ml-1 text-400" data-toggle="tooltip" data-placement="top" title="Calculated according to last week's sales"><span class="far fa-question-circle" data-fa-transform="shrink-1"></span></span>
-                  </h6>
-                </div>
-                <div class="card-body d-flex align-items-end">
-                  <div class="row flex-grow-1">
-                    <div class="col">
-                      <div class="fs-4 font-weight-normal text-sans-serif text-700 line-height-1 mb-1"> 10 </div><span class="badge badge-pill fs--2 badge-soft-warning">Jour</span>
-                    </div>
-                    <div class="col-auto pl-0">
-                      <div class="echart-bar-weekly-sales h-100"></div>
-                    </div>
-                  </div>
-                </div>
+            <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+              <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-2.png);">
+              </div>
+              <!--/.bg-holder-->
+
+              <div class="card-body position-relative">
+                <h6>Clients<span class="badge badge-soft-info rounded-capsule ml-2">
+                  <i class="far fa-address-card"></i>
+                </span></h6>
+                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info" >
+                  <i class="far fa-address-card"></i> {{ formatQte(getClientNbr()->count()) }}
+                </div>{{-- <a class="font-weight-semi-bold fs--1 text-nowrap" href="#!">All orders<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a> --}}
+              </div>
+            </div>
+            <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
+              <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-3.png);">
+              </div>
+              <!--/.bg-holder-->
+
+              <div class="card-body position-relative">
+                <h6>Fournisseurs<span class="badge badge-soft-success rounded-capsule ml-2">{{ formatQte(getNbrFour()->count() )}}</span></h6>
+                <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif" >
+                <i class="fas fa-shipping-fast"></i> {{ formatQte(getNbrFour()->count() )}} </div><a class="font-weight-semi-bold fs--1 text-nowrap" href="#!">Statistics<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a>
               </div>
             </div>
 
           </div>
-          <div class="row no-gutters">
-            <div class="col-lg-12 pr-lg-2 mb-3">
-              <div class="card h-lg-100 overflow-hidden">
-                <div class="card-header bg-light">
-                  <div class="row align-items-center">
-                    <div class="col">
-                      <h6 class="mb-0">05 Meilleur Vente</h6>
-                    </div>
+          @if(bestVente()->count() >0  )
+            @php
+            $end = bestVente()->count() > 5 ? 5 : bestVente()->count();
+            @endphp
+            <div class="card mb-3">
+              <div class="card-header">
+                <div class="row align-items-center justify-content-between">
+                  <div class="col-6 col-sm-auto d-flex align-items-center pr-0">
+                    <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">{{ formatQte($end )}} Meilleures Ventes</h5>
                   </div>
+                 
                 </div>
-{{--                 <div class="card-body p-0">
-                @if(bestVente()->count() >0  )
-                @if(bestVente()->count()<5)
-                {{ $end = bestVente()->count() }}
-                @else
-                {{ $end = 5 }}
-                @endif
-                @for($i=0; $i<$end; $i++)
-                  <div class="row no-gutters align-items-center py-2 position-relative border-bottom border-200">
-                    <div class="col pl-card py-1 position-static">
-                      <div class="media align-items-center">
-                        <div class="avatar avatar-xl mr-3">
-                          <div class="avatar-name rounded-circle bg-soft-primary text-dark"><span class="fs-0 text-primary">
-                            {{ substr(getClient(bestVente()[$i]->client_id)->nom, 0,1) }}</span></div>
-                        </div>
-                        <div class="media-body">
-                          <h5 class="mb-0 d-flex align-items-center"><a class="text-800 stretched-link" href="#!">{{ getClient(bestVente()[$i]->client_id)->nom }}</a><span class="badge badge-pill ml-2 bg-200 text-primary">
-                            <i class="fas fa-phone-alt"></i>
-                            {{ getClient(bestVente()[$i]->client_id)->contact }}</span></h5>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col py-1">
-                      <div class="row flex-end-center no-gutters">
-                        <div class="col-auto pr-2">
-                          <div class="fs--1 font-weight-semi-bold">{{ number_format(bestVente()[$i]->prix,0,',',' .').' '.getMyDevise()}}</div>
-                        </div>
-                        <div class="col-5 pr-card pl-2">
-                          <div class="progress mr-2" style="height: 5px;">
-                            <div class="progress-bar rounded-capsule" role="progressbar" style="width:{{ 100/($i+1) }}%" aria-valuenow="38" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <div class="card-body px-0 pt-0">
+                <div class="dashboard-data-table">
+                  <table class="fs-0 bestVnt table table-sm table-dashboard fs--1 data-table border-bottom" data-options='{"responsive":true,"lengthChange":false,"searching":false,"pageLength":6}'>
+                    <thead class="bg-200 text-900">
+                      <tr>
+                        <th class="no-sort pr-1 align-middle data-table-row-bulk-select">
+                          <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input checkbox-bulk-select" id="checkbox-bulk-purchases-select" type="checkbox" data-checkbox-body="#purchases" data-checkbox-actions="#purchases-actions" data-checkbox-replaced-element="#dashboard-actions" />
+                            <label class="custom-control-label" for="checkbox-bulk-purchases-select"></label>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                        </th>
+                        <th class="sort pr-1 align-middle">Client</th>
+                        <th class="sort pr-1 align-middle">Telephone</th>
+                        <th class="sort pr-1 align-middle">N° Vente</th>
+                        <th class="sort pr-1 align-middle text-right">Montant</th>
+                        <th class="sort pr-1 align-middle text-right">Bénéfice</th>
+                        <th class="no-sort pr-1 align-middle data-table-row-action"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="purchases">
+                  @for($i=0; $i<$end; $i++)
+                      <tr class="btn-reveal-trigger">
+                        <td class="align-middle">
+                          {{ formatQte($i+1) }}
+                        </td>
+                        <th class="align-middle">
+                          <a href="#">{{ getClient(bestVente()[$i]->clients_id)->nom}}</a></th>
+                        <td class="align-middle">
+                          {{ getClient(bestVente()[$i]->clients_id)->contact}}
+                        </td>
+                        <td class="align-middle">{{ bestVente()[$i]->NumVente}}</td>
+
+                        <td class="align-middle text-right">
+                          <span class="badge badge rounded-capsule badge-soft-warning">
+                          {{ formatPrice((bestVente()[$i]->prix_vente_total + bestVente()[$i]->charge)) }}
+                          <span class="ml-1 fas fa-stream" data-fa-transform="shrink-2"></span></span>
+                        </td>
+
+                        <td class="align-middle text-right">
+                          <span class="badge badge rounded-capsule badge-soft-success">
+                          {{ formatPrice(bestVente()[$i]->mg_benef_brute) }}
+                          <span class="ml-1 fas fa-check" data-fa-transform="shrink-2"></span></span></td>
+                        <td class="align-middle">
+                          <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="checkbox-0" />
+                            <label class="custom-control-label" for="checkbox-0"></label>
+                          </div>
+                        </td>
+                      </tr>
                   @endfor
-                @endif
-                </div> --}}
-                <div class="card-footer bg-light p-0"><a class="btn btn-sm btn-link btn-block py-2" href="#!">Toutes les commandes<span class="fas fa-chevron-right ml-1 fs--2"></span></a></div>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-
-          </div>
+          @endif

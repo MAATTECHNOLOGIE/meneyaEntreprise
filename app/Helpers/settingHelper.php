@@ -169,8 +169,16 @@ if(!function_exists('getAlertEtat'))
 	{
 		function formatQte($qte)
 		{
-			$qte = number_format( $qte,0,',',' .');
-			return $qte;
+			if (is_int($qte) && $qte <10) 
+			{
+				return sprintf("%02d", $qte);
+			}
+			else
+			{
+				$qteF = number_format( $qte,0,',',' .');
+				return $qteF;	
+			}
+
 		}
 	}
 	

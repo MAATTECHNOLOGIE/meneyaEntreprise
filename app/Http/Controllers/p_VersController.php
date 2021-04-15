@@ -7,8 +7,11 @@ use App\Model\versement;
 use App\Model\ventes_succursales;
 use App\Model\versement_historiques;
 use App\Model\succursale;
+use  App\Mail\AlertVers;
 use DB;
 use Validator;
+use Mail;
+
 
 class p_VersController extends Controller
 {
@@ -86,12 +89,15 @@ class p_VersController extends Controller
                 $bnfBrut = $re2->sum('mg_benef_brute');
                 $bnfRel = $re2->sum('mg_benef_rel');
                 $livraison = $re2->sum('livraison');
+                $nbrVnt = $re2->count();
                     $table= [ 'Idsucu' =>$mesIdSuc[$i],
                             'coutAcha'=>$coutAcha,
                             'prixV'=>$prixV,
                             'bnfBrut'=>$bnfBrut,
-                            'bnfRel'=>$bnfRel,
-                            'livraison'=>$livraison];
+                            'bnfRel'=>$prixV-$coutAcha ,
+                            'livraison'=>$livraison,
+                            'nbrVnt'=>$nbrVnt
+                            ];
 
                 $collection->push($table);
                 }
@@ -99,9 +105,10 @@ class p_VersController extends Controller
 
                 //Trier par le prix
                 // dd($collection);
-                    $orderByPrice = $collection->sortByDesc('bnfRel')->values(); 
-        
-  $output='<div class="card-deck">';
+                    $orderByPrice = $collection->sortByDesc('coutAcha')->values(); 
+          
+                //Cadre de classement
+                $output='<div class="card-deck">';
                 if(count($orderByPrice)<3){$fin = count($orderByPrice); }
                   else{$fin = 3;}
             for ($i=0; $i <$fin ; $i++) { 
@@ -111,9 +118,9 @@ class p_VersController extends Controller
                        style="background-image:url(assets/img/illustrations/corner-1.png);">
                       </div>
                       <div class="card-body position-relative">
-                        <h6>'.formatPrice($orderByPrice[$i]['bnfRel']).'<span class="badge badge-soft-warning rounded-capsule  ml-2"> <i class="far fa-star"></i></span></h6>
+                        <h6>'.formatPrice($orderByPrice[$i]['coutAcha']).'<span class="badge badge-soft-warning rounded-capsule  ml-2"> <i class="far fa-star"></i></span></h6>
                         <div class="display-6 fs-3 mb-2 font-weight-normal text-sans-serif text-warning">'.readSurc($orderByPrice[$i]['Idsucu'])->succursaleLibelle.'</div>
-                        <a class="font-weight-semi-bold fs-1 text-nowrap ReSMS" href="#!" id="'.$orderByPrice[$i]['bnfRel'].'">';
+                        <a class="font-weight-semi-bold fs-1 text-nowrap ReSMS" href="#!" id="'.$orderByPrice[$i]['coutAcha'].'">';
                         if($i == 0)
                         {
                             $output.='<span class="text-success">Classé Meilleur</span>';
@@ -146,14 +153,11 @@ class p_VersController extends Controller
                 <div class="table-responsive fs--1">
                   <table class="table table-striped border-bottom">
                     <thead class="bg-200 text-900" >
-                      <tr>
-   
-                              
-                              <th scope="col">Libelle Succursale</th>
+                      <tr>   
+                              <th scope="col">Succursale</th>
                               <th scope="col">Vente total </th>
-                              <th scope="col">Frais livraison T.</th>
-                              <th scope="col">Marge Brute T.</th>
-                              <th scope="col">Bénéfice Rél T.</th>
+                              <th scope="col">Bénéfice Suc.</th>
+                              <th scope="col">Nombre Vente</th>
                               <th class="white-space-nowrap" scope="col">Actions</th>
                       </tr>
                     </thead>
@@ -168,14 +172,13 @@ class p_VersController extends Controller
                           $output.='<tr>
                                       <td class="fs-1">'.readSurc($oneSuc['Idsucu'])->succursaleLibelle.'</td>
                                       <td class="fs-1">'. $oneSuc['prixV'] .'</td>
-                                      <td class="fs-1">'.$oneSuc['bnfBrut'].'</td>
-                                      <td class="fs-1">'. $oneSuc['livraison'] .'</td>
-                                      <td class="text-warning fs-2">'.formatPrice($oneSuc['bnfRel']) .'</td>
+                                      <td class="fs-1">'.$oneSuc['bnfRel'].'</td>
+                                      <td class="fs-1">'.$oneSuc['nbrVnt'].'</td>
                                       <td class="pr-0 d-flex">
                                         <button class="btn btn-warning mr-1 mb-1 dmdVers" type="button" 
                                           idSucVrs="'.$oneSuc['Idsucu'].'" 
                                           nomSucVrs="'.readSurc($oneSuc['Idsucu'])->succursaleLibelle.'" 
-                                          mntanVrs="'.$oneSuc['bnfRel'].'"mntanVrsFrm="'.formatPrice($oneSuc['bnfRel']).'"
+                                          mntanVrs="'.$oneSuc['coutAcha'].'"mntanVrsFrm="'.formatPrice($oneSuc['coutAcha']).'"
                                           debutVers="'.$debut.'"
                                           finVers="'.$fin2.'">
                                           Reclamer versement
@@ -195,18 +198,16 @@ class p_VersController extends Controller
                             {
                                $output.='<tr>
                                       <td class="fs-1">'.readSurc($orderByBnf['Idsucu'])->succursaleLibelle.'</td>
-                                      <td class="fs-1">'. $orderByBnf['prixV'] .'</td>
-                                      <td class="fs-1">'.$orderByBnf['bnfBrut'].'</td>
-                                      <td class="fs-1">'. $orderByBnf['livraison'] .'</td>
-                                      <td class="text-warning fs-2">'.formatPrice($orderByBnf['bnfRel']) .'</td>
+                                      <td class="fs-1">'. formatPrice($orderByBnf['coutAcha']) .'</td>
+                                      <td class="fs-1">'.formatPrice($orderByBnf['bnfRel']).'</td>
+                                      <td class="fs-1">'.formatQte($orderByBnf['nbrVnt']).'</td>
                                       <td class="pr-0 d-flex">
-
                                         <button class="btn btn-warning mr-1 mb-1 dmdVers" type="button" 
                                           idSucVrs="'.$orderByBnf['Idsucu'].'" 
                                           nomSucVrs="'.readSurc($orderByBnf['Idsucu'])->succursaleLibelle.'" 
-                                          mntanVrs="'.$orderByBnf['bnfRel'].'"mntanVrsFrm="'.formatPrice($orderByBnf['bnfRel']).'"
+                                          mntanVrs="'.$orderByBnf['coutAcha'].'"mntanVrsFrm="'.formatPrice($orderByBnf['coutAcha']).'"
                                           debutVers="'.$debut.'"
-                                          finVers="'.$fin.'">
+                                          finVers="'.$fin2.'">
                                           Reclamer versement
                                           </button>
                                         <button class="btn btn-primary mr-1 mb-1 lVers" type="button" 
@@ -327,12 +328,13 @@ class p_VersController extends Controller
                           ->where('succursale_id','=',$request->succursale_id)
                           ->get();
 
+              //Verifie si des demandende de versement exite deja
             if(!$versDebu->isEmpty())
             {
                     if ( $request->dateFin< $versDebu->min('dateDebut')) 
                     {
                       versement::create($dataV);
-                      $output =1; 
+                      $output =1;  //Nouveau versemen ajoute
                     }
                     else
                     {
@@ -353,6 +355,14 @@ class p_VersController extends Controller
               $output =1;   
             }
 
+            //L'ajout de demande de versementa été efectue
+            //Envoie de mail au gerant
+            if ($output == 1) {
+                $gerant = gerantSuc(readSurc($request->succursale_id)->user_id);
+                // Alert versement
+                    Mail::to($gerant->email)->send(new AlertVers('Demande',$dataV));
+            }
+            
         // Retour JSON
          return $output; 
 
@@ -369,11 +379,26 @@ class p_VersController extends Controller
                 ];
         $vers = versement::find($request->idVers);
         versement_historiques::create($valeur);
-        if(getHistVers($request->idVers)->sum('montantPaye') >= $vers->versMnt )
+        $mntDejaPaye = getHistVers($request->idVers)->sum('montantPaye');
+        if($mntDejaPaye >= $vers->versMnt )
         {
           $vers->versStatu = 1;
           $vers->save();
         }
+
+         $gerant = gerantSuc(readSurc($vers->succursale_id)->user_id);
+        //Déclenchement d'alert
+            //Msg alert
+         $elemnt = ['montantPaye'=>$request->montant,
+                  'datePaiement' =>$request->datePayVers,
+                  'typepaiement' =>$request->moyen,
+                  'matVers' =>$vers->versMat,
+                  'mntVers' =>$vers->versMnt,
+                  'mntRst' =>$vers->versMnt - $mntDejaPaye
+                ];
+            Mail::to($gerant->email)
+            ->send(new AlertVers('Alert Payement',$elemnt));
+
    
       return response()->json();
     }

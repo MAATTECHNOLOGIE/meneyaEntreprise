@@ -10,6 +10,7 @@
             </div>
           </div>
 
+          @if(!$produits->isEmpty())
             <div class="card mb-3 no-print">
             <div class="card-body">
               <div class="row justify-content-between align-items-center">
@@ -137,14 +138,13 @@
               @include('pages/principale/approvision/addPrdMod')
             {{-- ***** MODULE AJOUT PRODUIT & CATGORIE**** --}}
 
-@csrf
+          @csrf
+        @else
+        <div class="alert alert-warning h4 text-center">Aucun produits enregistrer</div>
+        @endif
 
 
-<!-- Button trigger modal-->
-{{-- <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#exampleModal">Launch demo modal</button> --}}
-<!-- Modal-->
-<!-- Button trigger modal-->
-<!-- Modal-->
+
 <div class="modal fade" id="histMod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

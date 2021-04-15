@@ -192,13 +192,13 @@
         <h2 class="text-center mb-5">Comment s'acquérir la solution ?</h2>
         <div class="row justify-content-center">
             
-            <div class="col-md-6 col-lg-5 col-xl-4">
+            <div class="col-md-3 col-lg-3 col-xl-6">
                 <div class="card card-price shadow-lg mb-4">
                     <div class="card-header">
-                        <h3 class="h4 font-weight-normal">Essaie</h3>
+                        <h3 class="h4 font-weight-normal "> <b>Essaie</b></h3>
                         <div class="d-flex justify-content-center">
                            <!--<span class="h4 font-weight-normal mt-1">Fcfa</span>-->
-                            <b><span>00 fcfa</span></b>
+                            <b><span>Gratuit !!!</span></b>
                         </div>
                     </div>
                     <div class="card-body">
@@ -215,10 +215,10 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-5 col-xl-4">
+            <div class="col-md-3 col-lg-3 col-xl-6">
                 <div class="card card-price shadow-lg mb-4">
                     <div class="card-header">
-                        <h3 class="h4 font-weight-normal">Abonnement</h3>
+                        <h3 class="h4 font-weight-normal"> <b>Starter</b> </h3>
                         <div class="d-flex justify-content-center">
                             <!--<span class="h4 font-weight-normal mt-1">Fcfa</span>-->
                             <b><span class="">20.000 fcfa/mois</span></b>
@@ -226,12 +226,11 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled mb-4" style="text-align: left;list-style-type: square;">
-                            <li class="py-2 text-secondary">Suivie en temps réel de votre stock</li>
-                            <li class="py-2 text-secondary">Gestion de vos ventes</li>
-                            <li class="py-2 text-secondary">Campagnes publicitaires</li>
-                            <li  class="py-2 text-secondary">Centraliser vos succursales</li>
-                            <li  class="py-2 text-secondary">Contrôle des Crédits</li>
-                            <li  class="py-2 text-secondary">logiciel online</li>
+                        <li class="py-2 text-secondary">Suivie en temps réel</li>
+                            <li class="py-2 text-secondary">Gestion des arrivages</li>
+                            <li class="py-2 text-secondary">Gestion de la principale</li>
+                            <li class="py-2 text-secondary">Gestion des ventes</li>
+                            <li  class="py-2 text-secondary">Gestion des fournisseurs</li>
                         </ul>
                         <a class="btn btn-outline-primary rounded-pill mb-3" 
                         href="meneyaabonner">S'abonner</a>
@@ -239,29 +238,58 @@
                 </div>
             </div>
             
-            <div class="col-md-6 col-lg-5 col-xl-4">
-                <div class="card card-price card-featured shadow-lg mb-4">
+            <div class="col-md-3 col-lg-3 col-xl-6">
+                <div class="card card-price shadow-lg mb-4">
                     <div class="card-header">
-                        <h3 class="h4 font-weight-normal">Premium</h3>
+                        <h3 class="h4 font-weight-normal"> <b>Medium</b> </h3>
                         <div class="d-flex justify-content-center">
                             <!--<span class="h4 font-weight-normal mt-1">Fcfa</span>-->
-                            <b><span class="">200.000 fcfa</span></b>
+                            <b><span class="">50.000 fcfa/mois</span></b>
                         </div>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled mb-4" style="text-align: left;list-style-type: square;">
-                        <li class="py-2 text-secondary">Suivie en temps réel de votre stock</li>
-                            <li class="py-2 text-secondary">Gestion de vos ventes</li>
-                            <li class="py-2 text-secondary">Campagnes publicitaires</li>
-                            <li  class="py-2 text-secondary">Centraliser vos succursales</li>
-                            <li  class="py-2 text-secondary">Contrôle des Crédits</li>
-                            <li class="py-2 text-secondary"> Mails professionnel</li>
-                            <li class="py-2 text-secondary"> Gestion des documents administratifs</li>
-                            <li class="py-2 text-secondary"> Gestion et paies des employés</li>
-                            <li class="py-2 text-secondary"> logiciel offline et online</li>
+                        <li class="py-2 text-secondary">Suivie en temps réel</li>
+                        <li class="py-2 text-secondary">Gestion des arrivages</li>
+                            <li class="py-2 text-secondary">Gestion de la principale</li>
+                            <li class="py-2 text-secondary">Gestion des succursales</li>
+                            <li  class="py-2 text-secondary">Gestion des ventes</li>
+                            <li  class="py-2 text-secondary">Gestion des utilisateurs</li>
+                            <li class="py-2 text-secondary"> Gestion des fournisseurs</li>
+                            <li class="py-2 text-secondary"> Gestion des prospects</li>
                         </ul>
-                        <a class="btn btn-primary rounded-pill mb-3" href="meneyaacheter">
-                            Acheter
+                        <a class="btn btn-outline-primary rounded-pill mb-3" href="meneyaacheter">
+                            S'abonner
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-6">
+                <div class="card card-price card-featured shadow-lg mb-4">
+                    <div class="card-header">
+                        <h3 class="h4 font-weight-normal"> <b>Premium</b> </h3>
+                        <div class="d-flex justify-content-center">
+                            <!--<span class="h4 font-weight-normal mt-1">Fcfa</span>-->
+                            <b><span class="">100.000 fcfa/ Mois</span></b>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-4" style="text-align: left;list-style-type: square;">
+                        <li class="py-2 text-secondary">Suivie en temps réel</li>
+                            <li class="py-2 text-secondary">Gestion de vos ventes</li>
+                            <li class="py-2 text-secondary">Gestion Arrivages</li>
+                            <li class="py-2 text-secondary">Gestion Principale</li>
+                            <li class="py-2 text-secondary">Gestion Succursales</li>
+                            <li class="py-2 text-secondary">Gestion Utilisateurs</li>
+                            <li class="py-2 text-secondary">Gestion Operateurs</li>
+                            <li class="py-2 text-secondary">Gestion Fournisseurs</li>
+                            <li class="py-2 text-secondary">Campagnes marketing</li>
+                            <li class="py-2 text-secondary">Gestion Prospects</li>
+                            <li class="py-2 text-secondary">Controle crédit</li>     
+                            <li class="py-2 text-secondary">E-commerce</li>     
+                        </ul>
+                        <a class="btn btn-danger rounded-pill mb-3" href="meneyaacheter">
+                            S' abonner
                         </a>
                     </div>
                 </div>

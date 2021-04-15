@@ -62,11 +62,6 @@
                         </p>
                       </div>
                     </div>
-                    <div class="mt-3 mb-4 mt-md-4 mb-md-5">
-                      <p>Email : essaie@meneya.com<br>Mot de passe : meneya2020<br>
-                        <a class="text-white text-underline"href='#'>Bon travail!</a>
-                      </p>
-                    </div>
                   </div>
                   <div class="col-md-7 d-flex flex-center">
                     <div class="p-4 p-md-5 flex-grow-1">

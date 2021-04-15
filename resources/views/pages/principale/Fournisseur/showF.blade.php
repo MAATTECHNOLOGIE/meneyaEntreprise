@@ -62,7 +62,7 @@
             <h3 class="mb-0 text-primary">
            <a href="#" class="fournisseur">
             <i class="fas fa-user-tie"></i>
-            Fournisseurs ></a>Historique Echeances
+            Fournisseurs ></a>Historique Achats
           </h3><br>
             <span><b>Nom: </b></span>
               {{ $four->fournisseurNom }}<br>
@@ -90,7 +90,7 @@
                     <button class="btn btn-falcon-default btn-sm newOpera" type="button">
                       <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
                       <span class="d-none d-sm-inline-block ml-1">
-                        Nouvelle échéance
+                        Nouvelle achat
                       </span>
                     </button>
   
@@ -101,14 +101,20 @@
 
           <div class="card mb-3">
             <div class="card-header">
-              <div class="row align-items-center justify-content-between">
-                <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
-                   <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">
-                     Listes des Paiements
-                   </h5>
-                </div>
-                <div class="col-8 col-sm-auto ml-auto text-right pl-0">
-                </div>
+              <div class="row align-items-center justify-content-around">
+
+                <button class="btn btn-falcon-danger btn-sm newOpera" type="button">
+                    <i class="far fa-money-bill-alt" data-fa-transform="shrink-3 down-2"></i>
+                      <span class="d-none d-sm-inline-block ml-1">
+                        Total Montant Due : <span id="totMntDu"></span>
+                      </span>
+                </button>
+                <button class="btn btn-falcon-default btn-sm newOpera" type="button">
+                      <i class="fas fa-sort-amount-up" data-fa-transform="shrink-3 down-2"></i>
+                      <span class="d-none d-sm-inline-block ml-1">
+                        Total achat : {{ formatPrice($EchF->sum('echeanceMontant')) }}
+                      </span>
+                </button>
               </div>
             </div>
             <div class="card-body p-0">
@@ -120,7 +126,7 @@
                       <th class="align-middle sort">N°</th>
                       <th class="align-middle sort">Date d'achat
                       </th>
-                      <th class="align-middle sort">Echeance
+                      <th class="align-middle sort">Date Echeance
                       </th>
                       <th class="align-middle sort">Valeur d'achat
                       </th>
@@ -132,7 +138,11 @@
                     </tr>
                   </thead>
                   <tbody id="orders">
+                    @php
+                      $totalDue = 0;
+                    @endphp
                    @foreach($EchF as $echF)
+
                    <tr class="btn-reveal-trigger">
                       <td class="py-2 align-middle">
                         {{ $loop->iteration }}
@@ -145,20 +155,20 @@
                       </td>
                       <td class="py-2 align-middle">
                         <span class="badge badge-pill badge-secondary" style="font-size: 15px">
-                          {{ number_format($echF->echeanceMontant,0,',','. ').' FCFA' }}
+                          {{ formatPrice($echF->echeanceMontant) }}
                         </span>
                       </td>
                       <td class="py-2 align-middle">
                         <span class="badge badge-pill badge-primary" style="font-size: 15px">
                          @php
                           $montantDue = $echF->echeanceMontant - getSommePaye($echF->idEch);
+                          $totalDue += $montantDue;
                           if ($montantDue<0) {
                             $montantDue = 0;
                           }
-
                          @endphp 
                          
-                          {{ number_format($montantDue,0,',','. ').' FCFA' }}
+                          {{formatPrice($montantDue)}}
                           </span>
                         </td>
                       <td>
@@ -211,7 +221,7 @@
 
 
 <!-- Champ inactif -->
-
+<input type="hidden" id="totalMntDu" value="{{ formatPrice($totalDue) }}">
 @csrf
 <div class="d-none" id='spiner'>
 <div class="spinner-border text-primary" role="status">
@@ -279,7 +289,7 @@
                       <div class="form-row">
                         <div class="col-6">
                           <div class="form-group">
-                            <label for="name">Nom agent</label>
+                            <label for="name">Versé par (Nom)</label>
                             <input class="form-control" id="name" name="name" type="text" required>
                           </div>
                         </div>
@@ -301,7 +311,7 @@
                         </div>
                         <div class="col-sm-6">
                           <div class="form-group">
-                            <label for="montant">Montant</label>
+                            <label for="montant">Montant versement</label>
                             <input class="form-control " required id="montant" name="montant" type="number" >
                           </div>
                         </div>
@@ -331,7 +341,9 @@
 
      <script src="{{ asset('assets/js/theme.js') }}"></script>
      <script type="text/javascript">
-       
+        //Affectation du montant total Due 
+          var mntDue = $('#totalMntDu').val();
+          $('#totMntDu').text(mntDue);
         //Valider 
          $('.valider').click(function(){
             var idV     = $(this).attr('id');

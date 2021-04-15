@@ -47,7 +47,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Se connecter au logiciel</a>
+                            <a class="nav-link" href="/login">Se connecter au logiciel</a>
                         </li>
 
                         <li class="nav-item">
