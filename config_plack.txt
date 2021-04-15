@@ -96,3 +96,5 @@ Message
 Promesse
 SWOT (force et faiblesse ) Meneya
 SWOT (force et faiblesse ) Concurents
+
+//nouvelle mise a jour 
