@@ -48,14 +48,15 @@ class abonmntControl extends Controller
            /* Mail::to(getSettingByName('supportMail'))->send(new MailAbonnement($email,$offre,$domaine,$pass));*/
 
             // Lancement de l'opération d'achat CinetPay
-             $a = 1;
-             if ($a==1) {
-               return response()->json(['code' => 1]);
-             }
-             else
-             {
-                return response()->json(['code' => -1]);
-             }
+
+               return response()->json([
+                                        'email' =>$email,
+                                        'offre' =>$offre,
+                                        'montant' =>$abn->Coutabonnement,
+                                        'domaine' =>$domaine,
+                                        'pass' =>$pass
+                                        ]);
+
              
         }
 

@@ -145,31 +145,6 @@
        $('#main_content').load('updForfait'); 
      })
 
-    //Lancement de la souscription
-     /*$('.Suscribe').click(function()
-     {
-       var offre_id = $(this).attr('forfait');
-       const ipAPI = '/suscribe?offre='+offre_id;
-
-        Swal.queue([{
-          title: 'Système de paiement',
-          confirmButtonText: 'Payez maitenant',
-          text:'Le système de paiement est en cours de chargement',
-          showLoaderOnConfirm: true,
-          preConfirm: () => {
-            return fetch(ipAPI)
-              .then(response => response.text())
-              .then(data => testMe())
-              .catch(() => {
-                Swal.insertQueueStep({
-                  icon: 'error',
-                  title: 'Erreur de connexion !!!'
-                })
-              })
-          }
-        }])
-      });*/
-
   })
 </script>
 

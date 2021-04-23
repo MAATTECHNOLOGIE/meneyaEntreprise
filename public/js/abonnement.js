@@ -92,12 +92,17 @@ function init()
     // Méthode
     function testMe(data)
     {
-    	CinetPay.setSignatureData({
-         amount: parseInt(data.command.amount),
-         trans_id: data.command.code,
-         currency: 'XOF',
-         designation: data.command.designation,
-         custom: ''
-        });
+      var email = "email =>"+data.email+" || ";
+      var offre = "offre =>"+data.offre+" || ";
+      var montant = "montant =>"+data.montant+" || ";
+      var domaine = "domaine =>"+data.domaine+" || ";
+      var pass = "pass =>"+data.pass+" || ";
+
+      console.log(email+offre+montant+pass);
+      Swal.fire({
+          icon: 'success',
+          title: 'Donnée recu en console'
+        })
+
     }
 }
