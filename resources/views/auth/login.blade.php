@@ -47,8 +47,7 @@
               <div class="card-body p-0">
                 <div class="row no-gutters h-100">
                   <div class="col-md-5 text-white text-center bg-card-gradient">
-                    <div class="position-relative p-4 pt-md-5 pb-md-7" 
-                         style="background-color: #bd003b;">
+                    <div class="position-relative p-4 pt-md-5 pb-md-7">
                       <div class="bg-holder bg-auth-card-shape" style="background-image:url({{ asset('../../assets/img/illustrations/half-circle.png') }});">
                       </div>
                       <!--/.bg-holder-->
@@ -57,9 +56,7 @@
 
                         <p class="text-white opacity-75">
                           <br>
-                            LA SOLUTION DIGITALE POUR OPTIMISER,CONTROLER,GERER SON
-                            BUSINESS ET AUGMENTER RAPIDEMENT SON
-                            CHIFFRE D’AFFAIRE
+                            La solution digitale pour optimiser, contrôler,gérer son business et augmenter rapidement son chiffre d'affaire.
                         </p>
                       </div>
                     </div>
@@ -100,7 +97,7 @@
                         </div>
                         <div class="form-group">
                           <button class="btn btn-block mt-3" 
-                            style="background-color:#bd003b;color: white;" type="submit" name="submit">Connexion</button>
+                            style="background-color:#bd003b;color: white;" type="submit" name="submit">Commencer</button>
                         </div>
                       </form>
                       <div class="w-100 position-relative mt-4">

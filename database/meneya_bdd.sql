@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 05 mars 2021 à 10:23
+-- Généré le :  ven. 23 avr. 2021 à 11:06
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.4
 
@@ -19,8 +19,33 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `meneya`
+-- Base de données :  `meneya_vide`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `abonnements`
+--
+
+CREATE TABLE `abonnements` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `dateDebut` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'date de debut d abonnement',
+  `dateFin` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'date de fin d abonnement',
+  `statuPaiement` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Statut du paiemlent pour l''\n                                                        abonnement en cours \n                                                         0 => pour non  payer \n                                                         1 => Payement valider',
+  `offres_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `abonnements`
+--
+
+INSERT INTO `abonnements` (`id`, `dateDebut`, `dateFin`, `statuPaiement`, `offres_id`, `created_at`, `updated_at`) VALUES
+(2, '15/04/2021', '20/05/2021', '0', 1, NULL, '2021-04-21 22:30:45'),
+(3, '15/02/2021', '20/03/2021', '0', 3, NULL, '2021-04-21 22:30:45'),
+(4, '15/04/2021', '20/05/2021', '1', 2, NULL, '2021-04-23 07:45:58');
 
 -- --------------------------------------------------------
 
@@ -54,6 +79,35 @@ INSERT INTO `acces` (`id`, `libelle`, `description`, `created_at`, `updated_at`)
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `acces_offres`
+--
+
+CREATE TABLE `acces_offres` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `libelle` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'nom de l''acces',
+  `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'description des fonctions de l''acces',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `acces_offres`
+--
+
+INSERT INTO `acces_offres` (`id`, `libelle`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'Gestion des Arrivages', 'Enregistrer et valider les entrées de produits', NULL, NULL),
+(2, 'Gestion de la Principale\r\n', 'Accès a l\'administration de la général', NULL, NULL),
+(3, 'Gestion des Succursales\r\n', 'Création, validation des versement des succursales', NULL, NULL),
+(4, 'Gestion des Ventes\r\n', 'Effectuer ventes, controller le stock, Edition de facture', NULL, NULL),
+(5, 'Gestion des Utilisateur\r\n', 'Ajouter, suprimer, Privilège Utilisateurs', NULL, NULL),
+(6, 'Gestion des Opérateurs\r\n', 'Enregistrements d\'opérateur,leurs opérations et transactions', NULL, NULL),
+(7, 'Gestion des Fournisseurs\r\n', 'Ajout de fournisseur, Suivit de paiement fournisseur', NULL, NULL),
+(8, 'Accès aux Prospects\r\n', 'Enregistrement prospect, analyse de besoin', NULL, NULL),
+(9, 'Accès aux Campagnes Marketting\r\n', 'Enregistrement prospect, analyse de besoin', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `approvisionnements`
 --
 
@@ -66,15 +120,10 @@ CREATE TABLE `approvisionnements` (
   `dateApro` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
   `succursale_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `charge` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description_charge` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `approvisionnements`
---
-
-INSERT INTO `approvisionnements` (`id`, `approvisionMat`, `approvisionStatut`, `approvisionMontant`, `approvisionTotal`, `dateApro`, `succursale_id`, `created_at`, `updated_at`) VALUES
-(1, 'APR#04/03/21#31', '0', '1531250', '30', '0', 2, '2021-03-04 11:31:18', '2021-03-04 11:31:19');
 
 -- --------------------------------------------------------
 
@@ -85,21 +134,16 @@ INSERT INTO `approvisionnements` (`id`, `approvisionMat`, `approvisionStatut`, `
 CREATE TABLE `arrivages` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `arrivageLibelle` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `arrivagePrix` int(11) NOT NULL,
+  `arrivagePrix` bigint(20) NOT NULL,
   `arrivageQte` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `arrivageDate` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `MatArvg` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `statut` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `charge` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description_charge` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `arrivages`
---
-
-INSERT INTO `arrivages` (`id`, `arrivageLibelle`, `arrivagePrix`, `arrivageQte`, `arrivageDate`, `MatArvg`, `statut`, `created_at`, `updated_at`) VALUES
-(1, 'arrivage', 6735000, '110', '04/03/2021', 'Arr#11_22_42', 1, '2021-03-04 11:22:42', '2021-03-04 11:23:24');
 
 -- --------------------------------------------------------
 
@@ -109,24 +153,14 @@ INSERT INTO `arrivages` (`id`, `arrivageLibelle`, `arrivagePrix`, `arrivageQte`,
 
 CREATE TABLE `arrivage_has_produits` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `qteproduits` int(11) NOT NULL COMMENT 'Quantité du produits pris dans l''arrivage\\n',
-  `coutachat` int(11) NOT NULL COMMENT 'le coût d''achat de la relation arrivage_has_produits définit le prix d''achat actuel du produit et met à jour le prix d''achat du produit dans la table produit\\n\\n',
-  `prixvente` int(11) NOT NULL COMMENT 'le prix de vente de la relation arrivage_has_produits définit le prix de vente actuel du produit et met à jour le prix de vente  du produit dans la table produit\\n\\n',
+  `qteproduits` bigint(20) NOT NULL COMMENT 'Quantité du produits pris dans l''arrivage\\n',
+  `coutachat` bigint(20) NOT NULL COMMENT 'le coût d''achat de la relation arrivage_has_produits définit le prix d''achat actuel du produit et met à jour le prix d''achat du produit dans la table produit\\n\\n',
+  `prixvente` bigint(20) NOT NULL COMMENT 'le prix de vente de la relation arrivage_has_produits définit le prix de vente actuel du produit et met à jour le prix de vente  du produit dans la table produit\\n\\n',
   `arrivage_id` bigint(20) UNSIGNED NOT NULL,
   `produits_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `arrivage_has_produits`
---
-
-INSERT INTO `arrivage_has_produits` (`id`, `qteproduits`, `coutachat`, `prixvente`, `arrivage_id`, `produits_id`, `created_at`, `updated_at`) VALUES
-(1, 15, 50000, 62500, 1, 1, '2021-03-04 11:22:42', '2021-03-04 11:22:42'),
-(2, 4, 15000, 18750, 1, 2, '2021-03-04 11:22:42', '2021-03-04 11:22:42'),
-(3, 50, 57000, 71250, 1, 3, '2021-03-04 11:22:42', '2021-03-04 11:22:42'),
-(4, 41, 75000, 93750, 1, 4, '2021-03-04 11:22:42', '2021-03-04 11:22:42');
 
 -- --------------------------------------------------------
 
@@ -160,13 +194,6 @@ CREATE TABLE `besoins` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `besoins`
---
-
-INSERT INTO `besoins` (`id`, `nom`, `image`, `details`, `dateV`, `created_at`, `updated_at`) VALUES
-(1, 'bannane', 'image', 'besoins clients', '04/03/2021', '2021-03-04 12:46:59', '2021-03-04 12:46:59');
 
 -- --------------------------------------------------------
 
@@ -217,11 +244,7 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `libelle`, `created_at`, `updated_at`) VALUES
-(1, 'Non classe', NULL, NULL),
-(2, 'ORDINATEUR PORTABLE', '2021-03-04 11:12:08', '2021-03-04 11:12:08'),
-(3, 'ORDINATEUR PORTABLE', '2021-03-04 11:12:09', '2021-03-04 11:12:09'),
-(4, 'bureau', '2021-03-04 11:15:20', '2021-03-04 11:15:20'),
-(5, 'telepephone', '2021-03-04 11:19:28', '2021-03-04 11:19:28');
+(1, 'Non classé ', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -241,14 +264,6 @@ CREATE TABLE `clients` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `clients`
---
-
-INSERT INTO `clients` (`id`, `statutClt`, `nom`, `contact`, `lieu`, `date`, `mail`, `created_at`, `updated_at`) VALUES
-(1, '1', 'Client anonyme', '2250102205211', '', '', '', NULL, NULL),
-(3, '0', 'ngue', '2250788833060', 'lieu', '04/03/2021', NULL, '2021-03-04 12:45:44', '2021-03-04 23:33:45');
-
 -- --------------------------------------------------------
 
 --
@@ -264,13 +279,6 @@ CREATE TABLE `clients_has_besoins` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `clients_has_besoins`
---
-
-INSERT INTO `clients_has_besoins` (`id`, `clients_id`, `besoins_id`, `dateD`, `created_at`, `updated_at`) VALUES
-(1, 3, 1, '04/03/2121', '2021-03-04 12:46:59', '2021-03-04 12:46:59');
-
 -- --------------------------------------------------------
 
 --
@@ -284,7 +292,8 @@ CREATE TABLE `credits` (
   `creditStatut` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `creditDate` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `factureavoir_id` bigint(20) UNSIGNED NOT NULL,
+  `vente_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sucId` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -292,17 +301,15 @@ CREATE TABLE `credits` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `credits_princips`
+-- Structure de la table `credits_historiques`
 --
 
-CREATE TABLE `credits_princips` (
+CREATE TABLE `credits_historiques` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `creditEcheance` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `creditMontant` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `creditStatut` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `creditDate` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `princip_factu_avoirs_id` bigint(20) UNSIGNED NOT NULL,
+  `montantPaye` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `datePaiement` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `typepaiement` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `credit_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -384,14 +391,6 @@ CREATE TABLE `echeancehistoriques` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `echeancehistoriques`
---
-
-INSERT INTO `echeancehistoriques` (`id`, `nomAgent`, `montantPaye`, `datePaiement`, `banque`, `typepaiement`, `echeance_id`, `created_at`, `updated_at`) VALUES
-(1, 'MBO BOUA HUBERT', '5000', '05/03/21', 'ecobank', 'Banque', 1, '2021-03-04 12:41:23', '2021-03-04 12:41:23'),
-(2, 'kouame ngues', '5000', '06/03/21', NULL, 'Espèce', 1, '2021-03-04 12:44:03', '2021-03-04 12:44:03');
-
 -- --------------------------------------------------------
 
 --
@@ -408,13 +407,6 @@ CREATE TABLE `echeances` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `echeances`
---
-
-INSERT INTO `echeances` (`id`, `echeanceStatut`, `echeanceMontant`, `echeanceDate`, `dateAchat`, `fournisseurs_id`, `created_at`, `updated_at`) VALUES
-(1, 'Soldée', '10000', '05/03/2121', '04/03/2121', 1, '2021-03-04 12:40:52', '2021-03-04 12:44:04');
 
 -- --------------------------------------------------------
 
@@ -487,13 +479,6 @@ CREATE TABLE `fournisseurs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `fournisseurs`
---
-
-INSERT INTO `fournisseurs` (`id`, `fournisseurMat`, `fournisseurContact`, `fournisseurNom`, `fournisseurRespo`, `fournisseurMail`, `created_at`, `updated_at`) VALUES
-(1, '305537399F', '0102205211', 'SAPH', 'kone moussa', 'saph@gmail.com', '2021-03-04 12:40:27', '2021-03-04 12:40:27');
-
 -- --------------------------------------------------------
 
 --
@@ -509,19 +494,21 @@ CREATE TABLE `interesses` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Déchargement des données de la table `interesses`
+-- Structure de la table `jobs`
 --
 
-INSERT INTO `interesses` (`id`, `nom`, `tel`, `lieu`, `created_at`, `updated_at`) VALUES
-(1, 'SUCCURSALE LAHOU', '0542212552', 'Rivera', '2021-03-04 23:58:44', '2021-03-04 23:58:44'),
-(2, 'c', '1', 'c', '2021-03-05 00:10:39', '2021-03-05 00:10:39'),
-(3, 'c', '1', 'c', '2021-03-05 00:10:45', '2021-03-05 00:10:45'),
-(4, 'c', '1', 'c', '2021-03-05 00:10:59', '2021-03-05 00:10:59'),
-(5, 'z', '1', 'a', '2021-03-05 00:12:02', '2021-03-05 00:12:02'),
-(6, 'a', '1', 'a', '2021-03-05 00:14:10', '2021-03-05 00:14:10'),
-(7, 'a', '1', 'a', '2021-03-05 00:18:38', '2021-03-05 00:18:38'),
-(8, 'a', '1', 'a', '2021-03-05 00:22:07', '2021-03-05 00:22:07');
+CREATE TABLE `jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `queue` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint(3) UNSIGNED NOT NULL,
+  `reserved_at` int(10) UNSIGNED DEFAULT NULL,
+  `available_at` int(10) UNSIGNED NOT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -559,47 +546,52 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (17, '2020_11_13_183728_create_dossiers_table', 1),
 (18, '2020_11_13_184039_create_documents_table', 1),
 (19, '2020_11_13_184746_create_ventes_succursales_table', 1),
-(20, '2020_11_13_193907_create_factureavoirs_table', 1),
-(21, '2020_11_13_194910_create_credits_table', 1),
-(22, '2020_11_13_195258_create_devises_table', 1),
-(23, '2020_11_13_195359_create_roles_table', 1),
-(24, '2020_11_13_195437_create_approvisionnements_table', 1),
-(25, '2020_11_13_195600_create_operations_has_operateurs_table', 1),
-(26, '2020_11_13_215436_create_sortie_ops_table', 1),
-(27, '2020_11_13_215637_create_stock_operateurs_table', 1),
-(28, '2020_11_13_220600_create_stock_principales_table', 1),
-(29, '2020_11_13_220915_create_stock_succursales_table', 1),
-(30, '2020_11_13_223704_create_vente_principales_table', 1),
-(31, '2020_11_13_231644_create_arrivage_has_produits_table', 1),
-(32, '2020_11_13_232218_create_produits_has_approvisionnements_table', 1),
-(33, '2020_11_13_232447_create_produits_has_ventes_succursales_table', 1),
-(34, '2020_11_13_234834_create_succursale_has_clients_table', 1),
-(35, '2020_11_13_235013_create_produits_has_vente_principales_table', 1),
-(36, '2020_11_13_235301_create_factureachats_table', 1),
-(37, '2020_11_14_000059_create_role_has_users_table', 1),
-(38, '2020_11_14_000311_create_echeancehistoriques_table', 1),
-(39, '2020_11_14_000606_create_produits_has_sortie_ops_table', 1),
-(40, '2020_11_14_001709_create_sms_has_clients_table', 1),
-(41, '2020_11_14_001822_create_clients_has_besoins_table', 1),
-(42, '2020_11_14_002035_create_bulletins_table', 1),
-(43, '2020_11_14_002345_create_rubriques_table', 1),
-(44, '2020_11_14_002439_create_prets_table', 1),
-(45, '2020_11_14_002645_create_avances_table', 1),
-(46, '2020_11_14_004420_create_bulletin_has_rubriques_table', 1),
-(47, '2020_11_14_004842_create_super_admins_table', 1),
-(48, '2020_11_14_005013_create_prospects_table', 1),
-(49, '2020_11_14_022349_create_offres_table', 1),
-(50, '2020_11_14_022505_create_prospect_has_offres_table', 1),
-(51, '2020_11_14_080847_create_princip_factu_achats_table', 1),
-(52, '2020_11_14_081347_create_princip_factu_avoirs_table', 1),
-(53, '2020_11_14_081644_create_credits_princips_table', 1),
-(54, '2021_02_18_200312_create_ressources_hums_table', 1),
-(55, '2021_02_21_034249_create_acces_table', 1),
-(56, '2021_02_21_034307_create_user_has_acces_table', 1),
-(57, '2021_02_22_181056_create_versements_table', 1),
-(58, '2021_02_25_142634_create_versement_historiques_table', 1),
-(59, '2021_03_04_094141_create_interesse_table', 1),
-(60, '2021_03_04_094243_create_sms_has_interesses_table', 1);
+(20, '2020_11_13_195258_create_devises_table', 1),
+(21, '2020_11_13_195359_create_roles_table', 1),
+(22, '2020_11_13_195437_create_approvisionnements_table', 1),
+(23, '2020_11_13_195600_create_operations_has_operateurs_table', 1),
+(24, '2020_11_13_215436_create_sortie_ops_table', 1),
+(25, '2020_11_13_215637_create_stock_operateurs_table', 1),
+(26, '2020_11_13_220600_create_stock_principales_table', 1),
+(27, '2020_11_13_220915_create_stock_succursales_table', 1),
+(28, '2020_11_13_223704_create_vente_principales_table', 1),
+(29, '2020_11_13_231644_create_arrivage_has_produits_table', 1),
+(30, '2020_11_13_232218_create_produits_has_approvisionnements_table', 1),
+(31, '2020_11_13_232447_create_produits_has_ventes_succursales_table', 1),
+(32, '2020_11_13_234834_create_succursale_has_clients_table', 1),
+(33, '2020_11_13_235013_create_produits_has_vente_principales_table', 1),
+(34, '2020_11_13_235301_create_factureachats_table', 1),
+(35, '2020_11_14_000059_create_role_has_users_table', 1),
+(36, '2020_11_14_000311_create_echeancehistoriques_table', 1),
+(37, '2020_11_14_000606_create_produits_has_sortie_ops_table', 1),
+(38, '2020_11_14_001709_create_sms_has_clients_table', 1),
+(39, '2020_11_14_001822_create_clients_has_besoins_table', 1),
+(40, '2020_11_14_002035_create_bulletins_table', 1),
+(41, '2020_11_14_002345_create_rubriques_table', 1),
+(42, '2020_11_14_002439_create_prets_table', 1),
+(43, '2020_11_14_002645_create_avances_table', 1),
+(44, '2020_11_14_004420_create_bulletin_has_rubriques_table', 1),
+(45, '2020_11_14_004842_create_super_admins_table', 1),
+(46, '2020_11_14_005013_create_prospects_table', 1),
+(47, '2020_11_14_022349_create_offres_table', 1),
+(48, '2020_11_14_022505_create_prospect_has_offres_table', 1),
+(49, '2020_11_14_080847_create_princip_factu_achats_table', 1),
+(50, '2020_11_14_081347_create_princip_factu_avoirs_table', 1),
+(51, '2021_02_18_200312_create_ressources_hums_table', 1),
+(52, '2021_02_21_034249_create_acces_table', 1),
+(53, '2021_02_21_034307_create_user_has_acces_table', 1),
+(54, '2021_02_22_181056_create_versements_table', 1),
+(55, '2021_02_25_142634_create_versement_historiques_table', 1),
+(56, '2021_03_04_094141_create_interesse_table', 1),
+(57, '2021_03_04_094243_create_sms_has_interesses_table', 1),
+(66, '2021_03_18_194910_create_credits_table', 2),
+(67, '2021_03_19_091437_create_credits_historiques_table', 2),
+(74, '2021_03_31_064451_create_jobs_table', 3),
+(75, '2021_04_14_022349_create_offres_table', 4),
+(76, '2021_04_15_113311_create_abonnements_table', 4),
+(77, '2021_04_15_113821_create_acces_offres_table', 4),
+(78, '2021_04_15_114110_create_offres_has_acces_offres_table', 4),
+(79, '2021_04_15_222505_create_prospect_has_offres_table', 4);
 
 -- --------------------------------------------------------
 
@@ -609,10 +601,61 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `offres` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `libele` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'A travers la solution digitale Meneya nous disposons de trois types d''offre opérationnelles sur le marché:\\n- La version d''essaie\\n- La version d''abonnement\\n- La version premium\\n',
+  `libele` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Nom de loffre de souscription',
+  `prixInscription` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Montant payer a l''inscription ( contient le cout de l''abonnement 01 mois de l''offre + frais de deploiement)nt',
+  `Coutabonnement` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'cout de l''abonnement',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `offres`
+--
+
+INSERT INTO `offres` (`id`, `libele`, `prixInscription`, `Coutabonnement`, `created_at`, `updated_at`) VALUES
+(1, 'STARTER', '50 000', '20000', NULL, NULL),
+(2, 'MEDIUM', '80 000', '50000', NULL, NULL),
+(3, 'PREMIUM', '150 000', '100000', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `offres_has_acces_offres`
+--
+
+CREATE TABLE `offres_has_acces_offres` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `offres_id` bigint(20) UNSIGNED NOT NULL,
+  `accesOffres_id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `offres_has_acces_offres`
+--
+
+INSERT INTO `offres_has_acces_offres` (`id`, `offres_id`, `accesOffres_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, NULL, NULL),
+(2, 1, 2, NULL, NULL),
+(3, 1, 7, NULL, NULL),
+(4, 1, 4, NULL, NULL),
+(5, 2, 1, NULL, NULL),
+(6, 3, 2, NULL, NULL),
+(7, 2, 7, NULL, NULL),
+(8, 2, 4, NULL, NULL),
+(9, 2, 3, NULL, NULL),
+(10, 2, 5, NULL, NULL),
+(11, 2, 8, NULL, NULL),
+(12, 3, 1, NULL, NULL),
+(13, 3, 2, NULL, NULL),
+(14, 3, 3, NULL, NULL),
+(15, 3, 4, NULL, NULL),
+(16, 3, 5, NULL, NULL),
+(17, 3, 6, NULL, NULL),
+(18, 3, 7, NULL, NULL),
+(19, 3, 8, NULL, NULL),
+(20, 3, 9, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -631,13 +674,6 @@ CREATE TABLE `operateurs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `operateurs`
---
-
-INSERT INTO `operateurs` (`id`, `operateurMat`, `operateurNom`, `operateurContact`, `operateurDate`, `operateurLieu`, `created_at`, `updated_at`) VALUES
-(1, '6Ap', 'kouame ngues kouassi', '0102205211', '04/03/2121', 'Abobo', '2021-03-04 11:57:12', '2021-03-04 11:57:12');
-
 -- --------------------------------------------------------
 
 --
@@ -652,14 +688,6 @@ CREATE TABLE `operations` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `operations`
---
-
-INSERT INTO `operations` (`id`, `OperationLibele`, `operationCode`, `Operationcomt`, `created_at`, `updated_at`) VALUES
-(1, 'placement de ciment', '4A', 'déposer de l\'argent pour acheter du ciment', '2021-03-04 12:04:03', '2021-03-04 12:04:03'),
-(2, 'placement de briques', '11A', 'operation de retrait debriques', '2021-03-04 12:04:46', '2021-03-04 12:04:46');
 
 -- --------------------------------------------------------
 
@@ -678,13 +706,6 @@ CREATE TABLE `operation_has_operateurs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `operation_has_operateurs`
---
-
-INSERT INTO `operation_has_operateurs` (`id`, `operations_id`, `operateurs_id`, `montant`, `montantrestant`, `date`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '1600000', '975000', '04/03/2121', '2021-03-04 12:05:29', '2021-03-04 12:38:52');
-
 -- --------------------------------------------------------
 
 --
@@ -701,13 +722,6 @@ CREATE TABLE `operation_pay_historiques` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `operation_pay_historiques`
---
-
-INSERT INTO `operation_pay_historiques` (`id`, `nomAgent`, `montantPaye`, `datePaiement`, `typepaiement`, `optionOpteur_id`, `updated_at`, `created_at`) VALUES
-(1, 'ADMIN', 500000, '04/03/20', 'Mobile money', 1, '2021-03-04 12:38:52', '2021-03-04 12:38:52');
 
 -- --------------------------------------------------------
 
@@ -793,6 +807,7 @@ CREATE TABLE `produits` (
   `produitPrix` int(11) NOT NULL COMMENT 'Prix de vente du produit',
   `produitPrixFour` int(11) NOT NULL COMMENT 'Cout d'' achat du produit',
   `description` text COLLATE utf8mb4_unicode_ci,
+  `image` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'assets/img/illustrations/falcon.png',
   `unite_mesure` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tva` int(11) NOT NULL DEFAULT '0',
   `autre_charge` int(11) NOT NULL DEFAULT '0',
@@ -800,16 +815,6 @@ CREATE TABLE `produits` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `produits`
---
-
-INSERT INTO `produits` (`id`, `produitMat`, `produitLibele`, `seuilAlert`, `produitPrix`, `produitPrixFour`, `description`, `unite_mesure`, `tva`, `autre_charge`, `categorie_id`, `created_at`, `updated_at`) VALUES
-(1, 'Prd1#00', 'UNITE CENTRAL', 10, 62500, 50000, 'UNITE CENTRAL', 'ND', 0, 0, 4, '2021-03-04 11:17:22', '2021-03-04 11:17:22'),
-(2, 'Prd2#010', 'LENEOVO THINKPAD', 10, 18750, 15000, 'LENEOVO THINKPAD', 'ND', 0, 0, 2, '2021-03-04 11:18:45', '2021-03-04 11:18:45'),
-(3, 'Prd3#02', 'TECNO SPARK', 15, 71250, 57000, 'TECNO SPARK', 'ND', 0, 0, 5, '2021-03-04 11:19:57', '2021-03-04 11:19:57'),
-(4, 'Prd4#02', 'ITEL P15', 2, 93750, 75000, 'ITEL P15', 'ND', 0, 0, 5, '2021-03-04 11:20:16', '2021-03-04 11:20:16');
 
 -- --------------------------------------------------------
 
@@ -819,23 +824,14 @@ INSERT INTO `produits` (`id`, `produitMat`, `produitLibele`, `seuilAlert`, `prod
 
 CREATE TABLE `produits_has_approvisionnements` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `qteproduits` int(11) NOT NULL,
-  `coutachat` int(11) NOT NULL,
-  `prixvente` int(11) NOT NULL,
+  `qteproduits` bigint(20) NOT NULL,
+  `coutachat` bigint(20) NOT NULL,
+  `prixvente` bigint(20) NOT NULL,
   `produits_id` bigint(20) UNSIGNED NOT NULL,
   `approvisionnement_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `produits_has_approvisionnements`
---
-
-INSERT INTO `produits_has_approvisionnements` (`id`, `qteproduits`, `coutachat`, `prixvente`, `produits_id`, `approvisionnement_id`, `created_at`, `updated_at`) VALUES
-(1, 15, 15000, 18750, 2, 1, '2021-03-04 11:31:18', '2021-03-04 11:31:18'),
-(2, 5, 50000, 62500, 1, 1, '2021-03-04 11:31:19', '2021-03-04 11:31:19'),
-(3, 10, 75000, 93750, 4, 1, '2021-03-04 11:31:19', '2021-03-04 11:31:19');
 
 -- --------------------------------------------------------
 
@@ -854,13 +850,6 @@ CREATE TABLE `produits_has_sortie_ops` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `produits_has_sortie_ops`
---
-
-INSERT INTO `produits_has_sortie_ops` (`id`, `qte`, `prixvente`, `tva`, `produits_id`, `sortie_ops_id`, `created_at`, `updated_at`) VALUES
-(4, 10, 62500, NULL, 1, 4, '2021-03-04 12:27:48', '2021-03-04 12:27:48');
-
 -- --------------------------------------------------------
 
 --
@@ -869,7 +858,8 @@ INSERT INTO `produits_has_sortie_ops` (`id`, `qte`, `prixvente`, `tva`, `produit
 
 CREATE TABLE `produits_has_ventes_succursales` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `prixvente` int(11) NOT NULL,
+  `prixvente` int(11) NOT NULL COMMENT 'prix auquel la succursal a vendu le prd',
+  `coutAchat` int(11) NOT NULL COMMENT 'prix auquel la succursale a obtenue le produit',
   `qte` int(11) NOT NULL,
   `tva` int(11) NOT NULL COMMENT 'Le pourcentage de la tva, une addition sur le prix de vente',
   `produits_id` bigint(20) UNSIGNED NOT NULL,
@@ -964,7 +954,8 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`id`, `libelle`, `created_at`, `updated_at`) VALUES
 (1, 'admin', NULL, NULL),
-(2, 'gestionnaire', NULL, NULL);
+(2, 'gestionnaire', NULL, NULL),
+(3, 'superAdmin', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -985,10 +976,9 @@ CREATE TABLE `role_has_users` (
 --
 
 INSERT INTO `role_has_users` (`id`, `roles_id`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, NULL, '2021-03-04 11:51:37'),
-(13, 1, 1, '2021-02-28 20:04:40', '2021-03-04 11:51:37'),
-(18, 2, 6, '2021-03-04 11:45:16', '2021-03-04 11:51:46'),
-(19, 2, 6, '2021-03-04 11:52:03', '2021-03-04 11:52:03');
+(1, 1, 1, NULL, '2021-04-23 02:39:00'),
+(2, 1, 1, '2021-04-21 08:55:58', '2021-04-23 02:39:00'),
+(4, 3, 1, NULL, '2021-04-23 02:39:00');
 
 -- --------------------------------------------------------
 
@@ -1049,8 +1039,8 @@ CREATE TABLE `settings` (
 INSERT INTO `settings` (`id`, `cle`, `valeur`, `commentaire`, `created_at`, `updated_at`) VALUES
 (1, 'dedouanement', '0', 'Frais du dedouanement que dois supporter chaque produits dans le calcul de son prix', '2020-10-05 23:00:00', '2020-10-21 09:23:02'),
 (2, 'taxePort', '0', 'Les taxes du port que dois supporter chaque produits dans le calcul de son prix', '2020-10-05 23:00:00', '2020-10-08 23:12:09'),
-(3, 'fraisAnnexe', '5', 'Frais anexe que dois supporter chaque produits dans le calcul de son prix', '0000-00-00 00:00:00', '2020-10-08 23:12:09'),
-(4, 'margeVente', '20', 'Marge ajouter au prix brute du produit afin de geneer des benefices', '0000-00-00 00:00:00', '2020-10-08 23:12:09'),
+(3, 'fraisAnnexe', '0', 'Frais anexe que dois supporter chaque produits dans le calcul de son prix', '0000-00-00 00:00:00', '2020-10-08 23:12:09'),
+(4, 'margeVente', '0', 'Marge ajouter au prix brute du produit afin de geneer des benefices', '0000-00-00 00:00:00', '2020-10-08 23:12:09'),
 (5, 'seuilPrd', '10', 'Niveaau critique du stock ou on doit etre alerter', NULL, NULL),
 (6, 'alertTel', '53808065', 'Nuero de telephone recevant les alertes defin de stock', NULL, '2020-10-08 23:13:56'),
 (7, 'alertMail', 'maattechnologie@gmail.com', 'Adresse mail recevant les alertes de fin de stock', NULL, '2020-10-08 23:13:56'),
@@ -1066,7 +1056,10 @@ INSERT INTO `settings` (`id`, `cle`, `valeur`, `commentaire`, `created_at`, `upd
 (17, 'Entreprise', 'ALISHOP', 'Nom de votre entreprise', '2021-02-28 22:40:55', '2021-02-28 22:40:55'),
 (18, 'local', 'Abobo derrière barrage', '', '2021-02-28 22:45:36', '2021-02-28 22:45:36'),
 (19, 'contact', '225 01 02 20 52 11', 'Le numéro de l\'entreprise', '2021-02-28 22:52:14', '2021-02-28 22:52:14'),
-(20, 'logo', 'asset(\'assets/img/team/logodimad.jpg\')', '', NULL, NULL);
+(20, 'logo', 'assets/img/logos/meneya2.png', '', NULL, NULL),
+(21, 'domaine', 'alishop.meneya.com', NULL, NULL, NULL),
+(22, 'supportMail', 'meneyaco@gmail.com', NULL, NULL, NULL),
+(23, 'nbrConnexion', '2', NULL, NULL, '2021-04-23 00:54:32');
 
 -- --------------------------------------------------------
 
@@ -1142,13 +1135,6 @@ CREATE TABLE `sortie_ops` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `sortie_ops`
---
-
-INSERT INTO `sortie_ops` (`id`, `matSortie`, `libelleSortie`, `montantS`, `quantiteS`, `dateSortie`, `charges`, `chargesDesc`, `tva`, `operationsOperateurs_id`, `created_at`, `updated_at`) VALUES
-(4, 'SRT#04/03/2021#539', 'Sortie_placement de ciment (Matr: 1|100.000 CFA|04/03/2121 )', 625000, 10, '04/03/2021', NULL, 'aucun', NULL, 1, '2021-03-04 12:27:47', '2021-03-04 12:27:48');
-
 -- --------------------------------------------------------
 
 --
@@ -1177,16 +1163,6 @@ CREATE TABLE `stock_principales` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `stock_principales`
---
-
-INSERT INTO `stock_principales` (`id`, `stock_Qte`, `produits_id`, `created_at`, `updated_at`) VALUES
-(1, '10', 1, '2021-03-04 11:23:24', '2021-03-04 11:42:57'),
-(2, '3', 2, '2021-03-04 11:23:24', '2021-03-04 11:42:57'),
-(3, '47', 3, '2021-03-04 11:23:24', '2021-03-04 11:42:57'),
-(4, '39', 4, '2021-03-04 11:23:24', '2021-03-04 11:42:57');
-
 -- --------------------------------------------------------
 
 --
@@ -1197,19 +1173,11 @@ CREATE TABLE `stock_succursales` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `stock_Qte` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `produits_id` bigint(20) UNSIGNED NOT NULL,
+  `sucCoutAchat` int(11) DEFAULT NULL,
   `succursale_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Déchargement des données de la table `stock_succursales`
---
-
-INSERT INTO `stock_succursales` (`id`, `stock_Qte`, `produits_id`, `succursale_id`, `created_at`, `updated_at`) VALUES
-(1, '15', 2, 2, '2021-03-04 11:31:19', '2021-03-04 11:31:19'),
-(2, '5', 1, 2, '2021-03-04 11:31:19', '2021-03-04 11:31:19'),
-(3, '10', 4, 2, '2021-03-04 11:31:19', '2021-03-04 11:31:19');
 
 -- --------------------------------------------------------
 
@@ -1234,8 +1202,7 @@ CREATE TABLE `succursales` (
 --
 
 INSERT INTO `succursales` (`id`, `succursaleMat`, `succursaleLibelle`, `succursalLieu`, `succursalContact`, `datesucu`, `user_id`, `created_at`, `updated_at`) VALUES
-(1, 'SC001', 'Succursale PRINCIPALE', 'ABIDJAN', '+225 53 80 80 65', '10/03/21', 1, '2021-03-04 11:27:29', '2021-03-04 11:27:29'),
-(2, 'SC002', 'Succursale meneya1', 'ANONO', '77718083', '04/03/21', 6, '2021-03-04 11:29:53', '2021-03-04 11:52:03');
+(1, 'SC001', 'PRINCIPALE', 'ENTREPRISE PRINCIPALE', '0101010101', '01/04/21', 1, '2021-04-21 08:55:58', '2021-04-21 08:55:58');
 
 -- --------------------------------------------------------
 
@@ -1294,8 +1261,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `contact`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `localite`) VALUES
-(1, 'ADMIN', '53808065', 'admin@meneya.com', '2020-07-29 15:21:17', '$2y$10$.ZJ1edjAZb02mK0f0vHPsOIs802ao1txwIHShJYXbWcO/KSHDAi/u', '', NULL, '2021-03-04 11:51:37', 'meneya2020'),
-(6, 'MBO BOUA HUBERT', '785412785', 'boua@meneya.com', NULL, '$2y$10$qB3skqwNxMtU8z8KnFjsKeqlAiBXW3SksyTi5e.b44cSWiAfhlZA6', NULL, '2021-03-04 11:45:16', '2021-03-04 11:51:46', 'user1234');
+(1, 'ADMIN', '53808065', 'admin@meneya.com', '2020-07-29 15:21:17', '$2y$10$arMlIFDcVVg4s0bhPQAkfOaGPMqrGzcU1f4bA6QYwsd8xIZhLuIq6', '', NULL, '2021-04-23 02:39:00', 'meneya20');
 
 -- --------------------------------------------------------
 
@@ -1318,23 +1284,14 @@ CREATE TABLE `user_has_acces` (
 
 INSERT INTO `user_has_acces` (`id`, `user_id`, `acces_id`, `status`, `created_at`, `updated_at`) VALUES
 (1, 1, 5, 1, NULL, NULL),
-(2, 1, 1, 1, '2021-02-22 13:08:30', '2021-02-22 13:08:30'),
-(3, 1, 2, 1, '2021-02-22 13:08:30', '2021-02-22 13:08:30'),
-(4, 1, 3, 1, '2021-02-22 13:08:30', '2021-02-22 13:08:30'),
-(5, 1, 4, 1, '2021-02-22 13:08:30', '2021-02-22 13:08:30'),
-(6, 1, 6, 1, '2021-02-22 13:08:30', '2021-02-22 13:10:23'),
-(7, 1, 7, 1, '2021-02-22 13:08:30', '2021-02-22 14:11:15'),
-(8, 1, 8, 1, '2021-02-22 13:08:30', '2021-02-22 14:11:15'),
-(9, 1, 9, 1, '2021-02-22 13:08:30', '2021-02-22 14:11:15'),
-(26, 6, 1, 1, '2021-03-04 11:49:09', '2021-03-04 11:49:09'),
-(27, 6, 2, 1, '2021-03-04 11:49:09', '2021-03-04 11:49:09'),
-(28, 6, 3, 0, '2021-03-04 11:49:09', '2021-03-04 11:49:09'),
-(29, 6, 4, 1, '2021-03-04 11:49:09', '2021-03-04 11:49:09'),
-(30, 6, 5, 1, '2021-03-04 11:49:09', '2021-03-04 11:49:09'),
-(31, 6, 6, 0, '2021-03-04 11:49:09', '2021-03-04 11:49:09'),
-(32, 6, 7, 0, '2021-03-04 11:49:09', '2021-03-04 11:49:09'),
-(33, 6, 8, 0, '2021-03-04 11:49:09', '2021-03-04 11:49:09'),
-(34, 6, 9, 0, '2021-03-04 11:49:09', '2021-03-04 11:49:09');
+(2, 1, 1, 1, '2021-02-22 13:08:30', '2021-03-15 15:36:38'),
+(3, 1, 2, 1, '2021-02-22 13:08:30', '2021-03-15 15:36:38'),
+(4, 1, 3, 1, '2021-02-22 13:08:30', '2021-03-15 15:36:38'),
+(5, 1, 4, 1, '2021-02-22 13:08:30', '2021-03-12 00:23:58'),
+(6, 1, 6, 1, '2021-02-22 13:08:30', '2021-03-11 12:32:19'),
+(7, 1, 7, 1, '2021-02-22 13:08:30', '2021-03-11 12:32:20'),
+(8, 1, 8, 1, '2021-02-22 13:08:30', '2021-03-11 12:32:20'),
+(9, 1, 9, 1, '2021-02-22 13:08:30', '2021-03-11 12:32:20');
 
 -- --------------------------------------------------------
 
@@ -1424,9 +1381,22 @@ CREATE TABLE `versement_historiques` (
 --
 
 --
+-- Index pour la table `abonnements`
+--
+ALTER TABLE `abonnements`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `abonnements_offres_id_foreign` (`offres_id`);
+
+--
 -- Index pour la table `acces`
 --
 ALTER TABLE `acces`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `acces_offres`
+--
+ALTER TABLE `acces_offres`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1503,14 +1473,14 @@ ALTER TABLE `clients_has_besoins`
 --
 ALTER TABLE `credits`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `credits_factureavoir_id_foreign` (`factureavoir_id`);
+  ADD KEY `credits_sucid_foreign` (`sucId`);
 
 --
--- Index pour la table `credits_princips`
+-- Index pour la table `credits_historiques`
 --
-ALTER TABLE `credits_princips`
+ALTER TABLE `credits_historiques`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `credits_princips_princip_factu_avoirs_id_foreign` (`princip_factu_avoirs_id`);
+  ADD KEY `credits_historiques_credit_id_foreign` (`credit_id`);
 
 --
 -- Index pour la table `devises`
@@ -1578,6 +1548,13 @@ ALTER TABLE `interesses`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_index` (`queue`);
+
+--
 -- Index pour la table `migrations`
 --
 ALTER TABLE `migrations`
@@ -1588,6 +1565,14 @@ ALTER TABLE `migrations`
 --
 ALTER TABLE `offres`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `offres_has_acces_offres`
+--
+ALTER TABLE `offres_has_acces_offres`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `offres_has_acces_offres_offres_id_foreign` (`offres_id`),
+  ADD KEY `offres_has_acces_offres_accesoffres_id_foreign` (`accesOffres_id`);
 
 --
 -- Index pour la table `operateurs`
@@ -1854,28 +1839,40 @@ ALTER TABLE `versement_historiques`
 --
 
 --
+-- AUTO_INCREMENT pour la table `abonnements`
+--
+ALTER TABLE `abonnements`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT pour la table `acces`
 --
 ALTER TABLE `acces`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT pour la table `acces_offres`
+--
+ALTER TABLE `acces_offres`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT pour la table `approvisionnements`
 --
 ALTER TABLE `approvisionnements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `arrivages`
 --
 ALTER TABLE `arrivages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `arrivage_has_produits`
 --
 ALTER TABLE `arrivage_has_produits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `avances`
@@ -1887,7 +1884,7 @@ ALTER TABLE `avances`
 -- AUTO_INCREMENT pour la table `besoins`
 --
 ALTER TABLE `besoins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `bulletins`
@@ -1905,19 +1902,19 @@ ALTER TABLE `bulletin_has_rubriques`
 -- AUTO_INCREMENT pour la table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `clients_has_besoins`
 --
 ALTER TABLE `clients_has_besoins`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `credits`
@@ -1926,9 +1923,9 @@ ALTER TABLE `credits`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `credits_princips`
+-- AUTO_INCREMENT pour la table `credits_historiques`
 --
-ALTER TABLE `credits_princips`
+ALTER TABLE `credits_historiques`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
@@ -1953,13 +1950,13 @@ ALTER TABLE `dossiers`
 -- AUTO_INCREMENT pour la table `echeancehistoriques`
 --
 ALTER TABLE `echeancehistoriques`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `echeances`
 --
 ALTER TABLE `echeances`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `factureachats`
@@ -1983,49 +1980,61 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT pour la table `fournisseurs`
 --
 ALTER TABLE `fournisseurs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `interesses`
 --
 ALTER TABLE `interesses`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT pour la table `offres`
 --
 ALTER TABLE `offres`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `offres_has_acces_offres`
+--
+ALTER TABLE `offres_has_acces_offres`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT pour la table `operateurs`
 --
 ALTER TABLE `operateurs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `operations`
 --
 ALTER TABLE `operations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `operation_has_operateurs`
 --
 ALTER TABLE `operation_has_operateurs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `operation_pay_historiques`
 --
 ALTER TABLE `operation_pay_historiques`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `prets`
@@ -2049,19 +2058,19 @@ ALTER TABLE `princip_factu_avoirs`
 -- AUTO_INCREMENT pour la table `produits`
 --
 ALTER TABLE `produits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `produits_has_approvisionnements`
 --
 ALTER TABLE `produits_has_approvisionnements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `produits_has_sortie_ops`
 --
 ALTER TABLE `produits_has_sortie_ops`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `produits_has_ventes_succursales`
@@ -2073,7 +2082,7 @@ ALTER TABLE `produits_has_ventes_succursales`
 -- AUTO_INCREMENT pour la table `produits_has_vente_principales`
 --
 ALTER TABLE `produits_has_vente_principales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `prospects`
@@ -2097,13 +2106,13 @@ ALTER TABLE `ressources_hums`
 -- AUTO_INCREMENT pour la table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `role_has_users`
 --
 ALTER TABLE `role_has_users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `rubriques`
@@ -2121,13 +2130,13 @@ ALTER TABLE `salaries`
 -- AUTO_INCREMENT pour la table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT pour la table `sms`
 --
 ALTER TABLE `sms`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `sms_has_clients`
@@ -2139,7 +2148,7 @@ ALTER TABLE `sms_has_clients`
 -- AUTO_INCREMENT pour la table `sortie_ops`
 --
 ALTER TABLE `sortie_ops`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `stock_operateurs`
@@ -2151,13 +2160,13 @@ ALTER TABLE `stock_operateurs`
 -- AUTO_INCREMENT pour la table `stock_principales`
 --
 ALTER TABLE `stock_principales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `stock_succursales`
 --
 ALTER TABLE `stock_succursales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `succursales`
@@ -2169,7 +2178,7 @@ ALTER TABLE `succursales`
 -- AUTO_INCREMENT pour la table `succursale_has_clients`
 --
 ALTER TABLE `succursale_has_clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `super_admins`
@@ -2181,13 +2190,13 @@ ALTER TABLE `super_admins`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `user_has_acces`
 --
 ALTER TABLE `user_has_acces`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `ventes_succursales`
@@ -2199,7 +2208,7 @@ ALTER TABLE `ventes_succursales`
 -- AUTO_INCREMENT pour la table `vente_principales`
 --
 ALTER TABLE `vente_principales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `versements`
@@ -2216,6 +2225,12 @@ ALTER TABLE `versement_historiques`
 --
 -- Contraintes pour les tables déchargées
 --
+
+--
+-- Contraintes pour la table `abonnements`
+--
+ALTER TABLE `abonnements`
+  ADD CONSTRAINT `abonnements_offres_id_foreign` FOREIGN KEY (`offres_id`) REFERENCES `offres` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `approvisionnements`
@@ -2260,13 +2275,13 @@ ALTER TABLE `clients_has_besoins`
 -- Contraintes pour la table `credits`
 --
 ALTER TABLE `credits`
-  ADD CONSTRAINT `credits_factureavoir_id_foreign` FOREIGN KEY (`factureavoir_id`) REFERENCES `factureavoirs` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `credits_sucid_foreign` FOREIGN KEY (`sucId`) REFERENCES `succursales` (`id`) ON DELETE CASCADE;
 
 --
--- Contraintes pour la table `credits_princips`
+-- Contraintes pour la table `credits_historiques`
 --
-ALTER TABLE `credits_princips`
-  ADD CONSTRAINT `credits_princips_princip_factu_avoirs_id_foreign` FOREIGN KEY (`princip_factu_avoirs_id`) REFERENCES `princip_factu_avoirs` (`id`) ON DELETE CASCADE;
+ALTER TABLE `credits_historiques`
+  ADD CONSTRAINT `credits_historiques_credit_id_foreign` FOREIGN KEY (`credit_id`) REFERENCES `credits` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `documents`
@@ -2297,6 +2312,13 @@ ALTER TABLE `factureachats`
 --
 ALTER TABLE `factureavoirs`
   ADD CONSTRAINT `factureavoirs_ventes_succursales_id_foreign` FOREIGN KEY (`ventes_succursales_id`) REFERENCES `ventes_succursales` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `offres_has_acces_offres`
+--
+ALTER TABLE `offres_has_acces_offres`
+  ADD CONSTRAINT `offres_has_acces_offres_accesoffres_id_foreign` FOREIGN KEY (`accesOffres_id`) REFERENCES `acces_offres` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `offres_has_acces_offres_offres_id_foreign` FOREIGN KEY (`offres_id`) REFERENCES `offres` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `operation_has_operateurs`
