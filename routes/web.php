@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
   //Interface de connexion
     Route::get('/', function () {return redirect('/login');});
 
+    Route::get('test', function () {return redirect('/test');});
+
   //Route Systeme d'authentifiaction
     Auth::routes(['register'=>false]);
 
