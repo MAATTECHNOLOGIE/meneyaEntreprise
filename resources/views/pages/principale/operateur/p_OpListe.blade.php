@@ -37,11 +37,10 @@
                        Opération-Opérateur
                       </span>
                     </button>
-
                     <button class="btn btn-falcon-default btn-sm newOperateur" type="button">
                       <span class="fas fa-user-plus" data-fa-transform="shrink-3 down-2"></span>
                       <span class="d-none d-sm-inline-block ml-1">
-                        Nouveau opérateur
+                        Nouvel opérateur
                       </span>
                     </button>
                     
@@ -119,6 +118,7 @@
               </div>
             </div>
           </div>
+
 
 
 <!-- Modal-->

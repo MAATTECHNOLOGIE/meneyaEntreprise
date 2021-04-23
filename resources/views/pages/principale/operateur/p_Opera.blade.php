@@ -42,7 +42,7 @@
          <div class="form-group">
            <label for="name">Date</label>
            <input class="form-control datetimepicker" type="text"  id="date" 
-           data-options='{"dateFormat":"d/m/yy"}'  name="date">
+           data-options='{"dateFormat":"d/m/Y"}'  name="date">
         </div>
          
 

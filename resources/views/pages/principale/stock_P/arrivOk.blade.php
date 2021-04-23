@@ -24,7 +24,7 @@
       </div>
     </div>
 </div>
-
+        @if(!$arrivs->isEmpty())
           <div class="card">
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
@@ -91,6 +91,9 @@
               </div>
             </div>
           </div>
+        @else
+        <div class="alert alert-warning">Aucun arrivage enregistré</div>
+        @endif
       
 
     {{-- MODAL DES DETAILS DE L'APPROVISIONNEMENT  --}}

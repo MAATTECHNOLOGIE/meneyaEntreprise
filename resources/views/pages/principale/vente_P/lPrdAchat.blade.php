@@ -250,7 +250,7 @@
                         printRecu(parseInt(data)); 
                           //mise en atente du mesage de succes pour
                           //pouvoir afficher le recu en chargement
-                        setTimeout(msgSucces, 5000); 
+                        setTimeout(msgSucces, 3000); 
                         
                        if ($('#type').val() =='0') 
                        {

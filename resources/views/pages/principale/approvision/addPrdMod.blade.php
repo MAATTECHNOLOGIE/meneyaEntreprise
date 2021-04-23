@@ -10,16 +10,19 @@
                   @csrf
                               <input type="hidden" value="" name="idPrd" id="idPrd" >
                                   <div class="form-group" id="catgoListDiv">
+                                          <label for="listCatg">Catégorie</label>
+
                                       <select class="selectpicker" name="categorie" id="listCatg">
-                                        <option value="new">-- Categorie --</option>
-                                       <option class="text-primary" value="new" >
-                                        <span class="bg-warning">Nouvelle categorie</span>
-                                      </option>
+                                        {{-- <option value="new">-- Categorie --</option> --}}
+
                                         @foreach(getCatgo() as $catgo)
                                           <option class="categorie" value="{{ $catgo->id }}">
                                             {{ $catgo->libelle }}
                                           </option>
                                         @endforeach
+                                       <option class="text-primary" value="new" >
+                                        <span class="bg-warning">Nouvelle categorie</span>
+                                      </option>
                                       </select>
                                     </div>
                                     <div class="form-row">

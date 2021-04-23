@@ -144,7 +144,7 @@
       //Retour a lajout de prd
         $('#retourArrivage').click(function()
         {
-          $('#main_content').load('/addArriv');
+          $('#main_content').load('/mbo/addArriv');
           // alert('cliquer');
         });
 

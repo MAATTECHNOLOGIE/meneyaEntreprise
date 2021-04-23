@@ -11,9 +11,9 @@
           <h3 class="mb-0 text-primary">
            <a href="#" class="fournisseur">
             <i class="fas fa-user-tie"></i>
-            Fournisseurs ></a>Nouvelle Echeance
+            Fournisseurs ></a>Nouvelle Achat
           </h3>
-          <p class="mt-2"><b>Créer une écheance pour votre fournisseur </b></p>
+          <p class="mt-2"><b>Enregistrer un achat fait chez un fournisseur </b></p>
         </div>
       </div>
     </div>
@@ -35,20 +35,20 @@
 
 
          <div class="form-group">
-           <label for="name">Montant</label>
+           <label for="name">Montant de l'achat</label>
            <input class="form-control" id="montant" type="number" placeholder="" name="montant">
          </div>
          <div class="form-row">
                         <div class="col-sm-6">
                           <div class="form-group">
-                            <label for="dateAchat">Date Achat</label>
-                            <input class="form-control datetimepicker" id="dateAchat" name="dateAchat" type="text" data-options='{"dateFormat":"d/m/yy"}' value="{{ date('d/m/yy') }}">
+                            <label for="dateAchat">Date d'achat</label>
+                            <input class="form-control datetimepicker" id="dateAchat" name="dateAchat" type="text" data-options='{"dateFormat":"d/m/Y"}' value="{{ date('d/m/Y') }}">
                           </div>
                         </div>
                         <div class="col-sm-6">
                           <div class="form-group">
-                            <label for="echeance">Echeance</label>
-                            <input class="form-control datetimepicker" id="echeance" name="echeance" type="text" data-options='{"dateFormat":"d/m/yy"}'>
+                            <label for="echeance">Date d'écheance du paiement</label>
+                            <input class="form-control datetimepicker" id="echeance" name="echeance" type="text" data-options='{"dateFormat":"d/m/Y"}'>
                           </div>
                         </div>
                         </div>

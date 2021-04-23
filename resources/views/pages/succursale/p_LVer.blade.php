@@ -14,7 +14,7 @@
       </div>
     </div>
 </div>
-
+      @if(!$versL->isEmpty())
           <div class="card mb-3">
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
@@ -35,7 +35,7 @@
                     </tr>
                   </thead>
                   <tbody id="orders">
-                    @if(!$versL->isEmpty())
+
                    @foreach ($versL as $vers)
                     <tr class="btn-reveal-trigger">
                       <td class="py-2 align-middle white-space-nowrap"><a href="#">
@@ -118,8 +118,7 @@
                         @endif
                       </td>
                     </tr> 
-                  @endforeach
-                  @endif                  
+                  @endforeach                 
                   </tbody>
                 </table>
                 <div class="row no-gutters px-1 py-3 align-items-center  justify-content-center">
@@ -128,99 +127,101 @@
               </div>
             </div>
           </div>
+      @else
+      <div class="alert alert-warning h3 text-center">Aucun versement à afficher</div>
+      @endif
 
 
 
 
       {{-- MES MODALS --}}
 
-<!-- Modal Historique-->
-<div class="modal fade" id="histVers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Historique de paiement > 
-          <span class="text-danger" id="nameSucHist"></span>
-        </h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
-      </div>
-      <form class="modal-body" id="histVersForm">
+      <!-- Modal Historique-->
+      <div class="modal fade" id="histVers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Historique de paiement > 
+                <span class="text-danger" id="nameSucHist"></span>
+              </h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+            </div>
+            <form class="modal-body" id="histVersForm">
 
 
-      </form>
-      <div class="modal-footer">
-        <button class="btn btn-secondary btn-sm closeBtn" type="button" data-dismiss="modal">Fermer</button>
+            </form>
+            <div class="modal-footer">
+              <button class="btn btn-secondary btn-sm closeBtn" type="button" data-dismiss="modal">Fermer</button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Payement-->
-<div class="modal fade" id="payVers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          Paiement de Versement > 
-          <span class="text-danger" id="nameSuc"></span>
-           </h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
-      </div>
-      <form class="modal-body" id="payVersForm">
-              <div class="form-group">
-                 <label for="infoVers">Période => Montant Restant</label>
-                 <input class="form-control" id="infoVers" type="text" 
-                 readonly="">
-              </div>
-              <div class="form-row">
-                <div class="col-6">
-                 <div class="form-group">
-                 <label for="agent" class="text-danger">Agent (Nom du caissier)
-                  <span class="fas fa-times-circle " data-fa-transform="shrink-1"></span>
-                 </label>
-                 <input class="form-control" id="agent" name="agent" value="{{ Auth::user()->name }}"  type="text" readonly="">
-                </div>                 
-                </div>
-                <div class="col-6">
+      <!-- Modal Payement-->
+    <div class="modal fade" id="payVers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Paiement de Versement > 
+              <span class="text-danger" id="nameSuc"></span>
+               </h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+          </div>
+          <form class="modal-body" id="payVersForm">
                   <div class="form-group">
-                    <label for="agent">Type paiement</label>
-                    <select class="form-control" id="moyen"  name="moyen">
-                          <option value="Mobile money" >Mobile money</option> 
-                          <option value="Chèques" >Chèques</option>
-                          <option value="Espèce" >Espèce</option>
-                          <option value="Virement Bancaire" >Virement Bancaire</option>
-                    </select>
-                  </div>                 
-                </div>
-                <div class="col-6">
-                  <div class="form-group ">
-                   <label for="montant " class="text-danger">
-                      Montant 
-                      <span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span>
-                   </label>
-                   <input class="form-control" id="montant" type="number" name='montant' value="" min='1' max="">
+                     <label for="infoVers">Période => Montant Restant</label>
+                     <input class="form-control" id="infoVers" type="text" 
+                     readonly="">
                   </div>
-                </div> 
-                <div class="col-6">
-                  <div class="form-group">
-                          <label for="datePayVers">Date (date de paiement) </label>
-                          <input class="form-control form-control-sm datetimepicker flatpickr-input" id="datePayVers" required="" name="datePayVers" type="text" placeholder="d/m/Y" value="{{ date('d/m/Y') }}" >
-                        </div>
-                </div> 
-                    {{-- input hidden  important --}}
-                    @csrf
-                    <input type="hidden" name="idVers" id="idVers">
-              </div>
+                  <div class="form-row">
+                    <div class="col-6">
+                     <div class="form-group">
+                     <label for="agent" class="text-danger">Agent (Nom du caissier)
+                      <span class="fas fa-times-circle " data-fa-transform="shrink-1"></span>
+                     </label>
+                     <input class="form-control" id="agent" name="agent" value="{{ Auth::user()->name }}"  type="text" readonly="">
+                    </div>                 
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label for="agent">Type paiement</label>
+                        <select class="form-control" id="moyen"  name="moyen">
+                              <option value="Mobile money" >Mobile money</option> 
+                              <option value="Chèques" >Chèques</option>
+                              <option value="Espèce" >Espèce</option>
+                              <option value="Virement Bancaire" >Virement Bancaire</option>
+                        </select>
+                      </div>                 
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group ">
+                       <label for="montant " class="text-danger">
+                          Montant 
+                          <span class="fas fa-times-circle text-danger" data-fa-transform="shrink-1"></span>
+                       </label>
+                       <input class="form-control" id="montant" type="number" name='montant' value="" min='1' max="">
+                      </div>
+                    </div> 
+                    <div class="col-6">
+                      <div class="form-group">
+                              <label for="datePayVers">Date (date de paiement) </label>
+                              <input class="form-control form-control-sm datetimepicker flatpickr-input" id="datePayVers" required="" name="datePayVers" type="text" placeholder="d/m/Y" value="{{ date('d/m/Y') }}" >
+                            </div>
+                    </div> 
+                        {{-- input hidden  important --}}
+                        @csrf
+                        <input type="hidden" name="idVers" id="idVers">
+                  </div>
 
 
-      </form>
-      <div class="modal-footer">
-        <button class="btn btn-secondary btn-sm payModCls" type="button" data-dismiss="modal">Fermer</button>
-        <button class="btn btn-primary btn-sm" type="button" id="validPayVers">Valider</button>
+          </form>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm payModCls" type="button" data-dismiss="modal">Fermer</button>
+            <button class="btn btn-primary btn-sm" type="button" id="validPayVers">Valider</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
 
 

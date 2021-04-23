@@ -15,7 +15,9 @@ class CreateOffresTable extends Migration
     {
         Schema::create('offres', function (Blueprint $table) {
             $table->id();
-            $table->string('libele')->comment('A travers la solution digitale Meneya nous disposons de trois types d\'offre opérationnelles sur le marché:\n- La version d\'essaie\n- La version d\'abonnement\n- La version premium\n');
+            $table->string('libele')->comment('Nom de loffre de souscription');
+            $table->string('prixInscription')->comment('Montant payer a l\'inscription ( contient le cout de l\'abonnement 01 mois de l\'offre + frais de deploiement)nt');
+            $table->string('Coutabonnement')->comment('cout de l\'abonnement');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\abonnement;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,14 +24,50 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(getRole() == "admin")
-        {
-         return view('layouts.app');
-        }
-        else
-        {
-         return redirect('/appSuc');
-        }
+        $abmnt = abonnement::where('statuPaiement','=',1)->first();
+        //Verifie si il a un abonnement en cours de validité
+            if (!empty($abmnt)) 
+            {
+
+                //Conversion de date Fin Souscription au format d-m-Y 
+                $dureSous = date_create_from_format('d/m/Y', $abmnt->dateFin)
+                            ->format('d-m-Y');
+
+                //Calcul du timestamp de chaqe date
+                $tstanpSous = strtotime($dureSous);
+                $tstanpNow = strtotime(date('d-m-Y'));
+
+                //Comparaison des timestamp
+                if($tstanpSous>$tstanpNow )
+                {
+
+
+                    if(getRole() == "admin")
+                    {
+                     return view('layouts.app');
+                    }
+                    else
+                    {
+                     return redirect('/appSuc');
+                    }
+                }
+                else
+                {
+                    $abmnt->statuPaiement = 0;
+                    $abmnt->save();
+                }
+
+            }
+
+        //Utilisateur n'a pas d'abonnement ou abonnement expirer
+                    if(getRole() == "admin")
+                    {
+                     return view('layouts.app')->with('forfaitDown',1);
+                    }
+                    else
+                    {
+                     return redirect('/forfaitDown');
+                    }
     }
 
     public function smspromo(Request $request)

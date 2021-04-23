@@ -2,6 +2,125 @@ $(function()
 {
 
 
+//Abonnement expirer 
+$('.abnExpire').click(function()
+{
+Swal.fire({
+            title: "Abonnement Epiré",
+            text: "Veuillez renouvellez votre abonnement pour avoir accès à nouveau aux fonctionnalités",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "rgba(149, 150, 141, 0.69)" ,
+            cancelButtonText: "retour",
+            confirmButtonText: "Renouvellez!",
+            backdrop: "rgba(237, 36, 9,0.5)",
+         }).then((result) => {
+                                if (result.value) 
+                                {
+                                     $('#main_content').load('updForfait'); 
+                                }
+                            })
+
+
+
+
+})
+
+
+//Premiere connection au site
+$('.firstLog').click(function()
+{
+Swal.mixin({
+  input: 'text',
+  confirmButtonText: 'Suivant &rarr;',
+  cancelButtonText: 'Annuler',
+  showCancelButton: true,
+  progressSteps: ['1', '2']
+}).queue([
+  {
+    title: 'Nouveau mot de passe',
+    text: 'Changement obligatoire du mot de passe'
+  },
+  'Confirmer le mot de passe',
+]).then((result) => {
+  if (result.value) {
+    var answers = result.value
+    if(answers[0] === answers[1])
+    {
+        const ipAPI = '/mbo/updPass?pass='+answers[1];
+
+        Swal.queue([{
+          title: 'Changement de mot passe',
+          confirmButtonText: 'Oui, Changer',
+          text:'Votre mot de passe sera changé par le nouveau saisi !',
+          showLoaderOnConfirm: true,
+          preConfirm: () => {
+            return fetch(ipAPI)
+              .then(response => response.json())
+              .then(data => updPassOk())
+              .catch(() => {
+                Swal.insertQueueStep({
+                  icon: 'error',
+                  title: 'Erreur de connexion !!!'
+                })
+              })
+          }
+        }])
+    }
+    else
+    {
+        Swal.fire({
+          icon: 'error',
+          title: 'Mot de passe non identique',
+          showConfirmButton: true,
+          confirmButtonText: 'Retour',
+        })
+    }
+  }
+})
+
+})
+
+
+//Message de succes du changement de mot de passe
+    function updPassOk()
+    {
+        Swal.fire({
+                      icon: 'success',
+                      title: 'Mot de passe changer avec succès',
+                      showConfirmButton: true,
+                      confirmButtonText: 'ok',
+                      timer: 3000,
+                      timerProgressBar: true,
+                    });
+       setTimeout(function(){  window.location.href= '/login'; }, 1000);
+    }
+
+//Option non actifi
+$('.navChoix').click(function()
+{
+Swal.fire({
+            title: "Accès non autorisé",
+            text: "Veuillez passée au forfait supérieur pour bénéficier de cette fonctionnalité",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "rgba(149, 150, 141, 0.69)" ,
+            cancelButtonText: "Retour",
+            confirmButtonText: "Forfait supérieur!",
+            backdrop: "rgba(220, 229, 34,0.5)",
+         }).then((result) => {
+                                if (result.value) 
+                                {
+                                     $('#main_content').load('updForfait'); 
+                                }
+                            })
+
+
+
+
+})
 
 /*--------- -----------------
 TABLEAU DE BORD 
@@ -106,11 +225,13 @@ TABLEAU DE BORD
 -----------------------------*/
     // Nouveau
     $("#CampgNew").click(function(){
+        loadingScreen();
       $("#main_content").load("/CampgNew");
     });
 
     // Liste
     $("#CampgList").click(function(){
+        loadingScreen();
       $("#main_content").load("/CampgList");
     });
 
@@ -119,15 +240,18 @@ TABLEAU DE BORD
 -----------------------------*/
     // Nouveau
     $("#CommdNew").click(function(){
+        loadingScreen();
       $("#main_content").load("/CommdNew");
     });
     
      $("#CommdNewF").click(function(){
+        loadingScreen();
       $("#main_content").load("/CommdNew");
     });
 
     // Liste
     $("#CommdLvr").click(function(){
+        loadingScreen();
       $("#main_content").load("/CommdLvr");
     });
 
@@ -137,6 +261,7 @@ TABLEAU DE BORD
 
     // Config Param
     $("#setting").click(function(){
+        loadingScreen();
       $("#main_content").load("/setting");
     });
 
@@ -147,7 +272,26 @@ TABLEAU DE BORD
 //dashboard dune succursale
 $('#dashSucu').click(function()
 {
+    loadingScreen();
     $('#main_content').load('dashSucu'); 
 })
 
+
+
+/*--------- ------------
+ GESTION DE L'ABONNEMENT
+------------------------*/
+//Info Abonnement
+$('#abonmt').click(function()
+{
+    loadingScreen();
+    $('#main_content').load('myAbonmnt'); 
+})
+
+
 });
+
+
+
+
+

@@ -46,17 +46,17 @@
                     </div>
                   </a>
                   <ul class="nav collapse" id="arriv" data-parent="#navbarVerticalCollapse">
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="addArriv">
+                    <li class="nav-item  collapsed abnExpire">
                       <a class="nav-link" href="#top">Nouvelle commande</a>
                     </li>
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="arrivAttn">
+                    <li class="nav-item  collapsed abnExpire">
                       <a class="nav-link" href="#top">Commande en attente</a>
                     </li>
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="arrivOk">
+                    <li class="nav-item  collapsed abnExpire">
                       <a class="nav-link" href="#top">Commande validée</a>
                     </li>
 
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" >
+                    <li class="nav-item  collapsed" >
                       <a class="nav-link" href="{{ route('dashboard') }}">Statistique</a>
                     </li>
 
@@ -74,14 +74,15 @@
                     </div>
                   </a>
                   <ul class="nav collapse" id="principal" data-parent="#navbarVerticalCollapse">
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="arrivagePrincipal"><a class="nav-link" href="#top">Approvisionnement</a>
-                    </li>
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="listArrivage"><a class="nav-link" href="#top">Liste Approvi.</a>
-                    </li>
-
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"  id="produitsPrincipal">
+                    <li class="nav-item  collapsed  abnExpire">
                       <a class="nav-link" href="#top">Nos produits</a>
                     </li>
+                    <li class="nav-item  collapsed abnExpire"><a class="nav-link" href="#top">Approvisionnement</a>
+                    </li>
+                    <li class="nav-item  collapsed abnExpire"><a class="nav-link" href="#top">Liste Approvi.</a>
+                    </li>
+
+
 
                   </ul>
                 </li>
@@ -97,26 +98,16 @@
                     </div>
                   </a>
                   <ul class="nav collapse" id="Succursale" data-parent="#navbarVerticalCollapse">
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="creerSuccursale">
+                    <li class="nav-item  collapsed abnExpire" >
                       <a class="nav-link" href="#top">Créer Succursale</a>
                     </li>
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="listeSuccursale">
+                    <li class="nav-item  collapsed abnExpire" >
                       <a class="nav-link" href="#top">Liste Succursale</a>
                     </li>
-                    <li class="nav-item" id="rapportSuc"
-                      data-toggle="collapse" 
-                      data-target="#navbarVerticalCollapse" 
-                      aria-controls="navbarVerticalCollapse" 
-                      aria-expanded="false" 
-                      aria-label="Toggle Navigation">
+                    <li class="nav-item abnExpire" >
                       <a class="nav-link" href="#main_content">Rapport agence </a>
                     </li>
-                    <li class="nav-item" id="p_LVer"
-                      data-toggle="collapse" 
-                      data-target="#navbarVerticalCollapse" 
-                      aria-controls="navbarVerticalCollapse" 
-                      aria-expanded="false" 
-                      aria-label="Toggle Navigation">
+                    <li class="nav-item abnExpire">
                       <a class="nav-link" href="#main_content">Versement </a>
                     </li>
                   </ul>
@@ -131,15 +122,15 @@
                       </div>
                     </a>
                     <ul class="nav collapse" id="e-commerce" data-parent="#navbarVerticalCollapse">
-                      <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="achatPrincipal">
+                      <li class="nav-item  collapsed abnExpire">
                         <a class="nav-link" href="#top">Ventes</a>
                       </li>
-                      <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="proformat">
+                      <li class="nav-item  collapsed abnExpire">
                         <a class="nav-link" href="#top">Facture Proformat</a>
                       </li>
-                      <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="liste_ventePrincipal" ><a class="nav-link" href="#top">Mes ventes</a>
+                      <li class="nav-item  collapsed abnExpire" ><a class="nav-link" href="#top">Mes ventes</a>
                       </li>
-                      <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="stockP" ><a class="nav-link" href="#top">Mon stock</a>
+                      <li class="nav-item  collapsed abnExpire" ><a class="nav-link" href="#top">Mon stock</a>
                       </li>
 
                     </ul>
@@ -163,9 +154,9 @@
                   </a>
                   <ul class="nav collapse" id="utilities" data-parent="#navbarVerticalCollapse">
 
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="ajouterEmploye"><a class="nav-link" href="#top">Ajouter</a>
+                    <li class="nav-item  collapsed abnExpire"><a class="nav-link" href="#top">Ajouter</a>
                     </li>
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="listeEmploye"><a class="nav-link" href="#top">Liste Utilisateur</a>
+                    <li class="nav-item  collapsed abnExpire"><a class="nav-link" href="#top">Liste Utilisateur</a>
                     </li>
                   </ul>
                 </li>
@@ -187,31 +178,16 @@
                   </a>
                   <ul class="nav collapse" id="operateur" data-parent="#navbarVerticalCollapse">
 
-                    <li class="nav-item collapsed" id="p_Opera"
-                     data-toggle="collapse" 
-                      data-target="#navbarVerticalCollapse" 
-                      aria-controls="navbarVerticalCollapse" 
-                      aria-expanded="false" 
-                      aria-label="Toggle Navigation">
+                    <li class="nav-item collapsed abnExpire">
                       <a class="nav-link" href="#main_content">Nouveau </a>
                     </li>
 
-                    <li class="nav-item collapsed" id="p_OpListe"
-                     data-toggle="collapse" 
-                      data-target="#navbarVerticalCollapse" 
-                      aria-controls="navbarVerticalCollapse" 
-                      aria-expanded="false" 
-                      aria-label="Toggle Navigation">
+                    <li class="nav-item collapsed abnExpire">
                       <a class="nav-link" href="#main_content">Liste </a>
                     </li>
 
-                    <li class="nav-item collapsed" id="p_OpComd"
-                     data-toggle="collapse" 
-                      data-target="#navbarVerticalCollapse" 
-                      aria-controls="navbarVerticalCollapse" 
-                      aria-expanded="false" 
-                      aria-label="Toggle Navigation">
-                      <a class="nav-link" href="#main_content">Opération</a>
+                    <li class="nav-item collapsed abnExpire">
+                      <a class="nav-link" href="#main_content">Type Opération</a>
                     </li>
 
                   </ul>
@@ -251,7 +227,7 @@
                       aria-controls="navbarVerticalCollapse" 
                       aria-expanded="false" 
                       aria-label="Toggle Navigation">
-                      <a class="nav-link" href="#main_content"> Affecter Echeance </a>
+                      <a class="nav-link" href="#main_content"> Achat </a>
                     </li>
                   </ul>
                 </li>
@@ -272,28 +248,16 @@
                     </a>
                     <ul class="nav collapse" id="Prospects" data-parent="#navbarVerticalCollapse">
 
-                      <li class="nav-item collapsed"
-                        data-toggle="collapse" data-target="#navbarVerticalCollapse" 
-                        aria-controls="navbarVerticalCollapse" aria-expanded="false" 
-                        aria-label="Toggle Navigation" id="p_prospNew">
+                      <li class="nav-item collapsed abnExpire">
                         <a class="nav-link"  href="#main_content">Nouveau</a>
                       </li>
-                      <li class="nav-item collapsed"
-                        data-toggle="collapse" data-target="#navbarVerticalCollapse" 
-                        aria-controls="navbarVerticalCollapse" aria-expanded="false" 
-                        aria-label="Toggle Navigation" id="p_prospL">
+                      <li class="nav-item collapsed abnExpire">
                         <a class="nav-link"  href="#main_content">Liste</a>
                       </li>
-                      <li class="nav-item"
-                        data-toggle="collapse" data-target="#navbarVerticalCollapse" 
-                        aria-controls="navbarVerticalCollapse" aria-expanded="false" 
-                        aria-label="Toggle Navigation" id="p_prospStat">
+                      <li class="nav-item abnExpire">
                         <a class="nav-link" href="#main_content">Analyse</a>
                       </li>
-                      <li class="nav-item" 
-                        data-toggle="collapse" data-target="#navbarVerticalCollapse" 
-                        aria-controls="navbarVerticalCollapse" aria-expanded="false" 
-                        aria-label="Toggle Navigation" id="p_prospbesoin" 
+                      <li class="nav-item abnExpire" 
                       ><a class="nav-link" href="#main_content">Besoins</a>
                       </li>
     
@@ -314,21 +278,16 @@
                     </a>
                     <ul class="nav collapse" id="marketing" data-parent="#navbarVerticalCollapse">
 
-                      <li class="nav-item collapsed"
-                        data-toggle="collapse" data-target="#navbarVerticalCollapse" 
-                        aria-controls="navbarVerticalCollapse" aria-expanded="false" 
-                        aria-label="Toggle Navigation" id="CampgNew">
+                      <li class="nav-item collapsed abnExpire">
                         <a class="nav-link"  href="#main_content">Nouveau</a>
                       </li>
-                      <li class="nav-item"
-                        data-toggle="collapse" data-target="#navbarVerticalCollapse" 
-                        aria-controls="navbarVerticalCollapse" aria-expanded="false" 
-                        aria-label="Toggle Navigation" id="CampgList">
+                      <li class="nav-item abnExpire">
                         <a class="nav-link" href="#main_content">Historique</a>
                       </li>
                     </ul>
                 </li>
 
+                  {{-- SUIVIT DE COMMANDE --}}
                 <li class="nav-item"><a class="nav-link dropdown-indicator" 
                   href="#commandes" data-toggle="collapse" role="button" 
                   aria-expanded="false" aria-controls="fournisseur">
@@ -338,17 +297,10 @@
                   </a>
                   <ul class="nav collapse" id="commandes" data-parent="#navbarVerticalCollapse">
 
-                    <li class="nav-item collapsed"
-                      data-toggle="collapse" data-target="#navbarVerticalCollapse" 
-                      aria-controls="navbarVerticalCollapse" aria-expanded="false" 
-                      aria-label="Toggle Navigation" id="CommdNew">
+                    <li class="nav-item collapsed  abnExpire">
                       <a class="nav-link"  href="#main_content">Nouvelle</a>
                     </li>
-                    <li class="nav-item"
-                      data-toggle="collapse" data-target="#navbarVerticalCollapse" 
-                      aria-controls="navbarVerticalCollapse" 
-                      aria-expanded="false" 
-                      aria-label="Toggle Navigation" id="CommdLvr">
+                    <li class="nav-item collapsed abnExpire">
                       <a class="nav-link" href="#main_content">Livrées</a>
                     </li>
                   </ul>
@@ -369,7 +321,7 @@
                     </div>
                   </a>
                   <ul class="nav collapse" id="Succursale" data-parent="#navbarVerticalCollapse">
-                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="dashSucu">
+                    <li class="nav-item  collapsed ">
                       <a class="nav-link" href="#top">Ma succursale</a>
                     </li>
                   </ul>

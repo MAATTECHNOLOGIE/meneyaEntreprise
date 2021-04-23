@@ -25,6 +25,7 @@
     </div>
 </div>
 
+@if(!$approvisionnement->isEmpty() )
           <div class="card">
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
@@ -36,7 +37,7 @@
             </div>
             <div class="card-body p-0 ml-3 mr-3">
 
-{{-- {{ dd($approvisionnement) }} --}}
+
               <div class="falcon-data-table" id="loaderContent">
                 <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
@@ -89,6 +90,9 @@
               </div>
             </div>
           </div>
+@else
+<div class="alert alert-warning">Aucun approvisionnement </div>
+@endif
       
 
     {{-- MODAL DES DETAILS DE L'APPROVISIONNEMENT  --}}

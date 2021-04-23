@@ -221,6 +221,8 @@ use Illuminate\Support\Facades\Route;
           //update  employer
           Route::post('UpdEmpl', 'GestionEmployeController@UpdEmpl');
 
+          //update  employer
+          Route::get('updPass', 'GestionEmployeController@updPass');
           //Demetre les access
           Route::get('delAllAcces','GestionEmployeController@delAllAcces');
 
@@ -229,8 +231,7 @@ use Illuminate\Support\Facades\Route;
   GESTION INTERFACES
 -------------------------*/
           
-        //refresh navbar 
-        // Route::get('/refreshNav','landing@refreshNav');
+
 
 
 /*-----------------------------------
@@ -238,7 +239,7 @@ use Illuminate\Support\Facades\Route;
 -------------------------------------*/
 
       //Notification de demande de versement 
-      Route::post('alertVers', 'GestionAlertController@alertVers');
+      Route::get('alertVers', 'GestionAlertController@alertVers');
       
 
 
@@ -338,7 +339,7 @@ use Illuminate\Support\Facades\Route;
       Appel ajax  nécessaire
      ------------------------*/
     //Formater un prix en Ajax
-          Route::get('/formatPriceJs', 'landing@formatPriceJs');
+          Route::get('/formatPriceJs', 'myAbonnement@formatPriceJs');
 
 
 

@@ -51,7 +51,7 @@
          <div class="form-group col-6">
           <label for="datepicker">Start Date</label>
           <input class="form-control datetimepicker" type="text"  id="dateOp" 
-           data-options='{"dateFormat":"d/m/yy"}'>
+           data-options='{"dateFormat":"d/m/Y"}'>
         </div>
       </div>
 

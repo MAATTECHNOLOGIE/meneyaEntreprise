@@ -8,12 +8,12 @@ use App\Model\clients;
 use App\Model\stock_principales;
 use App\Model\vente_principales;
 use App\Model\produits_has_vente_principales; 
-// use App\Model\produits;
+use  App\Mail\AlertInfo;
 // use App\Model\versement;
 use DB;
 use Schema;
 use Auth;
-
+use Mail;
 
 session_start();
 
@@ -209,41 +209,6 @@ class GestionVentePrincipalController extends Controller
              exit();
           }
 
-    // //Recuperation des prds
-    //   public function ajaxRecupPrdP( Request $request)
-    //     {
-    //         // selection des produits du stock de la succursales 
-    //         $produits = DB::table('stock_principales')
-    //             ->join('produits', 'produits.id', '=', 'stock_principales.produits_id')
-    //             ->select('produits.*','produits.id as prdId','stock_principales.stock_Qte as qte')
-    //             ->where('stock_Qte','>=',1)
-    //             ->get();
-    //             // dd($produits);
-    //             $outputDetail = "";
-    //                 if (count($produits)!= 0) 
-    //                 {
-    //                    $outputDetail.=' <option value="choix">-- Articles --</option>';
-    //                   foreach($produits as $produit)
-    //                   {
-    //                   $outputDetail.=' <option 
-    //                         prixPrd="'.$produit->produitPrix.'" 
-    //                         prixFour="'.$produit->produitPrixFour.'"
-    //                         prixFourFormat="'.formatPrice($produit->produitPrixFour).'"
-    //                         value="'.$produit->prdId.'" 
-    //                         qteInStck="'.isInSession('achatP','article',$produit->prdId,$produit->qte).'" >
-    //                   '.$produit->produitLibele.'</option>';
-    //                   }
-    //                 }
-    //                 else
-    //                 {
-    //                    $outputDetail.=' <option>Stock Vide</option>';
-    //                 }
-                             
-
-    //           return $outputDetail;
-
-    //     }
-
 
     //Enregistrer un achat 
       public function saveAchat(Request $request)
@@ -299,7 +264,31 @@ class GestionVentePrincipalController extends Controller
                                             //Compare le stock restant au seuil d'alert
                                               if ($produits->stock_Qte <= getPrd($value['article'])->seuilAlert ) 
                                               {
-                                                  //Déclenchement d'alert
+                                                   if (isset($_SESSION['alertPrd'])) 
+                                                     {
+                                                        $item_array = array(
+                                                         'code' => getPrd($value['article'])
+                                                                            ->produitMat,
+                                                         'article'=> getPrd($value['article'])
+                                                                            ->produitLibele,
+                                                         'qteRest'  => $produits->stock_Qte,
+                                                         );
+                                                        $_SESSION["alertPrd"][] = $item_array;
+                                                      }
+                                                  else{
+
+                                                        $item_array = array(
+                                                         'code' => getPrd($value['article'])
+                                                                            ->produitMat,
+                                                         'article'=> getPrd($value['article'])
+                                                                            ->produitLibele,
+                                                         'qteRest'  => $produits->stock_Qte,
+                                                         );
+                                                    //Création de session
+                                                     $_SESSION["alertPrd"][] = $item_array;
+
+                                                      }
+
 
                                               }
                                           }
@@ -321,6 +310,15 @@ class GestionVentePrincipalController extends Controller
                         $arrivage->mg_benef_brute = $prix_vente_total - $cout_achat_total;
                         $arrivage->mg_benef_rel = $prix_vente_total - ($cout_achat_total + $arrivage->charge);
                         $arrivage->save();
+
+                        //verifie si ya des produits ayan atteint le seuil 
+                        if(isset($_SESSION['alertPrd']))
+                        {
+                          //Déclenchement d'alert
+                            Mail::to(getAlertMail())->send(new AlertInfo('Alert seuil',$_SESSION['alertPrd']));
+                            unset($_SESSION['alertPrd']);
+
+                        }
                       }
               $_SESSION['idVente'] = $arrivage->id;
             return $this->delAchat();
@@ -470,7 +468,7 @@ class GestionVentePrincipalController extends Controller
                         </tr>-->
                         <tr class="alert-success font-weight-bold">
                           <th class="text-sm-right">Montant dû:</th>
-                          <td>'.$vente->prix_vente_total.' '.getMyDevise().'</td>
+                          <td>'.formatPrice($vente->prix_vente_total).'</td>
                         </tr>
                       </tbody>
                     </table>
@@ -485,8 +483,8 @@ class GestionVentePrincipalController extends Controller
                     <tr>
                       <th class="border-0">Produit</th>
                       <th class="border-0 text-center">Qte</th>
-                      <th class="border-0 text-center">Prix de vente/ unité</th>
-                      <th class="border-0 text-center">TVA /unité</th>
+                      <th class="border-0 text-center">Prix de vente Unitaire</th>
+                      <th class="border-0 text-center">Unité</th>
                       <th class="border-0 text-right">Montant Total</th>
                     </tr>
                   </thead>
@@ -498,14 +496,13 @@ class GestionVentePrincipalController extends Controller
                         '.$prdVnt[$i]->produitLibele.' </h6>
                       </td>
                       <td class="align-middle text-center">
-                       '.$prdVnt[$i]->qte.' 
-                        ('.$prdVnt[$i]->unite_mesure.')</td>
+                       '.$prdVnt[$i]->qte.'</td>
+                      <td class="align-middle text-center"> 
+                        '.$prdVnt[$i]->unite_mesure.'</td>
                       <td class="align-middle text-center">
-                       '.$prdVnt[$i]->prixvente.' '.getMyDevise().'</td>
-                      <td class="align-middle text-center">
-                       '.$prdVnt[$i]->tva.' '.getMyDevise().'</td>
+                       '.$prdVnt[$i]->prixvente.'</td>
                       <td class="align-middle text-right">
-                       '.$prdVnt[$i]->qte * $prdVnt[$i]->prixvente.' '.getMyDevise().'
+                       '.formatPrice($prdVnt[$i]->qte * $prdVnt[$i]->prixvente).'
                       </td>
                     </tr>';
                      $somTotal += $prdVnt[$i]->prixvente * $prdVnt[$i]->qte;
@@ -537,7 +534,7 @@ class GestionVentePrincipalController extends Controller
 
                     <tr>
 
-                      <th class="text-900">Autres:</th>
+                      <th class="text-900">'.$vente->description_charge.':</th>
                       <td class="font-weight-semi-bold">'.
                        $charges.' '.getMyDevise().'
                       </td>

@@ -83,13 +83,13 @@ class p_OperaController extends Controller
 
     public function p_Opera()
     {
-        return view('pages.principale.Operateur.p_Opera');
+        return view('pages.principale.operateur.p_Opera');
     }
 
     public function p_OperaStock()
     {
         $opera = operateur::all()->sortByDesc('id');
-        return view('pages.principale.Operateur.p_OperaStock')->with('opera',$opera);
+        return view('pages.principale.operateur.p_OperaStock')->with('opera',$opera);
     }
 
     protected function ControlData(array $data)
@@ -146,7 +146,7 @@ class p_OperaController extends Controller
     {
         //Lectures des opérations
         $operat = operation::all()->sortByDesc('id');
-        return view('pages.principale.Operateur.p_OpComd')->with('operat',$operat);
+        return view('pages.principale.operateur.p_OpComd')->with('operat',$operat);
     }
 
     public function p_cmdDOp(Request $request)
@@ -212,7 +212,7 @@ class p_OperaController extends Controller
     {
         //Lectures des opérations
          $opera = operateur::all()->sortByDesc('id');
-         return view('pages.principale.Operateur.p_OpListe')->with('opera',$opera);
+         return view('pages.principale.operateur.p_OpListe')->with('opera',$opera);
     }
 
     public function p_OpDele(Request $request)
@@ -293,7 +293,7 @@ class p_OperaController extends Controller
          /*dd($idOp);*/
          
         // Valeur retournée
-         return view('pages.principale.Operateur.p_OpTion')
+         return view('pages.principale.operateur.p_OpTion')
                 ->with('OpTion',$OpTion)
                 ->with('idOp',$idOp)
                 ->with('oper',$oper);
@@ -436,7 +436,7 @@ class p_OperaController extends Controller
     {
         $operateurs = operateur::all();
         $operations = operation::all();
-        return view('pages.principale.Operateur.p_OpNew')->withOperateurs($operateurs)->withOperations($operations);
+        return view('pages.principale.operateur.p_OpNew')->withOperateurs($operateurs)->withOperations($operations);
     }
 
     protected function ControlOpOpera(array $data)
@@ -499,7 +499,7 @@ class p_OperaController extends Controller
          //dd($operations);
 
         //Ajout de nouvelle sortie  pour un operateur 
-         return view('pages.principale.Operateur.p_OpSortie')
+         return view('pages.principale.operateur.p_OpSortie')
                ->withOperateur($operateur)
                ->withOperations($operations)
                ->withProduits($produits);
