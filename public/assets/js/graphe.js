@@ -1,52 +1,5 @@
-@include('layouts.partials.header')
-
-
-@include('layouts.partials.navbar')
-
-    <!-- ===============================================-->
-    <!--   DEBUT DU CONTAINER A RECHARGER -->
-    <!-- ===============================================-->
-
-			{{-- VUE INCLUS POUR PRINCIPALE --}}
-			<div id="main_content">
-			         @include('pages.dash.index')
-			</div>
-
-
-
-    <!-- ===============================================-->
-    <!--   FIN DU CONTAINER A RECHARGER -->
-    <!-- ===============================================-->
-
-@include('layouts.partials.footer')
-<script type="text/javascript">
-  $(function()
-  {
-
-    //Bouton de renouvellement abonnement
-    $('.updForfait').click(function()
-    {
-        loadingScreen();
-
-
-        $('#main_content').load('updForfait'); 
-    })
-
-    //Supression paginate
-    $(".bestVnt").parent().next().hide();
-  })
-
-
-
-</script>
-
-    {{-- <script src="assets/js/graphe.js"></script> --}}
-    <script type="text/javascript">
 $(function()
 {
-
-var myjs = {{ json_encode(vntMois()) }};
-var lastMonthdata = {{ json_encode(vntOtherMois()) }};
 "use strict";
 
 var _this = this;
@@ -307,45 +260,23 @@ window.utils.$document.ready(function () {
   /*-----------------------------------------------
   |   Helper functions and Data
   -----------------------------------------------*/
-
-
   var _window = window,
       utils = _window.utils;
-  var chartData = myjs;
+  var chartData = [9, 5, 0, 2, 8, 8,10,0,0,0,20,1,4,7,2,5,9,14,1,0,0];
 
-  //Fonction des generation des labels
-  function generateLab(moiChoix)
+  const d = new Date();
+  var tab_mois = new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
+  var mois =' '+tab_mois[d.getMonth()].substring(0,2);
+  var labels = new Array();
+  for(var i = 0; i < d.getDate(); i++) 
   {
-    const d = new Date();
-    var numMois = d.getMonth();
-    //Initialisation de la fin
-    var fin  = d.getDate();
-    if (moiChoix == 'lastMois') { numMois +=1 ; fin = new Date(d.getYear(), d.getMonth(), 0).getDate();}
-      //Tableau de la liste des nom des mois
-      var tab_mois = new Array("Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre");
-
-      // Modif valeur text des option du select dans le graphe
-        $('#thisMois').text(tab_mois[d.getMonth()]);
-        $('#lastMois').text(tab_mois[d.getMonth()-1]);
-      //Coupure du nom du mois en cours
-      var mois =' '+tab_mois[numMois].substring(0,2);
-
-        //Initialisation du tableau de valeur
-        var labels = new Array();
-        for(var i = 0; i <fin; i++) 
-        {
-         labels[i]=i+1;
-         labels[i] +=mois;
-        }
-        return labels;
+   labels[i]=i+1;
+   labels[i] +=mois;
   }
 
-  //Varaible pour get le resultat de la fonction generateLabel
-  var labels = new Array();
-  labels = generateLab('thisMois');
-
-
-
+  //Initialisation de la date du select
+    $('#thisMois').text(tab_mois[d.getMonth()]);
+    $('#lastMois').text(tab_mois[d.getMonth()-1]);
   /*-----------------------------------------------
   |   Chart Initialization
   -----------------------------------------------*/
@@ -391,8 +322,8 @@ window.utils.$document.ready(function () {
           borderWidth: 2,
           data: chartData.map(
             function (d) {
-            return d;
-            // return (d * 3.14).toFixed(2);
+            // return 8*d;
+            return (d * 3.14).toFixed(2);
           }),
           borderColor: utils.settings.chart.borderColor,
           backgroundColor: getChartBackground(chartLine)
@@ -409,7 +340,7 @@ window.utils.$document.ready(function () {
           displayColors: false,
           callbacks: {
             label: function label(tooltipItem) {
-              return labels[tooltipItem.index] + " - " + tooltipItem.yLabel + " {{ getMyDevise() }}";
+              return labels[tooltipItem.index] + " - " + tooltipItem.yLabel + " USD";
             },
             title: function title() {
               return null;
@@ -442,42 +373,15 @@ window.utils.$document.ready(function () {
       }
     });
     $('#dashboard-chart-select').on('change', function (e) {
-
-      // labels = generateLab('thisMois');
-
       var LineDB = {
-        thisMois:myjs.map(function (d) {
-          // return (d * 3.14).toFixed(2);
-           return d;
-
+        thisMois: [9, 5, 0, 2, 8, 8,10,0,0,0,20,1,4,7,2,5,9,14,1,0,0].map(function (d) {
+          return (d * 3.14).toFixed(2);
         }),
-        lastMois: lastMonthdata.map(function (d) {
-          // return (d * 3.14).toFixed(2);
-           return d;
-        })
-      };
-
-      var LabelDB = {
-        thisMois:generateLab('thisMois').map(function (d) {
-          // return (d * 3.14).toFixed(2);
-           return d;
-
-        }),
-        lastMois: generateLab('lastMois').map(function (d) {
-          // return (d * 3.14).toFixed(2);
-           return d;
+        lastMois: [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 2, 8, 8,10,0,0,0,20].map(function (d) {
+          return (d * 3.14).toFixed(2);
         })
       };
       dashboardLineChart.data.datasets[0].data = LineDB[e.target.value];
-      dashboardLineChart.data.labels = LabelDB[e.target.value];
-      dashboardLineChart.options.tooltips.callbacks = {
-            label: function label(tooltipItem) {
-              return LabelDB[e.target.value][tooltipItem.index] + " - " + tooltipItem.yLabel + " {{ getMyDevise() }}";
-            },
-            title: function title() {
-              return '';
-            }
-          };
       dashboardLineChart.update();
     });
   }
@@ -485,8 +389,4 @@ window.utils.$document.ready(function () {
 });
 
 
-
-
 })
-
-    </script>

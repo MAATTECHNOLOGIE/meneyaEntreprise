@@ -10,7 +10,6 @@
             </div>
           </div>
 
-          @if(!$produits->isEmpty())
             <div class="card mb-3 no-print">
             <div class="card-body">
               <div class="row justify-content-between align-items-center">
@@ -44,17 +43,16 @@
               </div>
             </div>
           </div>
-
+          @if(!$produits->isEmpty())
           <div class="card mb-3">
+
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
                 <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
                   <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">
               <p class="mb-0">Vous avez 
                 <span class="badge badge-pill badge-soft-success fs-2"> {{ prdTotalP()->count() }} </span>  &nbsp;articles
-              </p>
-
-                    
+              </p>                   
                   </h5>
                 </div>
                 @include('pages/dash/pagnMod')
@@ -134,9 +132,7 @@
 
             </div>
 
-            {{-- ***** MODULE AJOUT PRODUIT & CATGORIE**** --}}
-              @include('pages/principale/approvision/addPrdMod')
-            {{-- ***** MODULE AJOUT PRODUIT & CATGORIE**** --}}
+
 
           @csrf
         @else
@@ -144,6 +140,10 @@
         @endif
 
 
+
+            {{-- ***** MODULE AJOUT PRODUIT & CATGORIE**** --}}
+              @include('pages/principale/approvision/addPrdMod')
+            {{-- ***** MODULE AJOUT PRODUIT & CATGORIE**** --}}
 
 <div class="modal fade" id="histMod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -165,8 +165,16 @@
 
 
 
-
-
+<script type="text/javascript">
+  window.utils.$document.ready(function () {
+  var select2 = $('.selectpicker');
+  select2.length && select2.each(function (index, value) {
+    var $this = $(value);
+    var options = $.extend({}, $this.data('options'));
+    $this.select2(options);
+  });
+});
+</script>
 <script type="text/javascript">
     $(function()
     {

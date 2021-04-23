@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Model\setting;
@@ -307,6 +308,42 @@ if(!function_exists('getSender'))
 			
 			$fbLink = setting::where('cle','=', 'fblink')->first();
 			return $fbLink->valeur;
+		}
+	}
+
+
+	if(!function_exists('formatDate'))
+	{
+		function formatMyDate($date)
+		{
+	        setlocale(LC_TIME, ['fr', 'fra', 'fr_FR']);
+			$newDate = date_create_from_format('d/m/Y', $date)
+			    ->format('d-m-Y');    
+	        $timestamp = strtotime($newDate);       
+            $dateStr = strftime('%A %d %B %Y', $timestamp);
+            return $dateStr;
+		}
+	}
+
+	
+    if(!function_exists('getSettingByName'))
+	{
+		function getSettingByName($name)
+		{
+			
+			$set = setting::where('cle','=', $name)->first();
+			return $set->valeur;
+		}
+	}
+
+    if(!function_exists('setSettingByName'))
+	{
+		function setSettingByName($name,$valeur)
+		{
+			
+			$set = setting::where('cle','=', $name)->first();
+			$set->valeur = $valeur;
+			$set->save();
 		}
 	}
 

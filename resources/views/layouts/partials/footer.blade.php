@@ -137,7 +137,35 @@
     </script>
 
 
-    
+{{-- Module JS avec skypack et le module confettis --}}
+@if(getSettingByName('nbrConnexion') ==1)
+<script  type="module">
+     import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+
+function myConfetti()
+{
+  confetti({
+    particleCount: 200,
+    spread: 360,
+    origin: {x: 0.5,y: 0.1}
+    });  
+}
+
+function confetti3()
+{
+  myConfetti();
+setTimeout(function(){
+  confetti3();
+}, 2000);
+}
+
+confetti3();
+
+setTimeout(function(){
+  $('.firstLog').click();
+}, 1000)
+</script>
+@endif 
     <script src="{{ asset('assets/js/js_route.js') }}"></script>
     <script src="{{ asset('assets/js/mbo_route.js') }}"></script>
 

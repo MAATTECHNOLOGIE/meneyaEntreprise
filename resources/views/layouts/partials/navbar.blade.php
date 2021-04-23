@@ -12,7 +12,34 @@
         {{-- MENU DE GAUCHE --}}
         <nav class="navbar navbar-vertical navbar-expand-xl navbar-light"
               id="myNav"> 
-        @include('layouts.partials.nav')
+
+    {{-- VERIFIE S'IL A UN FORFAIT ACTIF --}}
+    @if(isset($forfaitDown))
+      @php $lien = 'layouts.partials.navAbnExpire'@endphp
+    @else
+      {{-- VERIFIE SI C'EST SA PREMIERE CONNEXION A MENEYA --}}
+        @if(getSettingByName('nbrConnexion') ==1)
+          @php $lien = 'layouts.partials.navFirstLogin'@endphp
+        @else
+
+          @switch( getAbnmnt()->offres_id ?? getLastAbnmnt()->offres_id )
+            @case(1) {{-- Forfait starter --}}
+              @php $lien = 'layouts.partials.navStarter' @endphp 
+              @break
+            @case(2) {{--Forfait Medium   --}}
+              @php $lien = 'layouts.partials.navMedium' @endphp 
+              @break 
+            @case(3) {{-- Forfait premium   --}}
+              @php $lien = 'layouts.partials.navPremium' @endphp
+              @break
+
+            @default {{-- Forfait starter --}}
+               @php $lien = 'layouts.partials.navStarter' @endphp
+          @endswitch
+        @endif
+    @endif
+
+      @include($lien)
         </nav>          
         {{-- FIN MENU DE GAUCHE --}}
 
@@ -120,9 +147,16 @@
                      <span>{{ Auth::user()->name }}</span></a>
 
                       <div class="dropdown-divider"></div>
+                        @if(getRole() == "admin")
                        <a class="dropdown-item" href="#" id="setting">
                          Paramètres
                        </a>
+                        @endif
+                        @if(isSuperAdmin())
+                         <a class="dropdown-item" href="#" id="abonmt">
+                           Abonnement
+                         </a>
+                        @endif
                       <a class="dropdown-item" href="{{ route('logout') }}"
                          onclick="event.preventDefault();
                          document.getElementById('logout-form').submit();">

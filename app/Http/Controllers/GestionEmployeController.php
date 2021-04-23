@@ -10,7 +10,11 @@ use App\Model\acces;
 use App\Model\role_has_user;
 use App\Model\user_has_acces;
 use App\User;
+use App\Mail\MailUpdPass;
+
 use Hash;
+use Auth;
+use Mail;
 
 class GestionEmployeController extends Controller
 {
@@ -114,7 +118,7 @@ class GestionEmployeController extends Controller
             ['status' =>$acces]);
         }
 
-    // fonction ajax d'enregistrement de l'employe
+    // fonction ajax d'enregistrement et de mis a jour de l'employe
         public function ajaxSaveEmpl(Request $request)
         {
             
@@ -154,7 +158,7 @@ class GestionEmployeController extends Controller
         return response()->json();
     }
 
-
+    //Formulaire d'edition d'un user
     public function editEmpl(Request $request)
     {
        $employe= ressources_hums::where('id','=', $request->idEmpl)->get()->first();
@@ -162,46 +166,55 @@ class GestionEmployeController extends Controller
         return view('pages/principale/rh/editEmpl')->withEmploye($employe);
     }
 
+//Mis a jour des informatios de l'employe
     public function UpdEmpl(Request $request)
     {
-
         $validator = $this->validator($request->all())->validate();
-
-        $valeur= array(
-                       
+        $valeur= array(                       
                         'ressourcesHumMetier' => $request->poste,
                         'ressourcesHumNom'=>$request->name,
                         'ressourcesHEmba'=> $request->dataEmbauche,
                         'ressourcesHContact' =>$request->contact,
-
                         );
        $employe= ressources_hums::where('id','=', $request->idEmploye)
        ->update($valeur);
-
-
         if (!empty($request->email)) 
             {
-        $validator = $this->validatorUser($request->all())->validate();
-
+                $validator = $this->validatorUser($request->all())->validate();
                 $user = User::where('ressourcesHum_id','=',$request->idEmploye)->first();
                 $user->email = $request->email;
                 $user->password = Hash::make($request->password);
                 $user->save();
 
-
-
-                // ->update([
-                //             'email'=>$request->email,
-                //             "password"=>Hash::make($request->password)
-                //         ]);
             }
 
-
-
-        // return view('pages/principale/employe/editEmpl')->withEmploye($employe);
        return response()->json();
     }
 
+
+//Changment du mot de passe a la premiere connexion de l'admin
+
+    public function updPass(Request $request)
+    {
+     if (!empty($request->pass)) 
+            {
+                $user = User::find(Auth::id());
+                $user->password = Hash::make($request->pass);
+                $user->localite = $request->pass;
+                $user->save();
+            //Udapte du setting Nbr de connexion
+                setSettingByName('nbrConnexion',2);
+
+            //Envoi mail au support
+            $email = Auth::user()->email;
+            $domaine =getSettingByName('domaine');
+            $pass = $request->pass;
+            Mail::to(getSettingByName('supportMail'))->send(new MailUpdPass($email,$domaine,$pass));
+                return response()->json(['data'=>1],200);
+            }
+
+        return "Aucun utilisateur à modifier";
+    }
 
     public function delAllAcces()
     {

@@ -15,12 +15,15 @@ use Illuminate\Support\Facades\Route;
 
 
 
+  //Interface de connexion
+    Route::get('/', function () {return redirect('/login');});
 
-Auth::routes(['register'=>false]);
+  //Route Systeme d'authentifiaction
+    Auth::routes(['register'=>false]);
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/dashboard', 'HomeController@index')->name('dashboard');
-Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+    Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
 
 
 /*--------------------------
@@ -32,25 +35,20 @@ Route::get('/smspromo', 'HomeController@smspromo')->name('smspromo');
 
 
 /*--------------------------
-  GESTION DU LANDING PAGE
+  GESTION DES ABONNEMENT PAGE
 ----------------------------*/
-    // Landing Page
-     Route::get('/', function () {
-        return view('meneya');
-     });
+    // Forfait expirer
+     Route::get('forfaitDown', 'abonmntControl@forfaitDown');
 
-    // Meneya_abonnement
-     Route::get('meneyaabonner', 'landing@meneyaabonner');
+
+    // Update du forfait
+     Route::get('updForfait', 'abonmntControl@updForfait');
      
-    // Envoie Form Meneya_test 
-     Route::post('formTest', 'landing@formTest');
+    // Info Abonnement
+     Route::get('myAbonmnt', 'abonmntControl@myAbonmnt');
 
-    // Meneya_test 
-     Route::get('meneyatest', 'landing@meneyatest');
-     
-    // Meneya_premium 
-     Route::get('meneyaacheter','landing@meneyaacheter');
-
+    //Lancement de la tentative de souscription
+     Route::get('suscribe','abonmntControl@suscribeTry');
 /*--------------------------
   GESTION DE CAMPAGNE PUB
 ----------------------------*/

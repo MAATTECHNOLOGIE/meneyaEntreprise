@@ -2,30 +2,44 @@
             <div class="card-body rounded-soft bg-gradient">
               <div class="row text-white align-items-center no-gutters">
                 <div class="col">
-                  <h4 class="text-white mb-0">Aujourd'hui {{ formatPrice(venteJourP()->sum('prix_vente_total')) }}</h4>
+                  <h6 class="text-white mb-0">Aujourd'hui<span class=" h5 text-danger "> {{ formatPrice(venteJourP()->sum('prix_vente_total')) }} </span></h6>
                   <p class="fs--1 font-weight-semi-bold">Hier <span class="opacity-50">{{
                   formatPrice(venteHierP()->sum('prix_vente_total')) }}</span></p>
                 </div>
                 <div class="col-auto d-none d-sm-block">
                   <select class="custom-select custom-select-sm mb-3" id="dashboard-chart-select">
-                    <option value="all" selected="selected">Mes ventes</option>
-                    <option value="successful" >Arrivages</option>
-                    <option value="failed"></option>
+                  <option value="thisMois" selected="selected" id="thisMois">
+                    {{ date('M') }}
+                  </option>
+                  <option value="lastMois"  id="lastMois">
+                    {{ date('M',strtotime('-1 month')) }}
+                  </option>
                   </select>
                 </div>
               </div>
-              <canvas class="max-w-100 rounded" id="chart-line" width="1618" height="375" aria-label="Line chart" role="img"></canvas>
+          {{--     <canvas class="max-w-100 rounded" id="chart-line" width="1618" height="375" aria-label="Line chart" role="img"></canvas> --}}
+
+              <canvas class="max-w-100 rounded" id="myChart" width="1618" height="375" aria-label="Line chart" role="img"></canvas>
             </div>
           </div>
 
-          
+
           <div class="card bg-light mb-3 ">
             <div class="card-body p-3 d-flex justify-content-center">
-              <p class="h5 text-info">
-                Le renouvellement de votre abonnement est prévu pour  <strong class="text-danger"> Mardi 10 Mars 2021</strong>
+                @if(getAbnmnt())
+                 <p class="h5 text-info">
+                Le renouvellement de votre abonnement est prévu pour le
+
+                 <strong class="text-danger">  {{ formatMyDate(getAbnmnt()->dateFin)}} </strong>
+                @else
+                  <p class="h5 text-info"> 
+                    <strong class="text-danger"> Votre abonnement {{ getLastAbnmnt()->libele }} a expirer le {{ formatMyDate(getLastAbnmnt()->dateFin) }} </strong> <a class="btn btn-danger ml-2 updForfait" href="#">Renouveler</a>
+                
+                @endif
               </p>
             </div>
           </div>
+
           <div class="card-deck">
             <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
               <div class="bg-holder bg-card" style="background-image:url(assets/img/illustrations/corner-1.png);">
@@ -50,7 +64,7 @@
                 </span></h6>
                 <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-info" >
                   <i class="far fa-address-card"></i> {{ formatQte(getClientNbr()->count()) }}
-                </div>{{-- <a class="font-weight-semi-bold fs--1 text-nowrap" href="#!">All orders<span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span></a> --}}
+                </div>
               </div>
             </div>
             <div class="card mb-3 overflow-hidden" style="min-width: 12rem">
@@ -135,3 +149,7 @@
               </div>
             </div>
           @endif
+
+
+
+

@@ -26,6 +26,7 @@ if(!function_exists('venteHierP'))
 	}
 }
 
+
 if(!function_exists('venteTotalP'))
 {
 	function venteTotalP()
@@ -35,6 +36,70 @@ if(!function_exists('venteTotalP'))
 		return $venteT;
 	}
 }
+
+
+if(!function_exists('vntMois'))
+{
+	function vntMois()
+	{
+		$debutMois = '01/'.date('m/Y');
+		$dateActu = date('d/m/Y');
+		$vntMois = DB::table('vente_principales')->whereBetween('dateV', [$debutMois, $dateActu])->get();
+
+  $charData = [];
+
+  for($i = 0; $i < date('d'); $i++) 
+  {
+  	$d =($i+1).'/'.date('m/Y');
+
+  	if ($i<9){$d ='0'.($i+1).'/'.date('m/Y');} //Mettre en 02 chiffre
+
+   $charData[$i] = $vntMois->where('dateV',$d)->sum('prix_vente_total');
+  }
+
+		return $charData;
+	}
+}
+
+//Valeur de vente d'un mois quelqconque
+if(!function_exists('vntOtherMois'))
+{
+	function vntOtherMois($mois= NULL,$annee=NULL)
+	{
+		$lastMois = date('m',strtotime('-1 month'));
+		$myYear = date('Y');
+		if ($lastMois == "12") {$myYear = date('Y',strtotime('-1 year'));}
+		//Verifie s'il son nulle
+		$mois = is_null($mois) ? $lastMois: $mois;
+		$annee = is_null($annee) ? $myYear: $annee;
+
+		//Traitement
+		$debutMois = '01/'.$mois.'/'.$annee;
+		//Calcul NBR de jour du mois
+		$nbrJ = cal_days_in_month(CAL_GREGORIAN, $mois,$annee );
+		//Formattage de la date de fin du mois
+		$dateFin = $nbrJ.'/'.$mois.'/'.$annee;
+
+		//Selection des vente compris entre le debut du mois et sa fin
+		$vntMois = DB::table('vente_principales')->whereBetween('dateV', [$debutMois, $dateFin])->get();
+
+		//initialisation du tableau de donnee 
+  		$charData = [];
+
+  		//Remplissage tableau avec la somme des vente de chaque jour ecoule
+		  for($i = 0; $i < $nbrJ; $i++) 
+		  {
+		  	$d =($i+1).'/'.$mois.'/'.$annee;
+
+		  	if ($i<9){$d ='0'.($i+1).'/'.$mois.'/'.$annee;} //Mettre en 02 chiffre
+
+		   $charData[$i] = $vntMois->where('dateV',$d)->sum('prix_vente_total');
+		  }
+
+		return $charData;
+	}
+}
+
 
 
 if(!function_exists('venteJourSuc'))

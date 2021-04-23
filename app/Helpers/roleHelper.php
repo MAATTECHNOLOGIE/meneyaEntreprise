@@ -1,6 +1,9 @@
 <?php
 use App\Model\user_has_acces;
 use App\Model\succursale;
+use App\Model\abonnement;
+use App\Model\offres;
+
 
 if(!function_exists('getRole'))
 {
@@ -16,6 +19,30 @@ if(!function_exists('getRole'))
 
 	}
 }
+
+
+if(!function_exists('isSuperAdmin'))
+{
+	function isSuperAdmin()
+	{
+		$role = DB::table('role_has_users')
+            ->join('roles', 'roles.id', '=', 'role_has_users.roles_id')
+            ->select('roles.*')
+            ->where('role_has_users.user_id','=', Auth::id())
+            ->where('role_has_users.roles_id','=',3) // Role 3 => superAdmin
+            ->first();
+
+         if(!empty($role))
+         {
+         	return 1;
+         }
+
+
+           return 0;
+
+	}
+}
+
 
 if(!function_exists('getUserRole'))
 {
@@ -74,6 +101,63 @@ if(!function_exists('hasStatAccesto'))
 	}
 }
 
+//Retourne le forfait d'abonnement actif du connecte
+if(!function_exists('getAbnmnt'))
+{
+	function getAbnmnt()
+	{
+		 $abmnt =  DB::table('abonnements')
+            ->join('offres', 'offres.id', '=', 'abonnements.offres_id')
+            ->select('offres.*','abonnements.*')
+            ->where('abonnements.statuPaiement','=', 1)
+            ->first();
+		 return $abmnt;
+           
+	}
+}
+
+//Retourne le dernier abonnement ayant expirer
+if(!function_exists('getLastAbnmnt'))
+{
+	function getLastAbnmnt()
+	{
+		 $abmnt =  DB::table('abonnements')
+            ->join('offres', 'offres.id', '=', 'abonnements.offres_id')
+            ->select('offres.*','abonnements.*')
+            ->where('abonnements.statuPaiement','=', 0)
+			->orderBy('abonnements.id','desc')
+            ->first();
+		 return $abmnt;
+           
+	}
+}
+
+//Retourne les info dune offre d'abonnement
+    if(!function_exists('getForfait'))
+	{
+		function getForfait($id)
+		{
+			
+			$offres = offres::find($id);
+			return $offres;
+		}
+	}
+//Retourne tous les abonnement du connecte
+if(!function_exists('allAbnmnt'))
+{
+	function allAbnmnt()
+	{
+		 $abmnt =  DB::table('abonnements')
+            ->join('offres', 'offres.id', '=', 'abonnements.offres_id')
+            ->select('offres.*','abonnements.*')
+            ->orderBy('abonnements.id','desc')->get();
+		 return $abmnt;
+           
+	}
+}
+
+
+
 
 	//Retrouver la succu  a partir du gerant connecte 
 if(!function_exists('userHasSucc'))
@@ -94,6 +178,8 @@ if(!function_exists('userHasSucc'))
            
 
 }
+
+
 
 
 

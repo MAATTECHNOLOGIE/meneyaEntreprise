@@ -565,7 +565,7 @@ window.utils.$document.ready(function () {
     return new window.Chart(ctx, config);
   };
   /*-----------------------------------------------
-  |   Line Chart
+  |   Line Chart 
   -----------------------------------------------*/
 
 
@@ -661,10 +661,12 @@ window.utils.$document.ready(function () {
           return (d * 3.14).toFixed(2);
         })
       };
+      
       dashboardLineChart.data.datasets[0].data = LineDB[e.target.value];
       dashboardLineChart.update();
     });
   }
+
   /*-----------------------------------------------
   |   Bar Chart
   -----------------------------------------------*/
