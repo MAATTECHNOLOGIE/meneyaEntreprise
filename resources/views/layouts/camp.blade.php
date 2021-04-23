@@ -284,42 +284,6 @@
      $("#qte").val("");
   });
 
-  // Boutton de paiement
-  /* $("#pay").click(function(){
-     var nom  = $("#nom").val();
-     var tel  = $("#tel").val();
-     var lieu = $("#lieu").val();
-     var qte  = $("#qte").val();
-     var idP  = $("#prdId").val();
-     if (qte=="") {
-       var qte = 1;
-     }
-     console.log("nom: "+nom+"/ tel:"+tel+" /lieu:"+lieu+" /qte:"+qte+
-     " / idPrd:"+idP);
-      if (nom!=''&&tel!=''&&lieu!='') {
-       $.ajax({
-         url:'comd',
-         method:'get',
-         data:{nom:nom,tel:tel,lieu:lieu,qte:qte,prod:idP},
-         //dataType:'text',
-         success:function(data){
-            trans_id = data.command.code;
-            amount = data.command.montant;
-            designation = data.command.designation;
-            $('#bt_get_signature').trigger('click');
-         },
-         error:function(data){
-           Swal.fire({
-              'title': 'Oops...',
-              'icon': 'error',
-              'text': 'cool'
-           });
-          
-         }
-       });
-      }else{
-       Swal.fire('Veuillez nous fournir votre addresse de livraison');
-      }
-   });*/
+
    init();
 </script>

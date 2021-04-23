@@ -88,7 +88,9 @@
     <script src="assets/js/theme.js"></script>
     <script src="assets/js/sweetalert2.min.js"></script>
     <script src="assets/lib/select2/select2.min.js"></script>
-    
+
+<!--Script de paiement cinetpay -->
+<script charset="utf-8" src="https://www.cinetpay.com/cdn/seamless_sdk/latest/cinetpay.prod.min.js" type="text/javascript"></script>
 
 <script src="assets/lib/toastr/toastr.min.js"></script>
 
@@ -175,6 +177,19 @@ setTimeout(function(){
 }
 </style>
 
-  </body>
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/607e0dac067c2605c0c405f7/1f3m6arr7';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+</body>
 
 </html>

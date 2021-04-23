@@ -45,8 +45,19 @@ class abonmntControl extends Controller
             $offre = $abn->libele; 
             $domaine =getSettingByName('domaine');
             $pass = Auth::user()->localite;
-            Mail::to(getSettingByName('supportMail'))->send(new MailAbonnement($email,$offre,$domaine,$pass));
-            return "ok";
+           /* Mail::to(getSettingByName('supportMail'))->send(new MailAbonnement($email,$offre,$domaine,$pass));*/
+
+            // Lancement de l'opération d'achat CinetPay
+
+               return response()->json([
+                                        'email' =>$email,
+                                        'offre' =>$offre,
+                                        'montant' =>$abn->Coutabonnement,
+                                        'domaine' =>$domaine,
+                                        'pass' =>$pass
+                                        ]);
+
+             
         }
 
 

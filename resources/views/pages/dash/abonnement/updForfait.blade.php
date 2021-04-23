@@ -102,7 +102,7 @@
                             <li class="py-1">
                               <span class="mr-2 fas fa-check text-success"></span>
                               <span class="badge badge-soft-success badge-pill ml-1"><i class="fa fa-plus"></i></span>
-                              Gestion Fournisseurs
+                              Gestion Opérateurs
                             </li>
                             <li class="py-1">
                               <span class="mr-2 fas fa-check text-success"></span>
@@ -126,57 +126,30 @@
                 </div>
                 <div class="col-12 text-center">
                   <h5 class="mt-5">Plus de fonctionnalités ?</h5>
-                  <p class="fs-1">Contactez notre équipe support <a href="mailto:support@meneya.com">support@meneya.com</a> </p>
+                  <p class="fs-1">Contactez notre équipe support <a href="mailto:{{getSettingByName('supportMail')}}">{{getSettingByName("supportMail")}}</a> </p>
                 </div>
               </div>
             </div>
           </div>
 
 
+
+<script src="{{ asset('js/abonnement.js') }}"></script>
 <script type="text/javascript">
   $(function()
   {
     //Renouvellement de l'abonnement 
-
-$('.updForfait').click(function()
-{
-    loadingScreen();
-
-
-    $('#main_content').load('updForfait'); 
-})
-
-    //Lancement de la souscription
-    $('.Suscribe').click(function()
-    {
-      var offre_id = $(this).attr('forfait');
-
-function testMe()
-{
-  console.log('TestOk');
-}
-
-const ipAPI = '/suscribe?offre='+offre_id;
-
-Swal.queue([{
-  title: 'Système de paiement',
-  confirmButtonText: 'Payez maitenant',
-  text:
-    'Le système de paiement est en cours de chargement',
-  showLoaderOnConfirm: true,
-  preConfirm: () => {
-    return fetch(ipAPI)
-      .then(response => response.text())
-      .then(data => testMe())
-      .catch(() => {
-        Swal.insertQueueStep({
-          icon: 'error',
-          title: 'Erreur de connexion !!!'
-        })
-      })
-  }
-}])
-    })
+     $('.updForfait').click(function()
+     {
+       loadingScreen();
+       $('#main_content').load('updForfait'); 
+     })
 
   })
+</script>
+
+<script type="text/javascript">
+  
+  // Gestion de l'abonnement
+   init();
 </script>

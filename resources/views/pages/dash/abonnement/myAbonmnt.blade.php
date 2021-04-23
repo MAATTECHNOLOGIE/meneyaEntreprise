@@ -98,8 +98,9 @@
                 <button class="btn btn-outline-warning mr-1 mb-1 updForfait" type="button">  
                  <span class="fas fa-sync-alt fs-0 mr-1"></span>Renouveler
                 </button>
-                <button class="btn btn-outline-danger mr-1 mb-1" type="button"> 
-                  <span class="fas fa-dollar-sign fs-0 mr-1"></span>Changer forfait
+                <button class="btn btn-outline-danger mr-1 mb-1 updForfait" 
+                type="button"> 
+                  <span class="fas fa-dollar-sign fs-0 mr-1"></span>Changer de forfait
                 </button>
             </div>
           </div>
@@ -143,11 +144,10 @@
   $(function()
   {
     //Renouvellement de l'abonnement 
-
-$('.updForfait').click(function()
-{
-    loadingScreen();
-    $('#main_content').load('updForfait'); 
-})
+     $('.updForfait').click(function()
+     {
+       loadingScreen();
+       $('#main_content').load('updForfait'); 
+     })
   })
 </script>
