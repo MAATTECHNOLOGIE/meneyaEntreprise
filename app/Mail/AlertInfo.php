@@ -21,7 +21,7 @@ class AlertInfo extends Mailable
     public $myTitle;
     public function __construct($myTitle = NULL,$liste)
     {
-        $this->myTitle = is_null($myTitle) ? "ALERT MENEYA": $myTitle;
+        $this->myTitle = is_null($myTitle) ? "MENEYA - SEUIL STOCK": $myTitle;
         $this->liste = is_null($liste) ? "Aucun produit en seuil d'alerte": $liste;
     }
 
@@ -33,7 +33,7 @@ class AlertInfo extends Mailable
     public function build()
     {
 
-        return $this->subject($this->myTitle)
+        return $this->subject("MENEYA - SEUIL STOCK")
                 ->from('meneya@noreply.com')
                 ->markdown('emails.alert.info');
     }

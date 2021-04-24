@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class MailAbonnement extends Mailable
+class AlertExpireAbonnement extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,16 +16,17 @@ class MailAbonnement extends Mailable
      *
      * @return void
      */
-    public $email;
+    public $nbrJrst;
     public $offre;
     public $domaine;
-    public $pass;
-    public function __construct($email,$offre,$domaine,$pass)
+
+
+    public function __construct($nbrJrst,$offre,$domaine)
     {
-        $this->email = $email ;
+        $this->nbrJrst = $nbrJrst ;
         $this->offre = $offre ;
         $this->domaine = $domaine ;
-        $this->pass = $pass ;
+
     }
 
     /**
@@ -35,10 +36,8 @@ class MailAbonnement extends Mailable
      */
     public function build()
     {
-
-        return $this->subject('MENEYA - REABONNEMENT')
+        return $this->subject('MENEYA - EXPIRATION ABONNEMENT')
                 ->from('meneya@noreply.com')
-                ->markdown('emails.suscribe.reabonnement');
-
+                ->markdown('emails.suscribe.expired');
     }
 }

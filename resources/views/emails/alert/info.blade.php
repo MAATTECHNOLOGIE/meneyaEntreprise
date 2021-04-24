@@ -1,6 +1,6 @@
 @component('mail::message')
 # Hello Gestionnaire
-Ci dessous la liste des produits qui on atteint le seuil d'alerte suite à votre vente précédente 
+Ci dessous la liste des produits dont le stock a atteint le seuil de sécurité d'alerte suite à votre vente précédente 
 
 @component('mail::table')
 | Code                    | Libelle	                 | Qte Restante              |
@@ -13,6 +13,6 @@ Ci dessous la liste des produits qui on atteint le seuil d'alerte suite à votre
 Se connecter
 @endcomponent
 
-Merci,<br>
+<br>
 {{ config('app.name') }}
 @endcomponent

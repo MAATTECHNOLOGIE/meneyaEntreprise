@@ -11,12 +11,13 @@
           <p class="mt-2">Gestion des clients des clients</p>
         </div>
         <div class="col-lg-12 d-flex justify-content-around">
+
+
+                  @if(!$clts->isEmpty())
                   <button class="btn btn-falcon-danger btn-sm mr-2" role="button"> 
                     <i class="fas fa-chart-pie mr-1 text-900 "></i>
                      {{ formatQte(allCltSuc(userHasSucc(Auth::id())->id)->count()) }} Clients
                   </button>
-
-                  @if(!$clts->isEmpty())
                   <?php $best= getBestClt() ?>
                   <button class="btn btn-falcon-danger btn-sm mr-2 bestClt" 
                     nom="{{ $best['nom'] }}" contact="{{ $best['contact'] }}" montant="{{ formatPrice($best['montant']) }}" >
@@ -28,12 +29,6 @@
                     Achat du meilleur: {{  formatPrice($best['montant']) }}
                   </button>
                   @endif
-                    <button class="btn btn-falcon-default btn-sm newOpera" type="button" id="AddClt" data-toggle="modal" data-target="#modAddClt">
-                      <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
-                      <span class=" d-sm-inline-block ml-1" >
-                        Nouveau prospect
-                      </span>
-                    </button>
                   
       </div>
       </div>
@@ -197,6 +192,7 @@
 $(function()
   {
 
+    //Info meiller cient
     $('.bestClt').click(function()
     {
       var nom = $(this).attr('nom'); 
@@ -214,11 +210,9 @@ $(function()
           confirmButtonAriaLabel: 'Merci',
         })
     })
+
       // Faire disparaitre les paginate de Javascript
           $(".mytable").parent().next().hide();
-
-      //Scroll l'affichage a la page charge
-        scrollContent();
 
       //Liste des acahts du clt
           $('.liste').click(function()
@@ -360,7 +354,7 @@ $(function()
                         toastr.success("Client ajouté avec succès");
                         $("#formAddClt").trigger("reset");
                           $('#modAddClt').modal('hide');
-                        $('#sucCont').load('/mbo/s_Client'); //Actualiser la page
+                          $('#main_content').load('/mbo/s_Client'); //Actualiser la page
 
 
                        })
@@ -394,7 +388,7 @@ $(function()
                     );
                         $("#formAddClt").trigger("reset");
                           $('#modAddClt').modal('hide');
-                        $('#sucCont').load('/mbo/s_Client'); //Actualiser la page
+                          $('#main_content').load('/mbo/s_Client'); //Actualiser la page
 
 
                        })

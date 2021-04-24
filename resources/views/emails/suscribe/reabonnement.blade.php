@@ -13,6 +13,6 @@ Ci-dessous ses informations
 | Mot de passe  | {{ $pass }} 	|
 @endcomponent
 
-Thanks,<br>
+
 {{ config('app.name') }}
 @endcomponent
