@@ -177,8 +177,7 @@ if(!function_exists('allAbnmnt'))
 
 
 
-
-	//Retrouver la succu  a partir du gerant connecte 
+//Retrouver la succu  a partir du gerant connecte 
 if(!function_exists('userHasSucc'))
 {
 	function userHasSucc($user_id)

@@ -55,7 +55,8 @@ use Illuminate\Support\Facades\Route;
     // Forfait expirer
      Route::get('forfaitDown', 'abonmntControl@forfaitDown');
 
-
+    //Alert mail expiration de forfait
+     Route::get('alertAbonmnt','abonmntControl@alertAbonmnt');
     // Update du forfait
      Route::get('updForfait', 'abonmntControl@updForfait');
      
@@ -70,10 +71,6 @@ use Illuminate\Support\Facades\Route;
 
     // Rechargement de sms
      Route::get('suscribe_sms','abonmntControl@suscribe_sms');
-      
-
-
-
 /*--------------------------
   GESTION DE CAMPAGNE PUB
 ----------------------------*/

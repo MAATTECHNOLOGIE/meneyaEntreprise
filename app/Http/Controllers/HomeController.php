@@ -38,13 +38,12 @@ class HomeController extends Controller
                 $tstanpNow = strtotime(date('d-m-Y'));
 
                 //Comparaison des timestamp
-                if($tstanpSous>$tstanpNow )
+                $tmpRst = $tstanpSous - $tstanpNow; //Timestamp between debut & fin abonnemnt
+                if($tmpRst>=0)
                 {
-
-
                     if(getRole() == "admin")
                     {
-                     return view('layouts.app');
+                     return view('layouts.app')->with('tmpRst',$tmpRst);
                     }
                     else
                     {

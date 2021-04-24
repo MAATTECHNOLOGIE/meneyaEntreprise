@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class AlertInfo extends Mailable
+class AlertExpireAbonnement extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -15,14 +15,18 @@ class AlertInfo extends Mailable
      * Create a new message instance.
      *
      * @return void
-
      */
-    public $liste;
-    public $myTitle;
-    public function __construct($myTitle = NULL,$liste)
+    public $nbrJrst;
+    public $offre;
+    public $domaine;
+
+
+    public function __construct($nbrJrst,$offre,$domaine)
     {
-        $this->myTitle = is_null($myTitle) ? "MENEYA - SEUIL STOCK": $myTitle;
-        $this->liste = is_null($liste) ? "Aucun produit en seuil d'alerte": $liste;
+        $this->nbrJrst = $nbrJrst ;
+        $this->offre = $offre ;
+        $this->domaine = $domaine ;
+
     }
 
     /**
@@ -32,9 +36,8 @@ class AlertInfo extends Mailable
      */
     public function build()
     {
-
-        return $this->subject("MENEYA - SEUIL STOCK")
+        return $this->subject('MENEYA - EXPIRATION ABONNEMENT')
                 ->from('meneya@noreply.com')
-                ->markdown('emails.alert.info');
+                ->markdown('emails.suscribe.expired');
     }
 }

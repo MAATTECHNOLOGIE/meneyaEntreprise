@@ -52,8 +52,6 @@
     <!-- ===============================================-->
 
 
-
-
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
@@ -95,99 +93,171 @@
 <script src="assets/lib/toastr/toastr.min.js"></script>
 
 
+<script src="{{ asset('assets/js/js_route.js') }}"></script>
+<script src="{{ asset('assets/js/mbo_route.js') }}"></script>
 
     <!-- ===============================================-->
     <!--    MES PROPRES SCRIPTS-->
     <!-- ===============================================-->
     <script type="text/javascript">
       // Fonction de scrollage
-       function scrollContent()
-       {
+         function scrollContent()
+         {
 
-            var offset = $('#infoSucc').offset().top;
-            $('html, body').animate({scrollTop: offset}, 'slow');
-       }
+              var offset = $('#infoSucc').offset().top;
+              $('html, body').animate({scrollTop: offset}, 'slow');
+         }
 
       // Fonction de chargement
-      function loadingScreen()
-      {
-                toastr.options.progressBar = true;
-                toastr.info('Chargement en cours ...'); 
-        $('#main_content').html($('#animationDiv').attr('class', 'animation text-center'));
-                toastr.options.progressBar = false;
+        function loadingScreen()
+        {
+          toastr.options.progressBar = true;
+          toastr.info('Chargement en cours ...'); 
+          $('#main_content').html($('#animationDiv').attr('class', 'animation text-center'));
+          toastr.options.progressBar = false;
+        }
 
+      //Function Formater un prix Ajax
+          function formatPriceJs(price,collerIci)
+          {
+            $.ajax({
+                url:'/mbo/formatPriceJs',
+                method:'GET',
+                data:{prix:price},
+                dataType:'text',
+                success:function(data){
+                  collerIci.text(data);
 
-      }
-
-//Function getPrice Ajax
-  function formatPriceJs(price,collerIci)
-  {
-    $.ajax({
-        url:'/mbo/formatPriceJs',
-        method:'GET',
-        data:{prix:price},
-        dataType:'text',
-        success:function(data){
-          collerIci.text(data);
-
-          },
-        error:function(){
-          toastr.error('Problème de connexion internet');
+                  },
+                error:function(){
+                  toastr.error('Problème de connexion internet');
+                  }
+            });
           }
-    });
-  }
+
+      //Function Ajax envoie mail
+        function sendAlertAbonnement(nbrJrst,offre)
+        {
+          $.ajax({
+              url:'/alertAbonmnt',
+              method:'GET',
+              data:{nbrJrst:nbrJrst,offre:offre},
+              dataType:'json',
+              success:function(data){
+                console.log("Reussi");
+
+                },
+              error:function(){
+                console.log("Echec");
+                }
+          });
+        }
     </script>
 
 
-{{-- Module JS avec skypack et le module confettis --}}
-@if(getSettingByName('nbrConnexion') ==1)
-<script  type="module">
-     import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+{{--Verfie sil es a sa premiere connexion --}}
+  @if(getSettingByName('nbrConnexion') ==1)
+   {{-- Module JS avec skypack ==> confettis --}}
+    <script  type="module">
+      //Inport du module de confetti
+        import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+      //Custom parametre de confetti
+        function myConfetti()
+        {
+          confetti({
+            particleCount: 200,
+            spread: 360,
+            origin: {x: 0.5,y: 0.1}
+            });  
+        }
 
-function myConfetti()
-{
-  confetti({
-    particleCount: 200,
-    spread: 360,
-    origin: {x: 0.5,y: 0.1}
-    });  
-}
+      //Propre fonction confetti
+        function confetti3()
+          {
+              myConfetti();
+            setTimeout(function(){
+              confetti3();
+            }, 2000);
+          }
+      //Auto declechement
+        confetti3(); 
 
-function confetti3()
-{
-  myConfetti();
-setTimeout(function(){
-  confetti3();
-}, 2000);
-}
+      //Boucle declencheur de modif password
+        setTimeout(function(){$('.firstLog').click();}, 1000); 
+    </script>
+  @endif
 
-confetti3();
+{{-- Forfait en cours d'expiration --}}
+  @if(isset($tmpRst))
+    @php
+      $abn = getAbnmnt();
+      $nbrJrst = ((int)$tmpRst) / 86400;
+      if ($nbrJrst < 10) 
+      {
+        @endphp
+            <script type="text/javascript">
+              $(function()
+              {
+                var offre ={{ $abn->offres_id }};
+                var nbrJrst ={{ $nbrJrst  }};
+                Swal.fire({             
+                title: "Alert Abonnement",
+                text: "Votre abonnement expire dans "+nbrJrst+" Jours. Pensez à le renouvelez pour toujours bénéficier de vos fonctionnalités",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "rgba(149, 150, 141, 0.69)" ,
+                cancelButtonText: "retour",
+                confirmButtonText: "Renouvellez!",
+                backdrop: "rgba(237, 36, 9,0.5)",
+                        }).then((result) => {
+                                  if (result.value) 
+                                  {
+                                       $('#main_content').load('updForfait'); 
+                                  }
+                              })
+                //Envoie de mail d'alert abonnement
+                  sendAlertAbonnement(nbrJrst,offre);
+              })
+            </script>
+        @php  
+      }
+      // else
+      // {
 
-setTimeout(function(){
-  $('.firstLog').click();
-}, 1000)
-</script>
-@endif 
-    <script src="{{ asset('assets/js/js_route.js') }}"></script>
-    <script src="{{ asset('assets/js/mbo_route.js') }}"></script>
+
+      // }
+    @endphp
+  @endif
+
+
+{{-- Forfait expirer  Lancement de modal--}}
+  @if(isset($forfaitDown))
+    <script type="text/javascript">
+      $(function()
+      {
+            $(".abnExpire").click();
+      })
+    </script>
+  @endif
+
 
 <style type="text/css">
-  .bg-meneya {
-  background-color: #a40046 !important;
-}
+  .bg-meneya {background-color: #a40046 !important;}
 </style>
 
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/607e0dac067c2605c0c405f7/1f3m6arr7';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
+<!--End of Tawk.to Script-->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/607e0dac067c2605c0c405f7/1f3m6arr7';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
 <!--End of Tawk.to Script-->
 
 </body>

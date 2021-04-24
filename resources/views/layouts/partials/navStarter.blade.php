@@ -77,6 +77,10 @@
                     <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation"  id="produitsPrincipal">
                       <a class="nav-link" href="#top">Nos produits</a>
                     </li>
+                    <li class="nav-item  collapsed" id="p_client">
+                      <a class="nav-link" href="#top">Nos clients</a>
+                    </li>
+
                     <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="arrivagePrincipal"><a class="nav-link" href="#top">Approvisionnement</a>
                     </li>
                     <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="listArrivage"><a class="nav-link" href="#top">Liste Approvi.</a>

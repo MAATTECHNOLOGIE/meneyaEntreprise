@@ -32,7 +32,9 @@
             @case(3) {{-- Forfait premium   --}}
               @php $lien = 'layouts.partials.navPremium' @endphp
               @break
-
+            @case(4) {{-- Forfait essaie   --}}
+              @php $lien = 'layouts.partials.navPremium' @endphp
+              @break
             @default {{-- Forfait starter --}}
                @php $lien = 'layouts.partials.navStarter' @endphp
           @endswitch

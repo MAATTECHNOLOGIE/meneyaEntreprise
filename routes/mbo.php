@@ -339,7 +339,7 @@ use Illuminate\Support\Facades\Route;
       Appel ajax  nécessaire
      ------------------------*/
     //Formater un prix en Ajax
-          Route::get('/formatPriceJs', 'myAbonnement@formatPriceJs');
+          Route::get('/formatPriceJs', 'abonmntControl@formatPriceJs');
 
 
 

@@ -6,6 +6,7 @@ use Auth;
 use Mail;
 use DB;
 use App\Mail\MailAbonnement;
+use App\Mail\AlertExpireAbonnement;
 use App\Mail\MailSms;
 use App\Model\offres;
 use App\Model\abonnement;
@@ -17,7 +18,6 @@ class abonmntControl extends Controller
 {
 
 	//Pour le form de renouvellement abonnement  
-
         public function updForfait()
         {
             if(isSuperAdmin())
@@ -40,12 +40,46 @@ class abonmntControl extends Controller
             }
         }
 
-    //Function de lancement de paiement
+
+    //Envoi de mail d'alert d'expiration d'abonnement
+        public function alertAbonmnt(Request $request)
+        {
+            $lastNotif = getSettingByName('notifExpiration');
+
+            //Conversion de la date de derniere notification
+            $lastNotif = date_create_from_format('d/m/Y', $lastNotif)
+                ->format('d-m-Y');   
+            //Calcul du timestamp de chaqe date
+            $tstanpLast = strtotime($lastNotif);
+            $tstanpNow = strtotime(date('d-m-Y'));
+            //Calcul du temps ecouler entre today et lastNotif
+            $ecart = $tstanpNow - $tstanpLast ; //Timestamp de l'ecart
+
+            $ecart2J = 86400*2; //Timestamp de deux jour
+
+            if ($ecart >=$ecart2J) 
+            {
+                //Le mail es envoyé ssi la date d'ancienne notification
+                // et celle d'aujourdhui vaut 02
+                $abn = offres::find($request->offre);
+                $offre = $abn->libele; 
+                $montant = $abn->montant; 
+                $domaine ='http://'.getSettingByName('domaine');
+                Mail::to(getSettingByName('alertMail'))->queue(new AlertExpireAbonnement($request->nbrJrst,$offre,$domaine)); 
+                setSettingByName('notifExpiration',date('d/m/Y'));
+            } 
+            return response()->json();    
+        }
+
+    //Page de notification du forfait expirer
         public function suscribeTry(Request $request)
         {
             //Reception des données
             $email = Auth::user()->email;
-            $domaine =getSettingByName('domaine');
+
+            $abn = offres::find($request->offre);
+            $offre = $abn->libele; 
+            $domaine ='http://'.getSettingByName('domaine');
             $pass = Auth::user()->localite;
 
 

@@ -88,7 +88,6 @@ class s_VenteController extends Controller
     //Formulaire d'Ajout de vente 
         public function Addvente()
         {
-
                 //Recup Clients de  la succursale 
                 $suc = userHasSucc(Auth::id());
                 $clt = allCltSuc($suc->id);
@@ -237,6 +236,8 @@ class s_VenteController extends Controller
                                       'typevente' => setDefault($request->type,"0"),
                                       'succursale_id' =>$suc->id,
                                     ]);
+                            
+
                           //Intialisation de variable pour les totaux
                                   $prix_vente_total = 0;
                                   $qte = 0;

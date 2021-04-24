@@ -6,7 +6,7 @@ $(function()
 $('.abnExpire').click(function()
 {
 Swal.fire({
-            title: "Abonnement Epiré",
+            title: "Abonnement Expiré",
             text: "Veuillez renouvellez votre abonnement pour avoir accès à nouveau aux fonctionnalités",
             icon: "info",
             showCancelButton: true,
