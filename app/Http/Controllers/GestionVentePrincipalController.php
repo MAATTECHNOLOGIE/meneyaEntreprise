@@ -228,6 +228,11 @@ class GestionVentePrincipalController extends Controller
                                       'description_charge' => setDefault($request->chargeLibelle,"livraison"),
                                       'typevente' => setDefault($request->type,"0"),
                                     ]);
+
+                          //Validation du prospect en client
+                            $clt =clients::find($_SESSION['clientId']);
+                            $clt->statutClt = 1;
+                            $clt->save();
                                   $prix_vente_total = 0;
                                   $qte = 0;
                                   $cout_achat_total = 0;
@@ -315,7 +320,7 @@ class GestionVentePrincipalController extends Controller
                         if(isset($_SESSION['alertPrd']))
                         {
                           //Déclenchement d'alert
-                            Mail::to(getAlertMail())->send(new AlertInfo('Alert seuil',$_SESSION['alertPrd']));
+                            Mail::to(getAlertMail())->queue(new AlertInfo('MENEYA - SEUIL STOCK',$_SESSION['alertPrd']));
                             unset($_SESSION['alertPrd']);
 
                         }

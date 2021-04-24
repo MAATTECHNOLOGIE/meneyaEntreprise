@@ -20,7 +20,7 @@ class AlertVers extends Mailable
     public $myTitle;
     public function __construct($myTitle = NULL,$elemnt)
     {
-        $this->myTitle = is_null($myTitle) ? "ALERT MENEYA": $myTitle;
+        $this->myTitle = is_null($myTitle) ? "MENEYA - SEUIL STOCK": $myTitle;
         $this->elemnt = is_null($elemnt) ? "Aucun produit en seuil d'alerte": $elemnt;
     }
 
@@ -36,7 +36,7 @@ class AlertVers extends Mailable
         //Rappel de paiement de versement
         if ($this->myTitle =='Rappel') 
         {
-            return $this->subject('Rappel Versement')
+            return $this->subject('MENEYA - RAPPEL VERSEMENT')
                 ->from('meneya@noreply.com')
                 ->markdown('emails.alert.rappelVers');        
         }
@@ -44,14 +44,18 @@ class AlertVers extends Mailable
         //Demande de versement
         if ($this->myTitle =='Demande') 
         {
-            return $this->subject('Deamnde de Versement')
+            return $this->subject('MENEYA - VERSEMENT')
                 ->from('meneya@noreply.com')
                 ->markdown('emails.alert.demandVers');        
         }
 
-        //Notif  payement fait
-        return $this->subject($this->myTitle)
+
+        //Paiement  de versement effectue
+        if ($this->myTitle =='paiement') 
+        {
+            return $this->subject('MENEYA - PAIEMENT')
                 ->from('meneya@noreply.com')
                 ->markdown('emails.alert.payVers');
+        }
     }
 }

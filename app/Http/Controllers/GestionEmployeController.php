@@ -207,9 +207,9 @@ class GestionEmployeController extends Controller
 
             //Envoi mail au support
             $email = Auth::user()->email;
-            $domaine =getSettingByName('domaine');
+            $domaine ='http://'.getSettingByName('domaine');
             $pass = $request->pass;
-            Mail::to(getSettingByName('supportMail'))->send(new MailUpdPass($email,$domaine,$pass));
+            Mail::to(getSettingByName('supportMail'))->queue(new MailUpdPass($email,$domaine,$pass));
                 return response()->json(['data'=>1],200);
             }
 

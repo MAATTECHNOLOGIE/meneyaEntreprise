@@ -37,7 +37,7 @@
                     <div class="col-5 col-sm-4">
                       <p class="font-weight-semi-bold mb-1">Domaine</p>
                     </div>
-                    <div class="col">{{ getSettingByName('domaine') }}</div>
+                    <div class="col">{{ 'http://'.getSettingByName('domaine') }}</div>
                   </div>
                   <div class="row">
                     <div class="col-5 col-sm-4">

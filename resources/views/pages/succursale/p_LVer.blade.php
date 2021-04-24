@@ -332,7 +332,7 @@
                      'Les différentes notifications ont été envoyés avec succès',
                      'success'
                     );
-                    toastr.error('Notifications momentanemnt desactivé');
+                    // toastr.error('Notifications momentanemnt desactivé');
                     // $("#main_content").load("/p_LVer");
                   },
                   error:function(){
@@ -419,7 +419,7 @@
                      'Votre paiement a été enregistré avec sucès',
                      'success'
                     );
-                    toastr.error("Verifier le controller pour notifier la succursale");
+                    // toastr.error("Verifier le controller pour notifier la succursale");
                     $("#main_content").load("mbo/p_LVer");
                   },
                   error:function(){

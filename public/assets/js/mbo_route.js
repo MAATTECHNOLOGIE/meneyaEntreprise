@@ -158,4 +158,16 @@ TABLEAU DE BORD
             $('#main_content').load('mbo/stockP');
     });
 
+
+            /*--------- -----------------
+                GESTION DES CLIENT P
+            -----------------------------*/
+
+    // Clients
+     $("#p_client").click(function(){
+      $('#main_content').load('/mbo/s_Client');
+
+
+     });
+
 });

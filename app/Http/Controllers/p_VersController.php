@@ -309,99 +309,101 @@ class p_VersController extends Controller
             }
 
 
-    public function addVers(Request $request)
-    {
+    //Demande de versement
+      public function addVers(Request $request)
+      {
 
-        // Versement
-         $id = versement::max('id') + 1;
-          $matV = "Vers#0".$id;
-            $dataV  = [ 'succursale_id'   => $request->succursale_id,
-                        'versMnt'  => $request->versMnt,
-                        'dateDebut'   =>$request->dateDebut,
-                        'dateFin' =>  $request->dateFin,
-                        'versMat' =>$matV,
-                        'versStatu' =>0,
-                        'versDate' =>date('d/m/Y'),
-                      ];
-            //Rquestte de selection des versement de la succursalles
-              $versDebu = DB::table('versements')
-                          ->where('succursale_id','=',$request->succursale_id)
-                          ->get();
+          // Versement
+           $id = versement::max('id') + 1;
+            $matV = "Vers#0".$id;
+              $dataV  = [ 'succursale_id'   => $request->succursale_id,
+                          'versMnt'  => $request->versMnt,
+                          'dateDebut'   =>$request->dateDebut,
+                          'dateFin' =>  $request->dateFin,
+                          'versMat' =>$matV,
+                          'versStatu' =>0,
+                          'versDate' =>date('d/m/Y'),
+                        ];
+              //Rquestte de selection des versement de la succursalles
+                $versDebu = DB::table('versements')
+                            ->where('succursale_id','=',$request->succursale_id)
+                            ->get();
 
-              //Verifie si des demandende de versement exite deja
-            if(!$versDebu->isEmpty())
-            {
-                    if ( $request->dateFin< $versDebu->min('dateDebut')) 
-                    {
-                      versement::create($dataV);
-                      $output =1;  //Nouveau versemen ajoute
-                    }
-                    else
-                    {
-                      if ($request->dateDebut > $versDebu->max('dateFin') ) 
+                //Verifie si des demandende de versement exite deja
+              if(!$versDebu->isEmpty())
+              {
+                      if ( $request->dateFin< $versDebu->min('dateDebut')) 
                       {
                         versement::create($dataV);
-                        $output =1; 
+                        $output =1;  //Nouveau versemen ajoute
                       }
                       else
                       {
-                        $output =0;  
+                        if ($request->dateDebut > $versDebu->max('dateFin') ) 
+                        {
+                          versement::create($dataV);
+                          $output =1; 
+                        }
+                        else
+                        {
+                          $output =0;  
+                        }
                       }
-                    }
-            }
-            else
-            {
-              versement::create($dataV);
-              $output =1;   
-            }
+              }
+              else
+              {
+                versement::create($dataV);
+                $output =1;   
+              }
 
-            //L'ajout de demande de versementa été efectue
-            //Envoie de mail au gerant
-            if ($output == 1) {
-                $gerant = gerantSuc(readSurc($request->succursale_id)->user_id);
-                // Alert versement
-                    Mail::to($gerant->email)->send(new AlertVers('Demande',$dataV));
-            }
-            
-        // Retour JSON
-         return $output; 
+              //L'ajout de demande de versementa été efectue
+              //Envoie de mail au gerant
+              if ($output == 1) {
+                  $gerant = gerantSuc(readSurc($request->succursale_id)->user_id);
+                  // Alert versement
+                      Mail::to($gerant->email)->queue(new AlertVers('Demande',$dataV));
+              }
+              
+          // Retour JSON
+           return $output; 
 
-    }
+      }
 
-    public function payVers(Request $request)
-    {
+    
+    //Paiement d'un versement
+      public function payVers(Request $request)
+      {
 
-        $valeur =['nomAgent' =>$request->agent ,
-                  'montantPaye'=>$request->montant ,
-                  'datePaiement' =>$request->datePayVers,
-                  'typepaiement' =>$request->moyen ,
-                  'versement_id' =>$request->idVers
-                ];
-        $vers = versement::find($request->idVers);
-        versement_historiques::create($valeur);
-        $mntDejaPaye = getHistVers($request->idVers)->sum('montantPaye');
-        if($mntDejaPaye >= $vers->versMnt )
-        {
-          $vers->versStatu = 1;
-          $vers->save();
-        }
+          $valeur =['nomAgent' =>$request->agent ,
+                    'montantPaye'=>$request->montant ,
+                    'datePaiement' =>$request->datePayVers,
+                    'typepaiement' =>$request->moyen ,
+                    'versement_id' =>$request->idVers
+                  ];
+          $vers = versement::find($request->idVers);
+          versement_historiques::create($valeur);
+          $mntDejaPaye = getHistVers($request->idVers)->sum('montantPaye');
+          if($mntDejaPaye >= $vers->versMnt )
+          {
+            $vers->versStatu = 1;
+            $vers->save();
+          }
 
-         $gerant = gerantSuc(readSurc($vers->succursale_id)->user_id);
-        //Déclenchement d'alert
-            //Msg alert
-         $elemnt = ['montantPaye'=>$request->montant,
-                  'datePaiement' =>$request->datePayVers,
-                  'typepaiement' =>$request->moyen,
-                  'matVers' =>$vers->versMat,
-                  'mntVers' =>$vers->versMnt,
-                  'mntRst' =>$vers->versMnt - $mntDejaPaye
-                ];
-            Mail::to($gerant->email)
-            ->send(new AlertVers('Alert Payement',$elemnt));
+           $gerant = gerantSuc(readSurc($vers->succursale_id)->user_id);
+          //Déclenchement d'alert
+              //Msg alert
+           $elemnt = ['montantPaye'=>$request->montant,
+                    'datePaiement' =>$request->datePayVers,
+                    'typepaiement' =>$request->moyen,
+                    'matVers' =>$vers->versMat,
+                    'mntVers' =>$vers->versMnt,
+                    'mntRst' =>$vers->versMnt - $mntDejaPaye
+                  ];
+              Mail::to($gerant->email)
+              ->queue(new AlertVers('paiement',$elemnt));
 
-   
-      return response()->json();
-    }
+        return response()->json();
+      }
 
     public function histPayVers(Request $request)
     {

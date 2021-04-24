@@ -7,6 +7,7 @@ use Validator;
 use App\Model\clients;
 use App\Model\succursale_has_clients;
 use App\Model\ventes_succursales;
+use App\Model\vente_principales;
 use App\User;
 use Hash;
 use Auth;
@@ -89,11 +90,14 @@ class GestionClient extends Controller
                 ->where('clients.statutClt','=',1)
                     ->orderBy('id', 'desc')->paginate($perPage);
 
+                //Retourne le path de la vue selon de Principal / Sucursa
+                if ($suc->id == 1) {$path = "pages.principale.vente_P.p_Client"; }
+                else{$path = "pages.succursale.vente.s_Client";}
 
-                return view('pages.succursale.vente.s_Client')
-                                            ->with('clts',$clts)
-                                            ->with('pagePath',$pagePath)
-                                            ->with('perPage',$perPage);
+                //Retour avec les donnees
+                return view($path)->with('clts',$clts)
+                                ->with('pagePath',$pagePath)
+                                ->with('perPage',$perPage);
             }
 
     //Recup liste des achat d'un client
