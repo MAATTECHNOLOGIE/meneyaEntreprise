@@ -2,6 +2,7 @@
 
 use App\Model\produits;
 
+// Helper d'envoie de sms
 if(!function_exists('Sendsms'))
 {
   function Sendsms($msg,$tel,$sender)
@@ -23,8 +24,8 @@ if(!function_exists('Sendsms'))
          $nvMsg = str_replace('î','i', $nvMsg);
          $curl = curl_init();
          $datas = [
-            "email"=>"kouame.ngues123@gmail.com",
-            "secret"=>"H97p0ZwvhpZBriJfWqJCb5iMuupodaibo@5veXbt",
+            "email"=>getSettingByName('sms_mail'),
+            "secret"=>getSettingByName('sms_secret'),
             "message"=>$nvMsg,
             "receiver"=>$tel,
             "sender"=>$sender,
@@ -50,3 +51,30 @@ if(!function_exists('Sendsms'))
          return $response;  
   }
 }
+
+// Helper de solde sms
+if(!function_exists('soldeSMS'))
+{
+  function soldeSMS($mail,$key)
+  {
+    $url = "http://www.letexto.com/get_sold/user/".$mail."/secret/".$key;
+    $curl = curl_init();
+    curl_setopt_array($curl, array(
+     CURLOPT_URL => $url ,
+     CURLOPT_RETURNTRANSFER => true,
+     CURLOPT_ENCODING => "",
+     CURLOPT_MAXREDIRS => 10,
+     CURLOPT_TIMEOUT => 30,
+     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+     CURLOPT_CUSTOMREQUEST =>"GET",
+     CURLOPT_HTTPHEADER => array("cache-control: no-cache"),
+    ));
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    curl_close($curl);
+    return $response;
+
+  }
+}
+
+?>

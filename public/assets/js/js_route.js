@@ -229,6 +229,8 @@ TABLEAU DE BORD
       $("#main_content").load("/CampgNew");
     });
 
+
+
     // Liste
     $("#CampgList").click(function(){
         loadingScreen();
@@ -274,7 +276,7 @@ $('#dashSucu').click(function()
 {
     loadingScreen();
     $('#main_content').load('dashSucu'); 
-})
+});
 
 
 
@@ -286,7 +288,14 @@ $('#abonmt').click(function()
 {
     loadingScreen();
     $('#main_content').load('myAbonmnt'); 
-})
+});
+
+// Gestion de crédit sms
+ $("#sms_credit").click(function(){
+   loadingScreen();
+   $('#main_content').load('sms_credit'); 
+ });
+
 
 
 });

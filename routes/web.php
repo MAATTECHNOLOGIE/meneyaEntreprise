@@ -29,8 +29,23 @@ use Illuminate\Support\Facades\Route;
 /*--------------------------
   GESTION DU PAIEMENT CINETPAY
 ----------------------------*/
+  // Achat sms_marketing
   Route::match(["get","post"],"/cinetpay_notify",
     "CampController@cinetpay_notify")->name('cinetpay.notify');
+
+  // Abonnement Meneya
+  Route::match(["get","post"],"/cinetpay_notify_abonment",
+    "abonmntControl@cinetpay_notify_abonment")
+  ->name('cinetpay_notify_abonment');
+
+  // Rechargement sms
+  Route::match(["get","post"],"/cinetpay_notify_sms",
+    "abonmntControl@cinetpay_notify_sms")
+  ->name('cinetpay_notify_sms');
+ 
+
+
+
 
 
 
@@ -49,6 +64,16 @@ use Illuminate\Support\Facades\Route;
 
     //Lancement de la tentative de souscription
      Route::get('suscribe','abonmntControl@suscribeTry');
+
+    // Gestion de crédit sms
+      Route::get('sms_credit','abonmntControl@sms_credit');
+
+    // Rechargement de sms
+     Route::get('suscribe_sms','abonmntControl@suscribe_sms');
+      
+
+
+
 /*--------------------------
   GESTION DE CAMPAGNE PUB
 ----------------------------*/
@@ -439,3 +464,7 @@ use Illuminate\Support\Facades\Route;
 
        //Mis a du resume des parametres
        Route::get('lSetting','SettingController@lSetting')->name('lSetting');
+
+       // Mise à jour sms_key
+       Route::post('updSms','SettingController@updSms')->name('updSms');
+       

@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 
-use App\Model\settings;
+use App\Model\setting;
 use App\User;
 use Auth;
+use DB;
 
 
 class SettingController extends Controller
@@ -29,7 +30,6 @@ class SettingController extends Controller
 		    	// $validator = $this->validator($request->all())->validate();
 
 		        $valeur= array(
-		                       
 		                        'name'=>$request->name,
 		                        'email'=> $request->email
 		                        );
@@ -44,7 +44,7 @@ class SettingController extends Controller
           //modif taxe devise
             if (isset($request->deviseId)) 
             {
-            $taxe = settings::where('cle','=','devise')->first()
+            $taxe = setting::where('cle','=','devise')->first()
                     ->update(['valeur'=> $request->deviseId]);
 
                 
@@ -53,7 +53,7 @@ class SettingController extends Controller
 		    	//modif taxe douane
 			    	if (isset($request->txDouane)) 
 			    	{
-						$taxe = settings::where('cle','=','dedouanement')->first()
+						$taxe = setting::where('cle','=','dedouanement')->first()
 										->update(['valeur'=> $request->txDouane]);
 
 			    			
@@ -61,19 +61,19 @@ class SettingController extends Controller
 		    	//modif taxe annexe
 			    	if (isset($request->txAnexe)) 
 			    	{
-						$taxe = settings::where('cle','=','fraisAnnexe')->first()
+						$taxe = setting::where('cle','=','fraisAnnexe')->first()
 										->update(['valeur'=> $request->txAnexe]);	
 			    	}
 			    //modif taxe portuaaire
 			    	if (isset($request->txPort)) 
 			    	{
-			    		$taxe = settings::where('cle','=','taxePort')->first()
+			    		$taxe = setting::where('cle','=','taxePort')->first()
 										->update(['valeur'=> $request->txPort]);
 			    	}	
 			    //modif marge vente
 			    	if (isset($request->txMarge)) 
 			    	{
-			    		$taxe = settings::where('cle','=','margeVente')->first()
+			    		$taxe = setting::where('cle','=','margeVente')->first()
 										->update(['valeur'=> $request->txMarge]);
 			    	}	
 
@@ -94,13 +94,13 @@ class SettingController extends Controller
               $request->mobileMoney = 0;
             }
 
-            $taxe = settings::where('cle','=','mobileMoney')->first()
+            $taxe = setting::where('cle','=','mobileMoney')->first()
                     ->update(['valeur'=> $request->mobileMoney]);     
 
 		    	//modif alert numero
 			    	if (!empty($request->alertTel)) 
 			    	{
-						$taxe = settings::where('cle','=','alertTel')->first()
+						$taxe = setting::where('cle','=','alertTel')->first()
 										->update(['valeur'=> $request->alertTel]);
 
 			    			
@@ -108,19 +108,19 @@ class SettingController extends Controller
 		    	//modif alert Mail 
 			    	if (!empty($request->alertMail)) 
 			    	{
-						$taxe = settings::where('cle','=','alertMail')->first()
+						$taxe = setting::where('cle','=','alertMail')->first()
 										->update(['valeur'=> $request->alertMail]);	
 			    	}
 			    //modif seuil produit
 			    	if (!empty($request->seuilPrd)) 
 			    	{
-			    		$taxe = settings::where('cle','=','seuilPrd')->first()
+			    		$taxe = setting::where('cle','=','seuilPrd')->first()
 										->update(['valeur'=> $request->seuilPrd]);
 			    	}	
 			    //modif marge vente
 			    	if (isset($request->etatAlert)) 
 			    	{
-			    		$taxe = settings::where('cle','=','etatAlert')->first()
+			    		$taxe = setting::where('cle','=','etatAlert')->first()
 										->update(['valeur'=> $request->etatAlert]);
 			    	}	
 		    	return response()->json();
@@ -208,7 +208,20 @@ class SettingController extends Controller
                     </table> ';
     	return $output;
     }
+  
+  // Modification de sms_key
+    public function updSms(Request $request)
+    {
+      $sms_email = $request->email_sms;
+      $sms_key   = $request->sms_key;
 
+      setting::where('cle','=','sms_mail')->first()
+                    ->update(['valeur'=> $sms_email]);   
+
+      setting::where('cle','=','sms_secret')->first()
+                    ->update(['valeur'=> $sms_key]);     
+
+    }
 
 
 

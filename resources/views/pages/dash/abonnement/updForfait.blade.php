@@ -34,9 +34,17 @@
                 <div class="col-lg-4 border-top border-bottom">
                   <div class="h-100">
                     <div class="text-center p-4">
-                      <h3 class="font-weight-normal my-0">{{ getForfait(1)->libele }}</h3>
+                      <h3 class="font-weight-normal my-0 text-uppercase">{{ getForfait(1)->libele }}</h3>
                       <p class="mt-3">Pour une entreprise individuelle, gestion simple et éfficace</p>
-                      <h2 class="font-weight-medium my-4"> <sup class="font-weight-normal fs-2 mr-1"></sup>{{ formatPrice(getForfait(1)->Coutabonnement) }}<small class="fs--1 text-700">/ mois</small></h2><a class="btn btn-outline-primary Suscribe" href="#" forfait="1">Souscrire</a>
+                      <h2 class="font-weight-medium my-4"><sup class="font-weight-normal fs-2 mr-1"></sup>
+                        @if(isEssaie())
+                          {{ formatPrice(getForfait(1)->prixInscription) }}
+                          <small class="fs--1 text-700"></small></h2>
+                        @else
+                          {{ formatPrice(getForfait(1)->Coutabonnement) }}
+                          <small class="fs--1 text-700">/ mois</small></h2>
+                        @endif
+                        <a class="btn btn-outline-primary Suscribe" href="#" forfait="1">Souscrire</a>
                     </div>
                     <hr class="border-bottom-0 m-0">
                     <div class="text-left px-sm-4 py-4">
@@ -55,9 +63,17 @@
                 <div class="col-lg-4 border-top border-bottom">
                   <div class="h-100" style="background-color: rgba(115, 255, 236, 0.18)">
                     <div class="text-center p-4">
-                      <h3 class="font-weight-normal my-0">{{ getForfait(2)->libele }}</h3>
+                      <h3 class="font-weight-normal my-0 text-uppercase">{{ getForfait(2)->libele }}</h3>
                       <p class="mt-3">Partagez vos taches de gestion et gérez vos filliales</p>
-                      <h2 class="font-weight-medium my-4"> <sup class="font-weight-normal fs-2 mr-1"></sup>{{ formatPrice(getForfait(2)->Coutabonnement) }}<small class="fs--1 text-700">/ mois</small></h2><a class="btn btn-primary Suscribe" href="#" forfait="2">Souscrire</a>
+                      <h2 class="font-weight-medium my-4"> <sup class="font-weight-normal fs-2 mr-1"></sup>
+                        @if(isEssaie())
+                          {{ formatPrice(getForfait(2)->prixInscription) }}
+                          <small class="fs--1 text-700"></small></h2>
+                        @else
+                          {{ formatPrice(getForfait(2)->Coutabonnement) }}
+                          <small class="fs--1 text-700">/ mois</small></h2>
+                        @endif
+                        <a class="btn btn-primary Suscribe" href="#" forfait="2">Souscrire</a>
                     </div>
                     <hr class="border-bottom-0 m-0">
                     <div class="text-left px-3 px-sm-4 py-4">
@@ -79,9 +95,17 @@
                 <div class="col-lg-4 border-top border-bottom">
                   <div class="h-100">
                     <div class="text-center p-4">
-                      <h3 class="font-weight-normal my-0">{{ getForfait(3)->libele }}</h3>
+                      <h3 class="font-weight-normal my-0 text-uppercase">{{ getForfait(3)->libele }}</h3>
                       <p class="mt-3">Relation client & Campagne Marketting + volet E-commerce</p>
-                      <h2 class="font-weight-medium my-4"> <sup class="font-weight-normal fs-2 mr-1"></sup>{{ formatPrice(getForfait(3)->Coutabonnement) }}<small class="fs--1 text-700">/ mois</small></h2><a class="btn btn-outline-primary Suscribe" forfait='3'>Souscrire</a>
+                      <h2 class="font-weight-medium my-4"> <sup class="font-weight-normal fs-2 mr-1"></sup>
+                        @if(isEssaie())
+                          {{ formatPrice(getForfait(3)->prixInscription) }}
+                          <small class="fs--1 text-700"></small></h2>
+                        @else
+                          {{ formatPrice(getForfait(3)->Coutabonnement) }}
+                          <small class="fs--1 text-700">/ mois</small></h2>
+                        @endif
+                        <a class="btn btn-outline-primary Suscribe" forfait='3'>Souscrire</a>
                     </div>
                     <hr class="border-bottom-0 m-0">
                     <div class="text-left px-sm-4 py-4">
@@ -132,7 +156,9 @@
             </div>
           </div>
 
+          <button id="cliqMe" style="display: none;">tester</button>
 
+          <button id="bt_get_signature" style="display: none;"></button>
 
 <script src="{{ asset('js/abonnement.js') }}"></script>
 <script type="text/javascript">

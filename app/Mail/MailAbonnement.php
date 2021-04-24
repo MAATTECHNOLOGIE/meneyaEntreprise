@@ -36,7 +36,7 @@ class MailAbonnement extends Mailable
     public function build()
     {
 
-        return $this->subject(' ALERT REABONNEMENT')
+        return $this->subject('ALERT REABONNEMENT')
                 ->from('meneya@noreply.com')
                 ->markdown('emails.suscribe.reabonnement');
 
