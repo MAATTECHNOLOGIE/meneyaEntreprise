@@ -88,6 +88,7 @@
              <span class="fas fa-plus "  data-fa-transform="shrink-3" ></span>Nouvelle sortie
            </button>
 
+
                     <button class="btn btn-falcon-default btn-sm newOpera" type="button">
                       <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
                       <span class="d-none d-sm-inline-block ml-1">
@@ -501,14 +502,19 @@
         //Ajouter une sortie
          $('.bntSortie').click(function()
          {
-          /* var idV = $(this).attr('id');
-           //alert(idV);
-           var token = $('input[name=_token]').val();
-           $("#main_content").load("/p_OpSortie",{idV:idV,_token:token});*/
-
            var idV = $(this).attr('id');
            var token  = $('input[name=_token]').val();
            $("#main_content").load("p_OpSortie",{idV:idV,_token:token});
+           //alert(token);
+
+         });
+
+        //Ajouter une sortie2
+         $('.bntSortie2').click(function()
+         {
+           var idV = $(this).attr('id');
+           var token  = $('input[name=_token]').val();
+           $("#main_content").load("p_OpSortie2",{idV:idV,_token:token});
            //alert(token);
 
          });

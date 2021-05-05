@@ -137,6 +137,7 @@ use Illuminate\Support\Facades\Route;
         // Sortie => Effectuer une sortie pour l'opérateur
           Route::post('p_OpSortie','p_OperaController@p_OpSortie')->name('p_OpSortie');
 
+
         //Sortie => Suppression de produits
           Route::get('suprPrdSortie','p_OperaController@suprPrdSortie');
 
@@ -464,4 +465,7 @@ use Illuminate\Support\Facades\Route;
 
        // Mise à jour sms_key
        Route::post('updSms','SettingController@updSms')->name('updSms');
+
+       // Mise à jour Entreprise
+       Route::post('updEntp','SettingController@updEntp')->name('updEntp');
        
