@@ -32,7 +32,7 @@
 
                   <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab3-sms" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-comments"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Sms</span></a></li>
 
-                  <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab4" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-sun"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Resume</span></a></li>
+                  <li class="nav-item" id="resume"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab4" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-sun"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Resume</span></a></li>
 
                   <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab5" data-toggle="tab"><span class="nav-item-circle-parent">
                     <span class="nav-item-circle"><span class="fas fa-thumbs-up"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Fin</span></a>
@@ -53,11 +53,11 @@
                       </div>
                       <div class="form-group">
                         <label for="wizard-name">Username</label>
-                        <input class="form-control" type="text" name="name"  id="wizard-name" value="{{ Auth::user()->name }}" />
+                        <input class="form-control" type="text" name="name"  id="wizardName" value="{{ Auth::user()->name }}" />
                       </div>
                       <div class="form-group">
-                        <label for="wizard-email">Email*</label>
-                        <input class="form-control" type="email" name="email" required="required" id="wizard-email" value="{{ Auth::user()->email }}" />
+                        <label for="myemail">Email*</label>
+                        <input class="form-control" type="email" name="email" required="required" id="myemail" value="{{ Auth::user()->email }}" readonly="" />
                       </div>
                     </form>
                   </div>
@@ -65,44 +65,39 @@
                   <!-- Infos entreprise -->
                   <div class="tab-pane  px-sm-3 px-md-5" 
                   id="bootstrap-wizard-tab1-Entp">
-                    <form class="form-validation" data-options='{"rules":"terms":{"required":"Vous devez acceptez nos conditions "}}}' id='form-tab1'>
+                    <form class="" method="POST" id='form-Entp' enctype="multipart/form-data">
                       @csrf
                       <div class="form-group">
-                        <label for="wizard-name">Nom Entreprise</label>
+                        <label for="entreprise">Nom Entreprise</label>
                         <input class="form-control" type="text" 
-                        name="entreprise" value="" />
+                        name="entreprise" value="{{ getSettingByName('Entreprise') }}" readonly="" />
                       </div>
 
-                     <div class="form-group">
-                       <label for="name">Logo</label>
-                       <div class="custom-file">
-                        <input class="custom-file-input" id="imageP" 
-                        type="file" name="imageP" required="required">
-                        <label class="custom-file-label" 
-                        for="customFile">sélectionner</label>
-                       </div>
-                     </div>
+                    <div class="form-group">
+                      <label for="imageP">Logo</label>
+                      <input class="form-control-file" name="imageP" id="imageP" type="file" required="required">
+                    </div>
 
 
                       <div class="form-group">
-                        <label for="wizard-email">Sender(identifiant sms)</label>
+                        <label for="sender">Sender(identifiant sms)</label>
                         <input class="form-control" type="text" 
                         name="sender" required="required" 
-                        id="wizard-email" value="" />
+                        id="wizard-email" value="{{ getSettingByName('sender') }}" />
                       </div>
 
                       <div class="form-group">
-                        <label for="wizard-name">Lien Facebook</label>
+                        <label for="facb">Lien Facebook</label>
                         <input class="form-control" type="text" 
                         name="facb"  id="wizard-name" 
-                        value="" />
+                        value="{{ getSettingByName('facebook') }}" />
                       </div>
 
                       <div class="form-group">
-                        <label for="wizard-name">WhatsApp</label>
+                        <label for="whatsAp">WhatsApp</label>
                         <input class="form-control" type="text" 
-                        name="whatsAp"  id="wizard-name" 
-                        value="" />
+                        name="whatsAp"  id="whatsAp" 
+                        value="{{ getSettingByName('whatsApp') }}" />
                       </div>
 
                       <div class="form-group">
@@ -111,15 +106,12 @@
                         </label>
                         <textarea class="form-control" id="descrp"
                          rows="3" 
-                         name="descrp">   
-                        </textarea>
+                         name="descrp">{{ getSettingByName('about') }}</textarea>
                       </div>
 
 
                     </form>
                   </div>
-
-
 
                   <div class="tab-pane px-sm-3 px-md-5" id="bootstrap-wizard-tab2">
                     <form class="form-validation" id='form-tab2'> 
@@ -229,12 +221,12 @@
                             </select>
                           </div>
                         </div>
-                        <div class="custom-control custom-checkbox">
+                    {{--<div class="custom-control custom-checkbox">
                           <input class="custom-control-input" id="wizard-checkbox1" type="checkbox" name="mobileMoney"  />
                           <label class="custom-control-label text-warning" for="wizard-checkbox1">
-                            Autoriser les règlements par mobile Money ?
+                            Données soumises a nos conditions de confidentialités
                           </label>
-                        </div>
+                        </div> --}}
                       </div>
                     </form>
                   </div>
@@ -278,7 +270,7 @@
                       <table class="table table-borderless fs--1 mb-0">
                         <tr class="border-bottom">
                           <th class="pl-0 pt-0 text-left">
-                          Etat alerte
+                          Etat alert
                           </th>
                           <th class="pr-0 text-right pt-0">
                               <div class="badge badge-pill badge-soft-success fs--2">{{getAlertEtat()}}
@@ -368,9 +360,9 @@
                 <div class="px-sm-3 px-md-5">
                   <ul class="pager wizard list-inline mb-0">
                     <li class="previous">
-                      <button class="btn btn-link pl-0" type="button" style="display: none;"><span class="fas fa-chevron-left mr-2" data-fa-transform="shrink-3"></span>Prev</button>
+                      <button class="btn btn-link pl-0" type="button" style="display: none;"><span class="fas fa-chevron-left mr-2" data-fa-transform="shrink-3"></span>Retour</button>
                     </li>
-                    <li class="next"><a class="btn btn-primary px-5 px-sm-6" href="#" id="next">Next<span class="fas fa-chevron-right ml-2" data-fa-transform="shrink-3"> </span></a></li>
+                    <li class="next"><a class="btn btn-primary px-5 px-sm-6" href="#" id="next">Suivant<span class="fas fa-chevron-right ml-2" data-fa-transform="shrink-3"> </span></a></li>
                   </ul>
                 </div>
               </div>
@@ -422,15 +414,16 @@
                 ajaxUpdAlert(form);
               break;
               case 'form-tab4': 
-                console.log("Parametres mis à jour");
+                  ajaxUpdSet();
               break;
               case 'form-tab3-sms':
                ajaxUpSms(form);
+                ajaxUpdSet();
               break;
-
-          }
-          ajaxUpdSet();
-
+              case 'form-Entp':
+               ajaxUpEntp(form);
+              break; 
+          } 
         })
 
 
@@ -489,6 +482,7 @@
                   }
                 });
               }
+
           //Mis a du resume des parametres
               function ajaxUpdSet() {
                 $.ajax({
@@ -506,6 +500,12 @@
                 });
               }
 
+          //Au clic de menu resume 
+            $('#resume').click(function()
+            {
+              ajaxUpdSet();
+            })
+
           // Mise à jour sms_key
            function ajaxUpSms(form)
            {
@@ -522,6 +522,35 @@
                 }
              });
            }
+
+
+
+
+
+          // Mise à jour Entrprise
+           function ajaxUpEntp(form)
+           {
+            toastr.info('Logo en chargement ...');
+              // var myform = $('form#');
+              var formData = new FormData(document.getElementById("form-Entp"));
+             $.ajax({
+               url:'/updEntp',
+               method:'POST',
+               data:formData,
+               dataType:'json',
+               success:function(){
+                 toastr.success('Mis à jour');
+                },
+               cache : false,
+               processData : false,
+               contentType : false,
+               error:function(){
+                    toastr.error('Problème de connexion');
+                }
+             });
+           }
+
+           
 
       })
     </script>

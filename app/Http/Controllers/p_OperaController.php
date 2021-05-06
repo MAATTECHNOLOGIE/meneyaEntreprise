@@ -485,6 +485,7 @@ class p_OperaController extends Controller
          return response()->json();
     }
 
+
     public function  p_OpSortie(Request $request)
     {
 
@@ -508,16 +509,12 @@ class p_OperaController extends Controller
             ->select('operateurs.*','operations.*', 'operation_has_operateurs.*','operateurs.id as OperaID','operations.id as opetionID','operation_has_operateurs.id as operaOpt')
             ->where('operateurs.id','=',$request->idV)
             ->get();
-         $produits = produits::all();
-         //dd($operations);
 
         //Ajout de nouvelle sortie  pour un operateur 
          return view('pages.principale.operateur.p_OpSortie')
                ->withOperateur($operateur)
-               ->withOperations($operations)
-               ->withProduits($produits);
+               ->withOperations($operations);
     }
-
     //Ajout de credit a une operation
     public function addCredit(Request $request)
     {
@@ -592,6 +589,8 @@ class p_OperaController extends Controller
 
     public function savePrdSortie(Request $request)
         {
+
+
             // Ajax validation et retour
             $validator = $this->validator($request->all())->validate();
 
@@ -605,24 +604,24 @@ class p_OperaController extends Controller
                     $item_array = array(
                      'qte'      => $request->quantite,
                      'prix'     => $request->prix,
-                     'article'     => $request->article,
-                     'idArticle'     => $request->idArticle,
+                     'article'     =>getPrd($request->article)->produitLibele,
+                     'idArticle'     => $request->article,
 
                      );
-                    $_SESSION["sortieOp"][$count] = $item_array;
+                    $_SESSION["sortieOp"][] = $item_array;
                   }
             else{
 
                 $item_array = array(
                  'qte'      => $request->quantite,
                  'prix'     => $request->prix,
-                 'article'  => $request->article,
-                'idArticle' => $request->idArticle,
+                 'article'     =>getPrd($request->article)->produitLibele,
+                     'idArticle'     => $request->article,
 
                  );
 
                 //Création de session
-                 $_SESSION["sortieOp"][0] = $item_array;
+                 $_SESSION["sortieOp"][] = $item_array;
               }
                     if (empty($_SESSION["sortieName"])) 
                     {
@@ -632,12 +631,6 @@ class p_OperaController extends Controller
                        $_SESSION["sortieIdOp"] = $request->sortieIdOp;
                        $_SESSION["sortieNameOp"] = $request->sortieNameOp;
                     }
-                //Exemple de donnée recu via le formulaire
-
-                        // sortieNom: 11
-                        // sortieLibelle: Test Operation
-                        // sortieIdOp: 12
-                        // sortieNameOp: MARCUS GARVEY
 
 
             return response()->json();

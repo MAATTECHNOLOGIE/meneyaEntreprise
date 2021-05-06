@@ -28,12 +28,10 @@ class SettingController extends Controller
 	    public function updUser(Request $request)
 		    {
 		    	// $validator = $this->validator($request->all())->validate();
-
 		        $valeur= array(
 		                        'name'=>$request->name,
 		                        'email'=> $request->email
 		                        );
-
 		       $user= user::where('id','=',Auth::id())->update($valeur);
 		    	return response()->json();
 		    }
@@ -217,12 +215,63 @@ class SettingController extends Controller
 
       setting::where('cle','=','sms_mail')->first()
                     ->update(['valeur'=> $sms_email]);   
-
       setting::where('cle','=','sms_secret')->first()
                     ->update(['valeur'=> $sms_key]);     
-
+      return response()->json();
     }
 
+
+  // Modification de sms_key
+    public function updEntp(Request $request)
+    {
+    //  !!!!!!!!!!!!!!!!  Lien des image  !!!!!!!!!!!!!!!! 
+      
+          // $lien = 'myapp/storage/app/public/';  //en ligne
+          $lien = 'storage/';                // en local
+
+        //  !!!!!!!!!!!!!!!!  Lien des image  !!!!!!!!!!!!!!!!!!
+         
+        // Récupération images
+          if(!empty($request->file('imageP')))
+          {
+            // Récupération du name file  
+             $imgP = $request->file('imageP');
+            // dossier de stockage
+             $path = $imgP->store('logo','public');
+            // Chemin d'accès de l'image 
+             $logoP = $lien.$path;
+            $set = setting::where('cle','=','logo')->first()
+                    ->update(['valeur'=> $logoP]);         
+          }
+
+
+          //modif sender SMS
+            if (!empty($request->sender)) 
+            {
+            $taxe = setting::where('cle','=','sender')->first()
+                    ->update(['valeur'=> $request->sender]); 
+            }
+          //modif FACEBOOK LINK
+            if (!empty($request->facb)) 
+            {
+            $taxe = setting::where('cle','=','facebook')->first()
+                    ->update(['valeur'=> $request->facb]); 
+            }
+          //modif whatsapp
+            if (!empty($request->whatsAp)) 
+            {
+              $taxe = setting::where('cle','=','whatsApp')->first()
+                    ->update(['valeur'=> $request->whatsAp]);
+            } 
+          //modif description
+            if (isset($request->descrp)) 
+            {
+              $taxe = setting::where('cle','=','about')->first()
+                    ->update(['valeur'=> $request->descrp]);
+            } 
+
+      return response()->json();
+    }
 
 
 

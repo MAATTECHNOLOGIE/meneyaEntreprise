@@ -165,20 +165,11 @@
                       <td class="font-weight-semi-bold">
                        <span class="chargesT">0</span> {{getMyDevise()}}
                       </td>
-                    </tr>
-                    
-
-                   {{--  <tr>
-                      <th class="text-900"><b>Taxe</b>
-                        <span class="taxeV">0</span> %:</th>
-                      <td class="font-weight-semi-bold"><span class="taxeMont">0
-                      </span> {{getMyDevise()}}</td>
-                    </tr> --}}
-                    
+                    </tr>                    
                      <tr class="border-top">
                       <th class="text-900"><b class="text-danger">Total:</b></th>
                        <td class="font-weight-semi-bold text-danger">
-                         <span class="totalttc">0</span>
+                         <span class="totalttc">{{formatPrice($montant_commande) }}</span>
                         {{getMyDevise()}}</td>
                      </tr>
                     
