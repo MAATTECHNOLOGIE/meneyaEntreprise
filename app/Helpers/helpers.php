@@ -1,5 +1,4 @@
 <?php 
-
 //Gestion des fournisseur
  	include 'Fournisseur.php';
 

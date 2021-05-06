@@ -4,7 +4,7 @@ function init()
     CinetPay.setConfig({
         apikey: '6820562105ffc56b7257464.26123769',
         site_id: 814773,
-        notify_url: 'https://5d2b9b2f7dfe.ngrok.io/cinetpay_notify'
+        notify_url: 'http://79f6c020852f.ngrok.io/cinetpay_notify_abonment'
     });
 
     //-------------Gestion des evenements
@@ -12,9 +12,6 @@ function init()
     CinetPay.on('error', function (e) {
         console.error(e);
         Swal.fire('Une erreur est survenue');
-        //var error_div = document.getElementById('error_info');
-        //error_div.innerHTML = '';
-        //error_div.innerHTML += '<b>Error code:</b>' + e.code + '<br><b>Message:</b>:' + e.message;
     });
     //ajax
     CinetPay.on('ajaxStart', function () {
@@ -28,35 +25,24 @@ function init()
         console.log('Tocken généré: ' + token);
     });
     CinetPay.on('paymentPending', function (e) {
-        //Swal.fire('Paiement en cours <br>');
-        //var error_div = document.getElementById('error_info');
-        //error_div.innerHTML = 'Paiement en cours <br>';
-        //error_div.innerHTML += '<b>code:</b>' + e.code + '<br><b>Message:</b>:' + e.message;
+        console.log("paiement en cours");
     });
     CinetPay.on('paymentSuccessfull', function (paymentInfo) {
-        //var error_div = document.getElementById('error_info');
-        //var sucess_div = document.getElementById('success_info');
         if (typeof paymentInfo.lastTime != 'undefined') {
             if (paymentInfo.cpm_result == '00') {
                 Swal.fire({
-                  'title': 'Commande validée !',
+                  'title': 'Paiement validée !',
                   'icon': 'success',
-                  'text': 'Vous serez livré dans quelques instant'
+                  'text': 'Mercie, Meneya votre partenaire de croissance'
                 });
-                //Swal.fire('Paiement succès');
-                //error_div.innerHTML = '';
-                //sucess_div.innerHTML = 'Votre paiement a été validé avec succès : <br> Montant :' + paymentInfo.cpm_amount + '<br>';
-                //trans_id.value = Math.floor((Math.random() * 10000000) + 10000);
+                
             } else {
-                //Swal.fire('Une erreur est survenue :' + paymentInfo.cpm_error_message);
-                //error_div.innerHTML = 'Une erreur est survenue :' + paymentInfo.cpm_error_message;
-                //sucess_div.innerHTML = '';
                 Swal.fire({
-                  'title': 'Votre commande a echouée !',
+                  'title': 'Paiement interrompue!',
                   'icon': 'error',
                   'text': paymentInfo.cpm_error_message
                 });
-                //console.log(paymentInfo.cpm_error_message);
+               
             }
         }
     });
@@ -92,17 +78,15 @@ function init()
     // Méthode
     function testMe(data)
     {
-      var email = "email =>"+data.email+" || ";
-      var offre = "offre =>"+data.offre+" || ";
-      var montant = "montant =>"+data.montant+" || ";
-      var domaine = "domaine =>"+data.domaine+" || ";
-      var pass = "pass =>"+data.pass+" || ";
-
-      console.log(email+offre+montant+pass);
-      Swal.fire({
-          icon: 'success',
-          title: 'Donnée recu en console'
-        })
-
+      CinetPay.setSignatureData({
+       amount: parseInt(data.amount),
+       trans_id: data.trans_id,
+       currency: 'XOF',
+       designation: data.designation,
+       custom: ''
+      });
+      CinetPay.getSignature();
     }
+
+
 }

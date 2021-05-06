@@ -21,11 +21,21 @@
             <div class="card theme-wizard mb-5" data-wizard data-controller="#wizard-controller" data-error-modal="#error-modal">
               <div class="card-header bg-light pt-1 pb-1">
                 <ul class="nav justify-content-between nav-wizard">
+                  
                   <li class="nav-item"><a class="nav-link active font-weight-semi-bold" href="#bootstrap-wizard-tab1" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="fas fa-lock"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Compte</span></a></li>
-                  <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab2" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="fas fa-dollar-sign"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Produits</span></a></li>
+
+                  <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab2" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-clipboard"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Produits</span></a></li>
+
                   <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab3" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-bell"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Seuil de stock</span></a></li>
+
+                  <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab3-sms" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-comments"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Sms</span></a></li>
+
                   <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab4" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-sun"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Resume</span></a></li>
-                  <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab5" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="fas fa-thumbs-up"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Fin</span></a></li>
+
+                  <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab5" data-toggle="tab"><span class="nav-item-circle-parent">
+                    <span class="nav-item-circle"><span class="fas fa-thumbs-up"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Fin</span></a>
+                  </li>
+
                 </ul>
               </div>
               <div class="card-body py-4">
@@ -117,7 +127,9 @@
                       </div>       
                     </form>
                   </div>
-                  <div class="tab-pane px-sm-3 px-md-5" id="bootstrap-wizard-tab3">
+
+                  <div class="tab-pane px-sm-3 px-md-5" 
+                  id="bootstrap-wizard-tab3">
                     <form class="form-validation" id='form-tab3'>
                       @csrf
 
@@ -162,6 +174,40 @@
                       </div>
                     </form>
                   </div>
+
+                  <div class="tab-pane px-sm-3 px-md-5" 
+                  id="bootstrap-wizard-tab3-sms">
+                    <h4 class="mb-0 text-center text-primary">
+                    Configurer votre SMS promotionnel</h4><br>
+                    <form class="form-validation" id='form-tab3-sms'>
+                      @csrf
+
+                      <div class="form-row">
+                        <div class="col-md-6 col-sm-12">
+                          <div class="form-group mb-0">
+                            <label for="montant">Email </label>
+                            <input class="form-control"
+                            name="email_sms" required 
+                            type="email" 
+                            value="{{ getSettingByName('sms_mail') }}" />
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                          <div class="form-group mb-0">
+                            <label for="duree">clé secret</label>
+                            <input class="form-control"
+                             name="sms_key" required  
+                             type="text" 
+                             value="{{ getSettingByName('sms_secret') }}" />
+                          </div>
+                        </div>
+                        
+                        
+                      </div>
+                    </form>
+                  </div>
+
+
                   <div class="tab-pane text-center px-sm-3 px-md-5" id="bootstrap-wizard-tab4">
                     <form class="form-validation" id='form-tab4'>
                       @csrf
@@ -314,6 +360,9 @@
               case 'form-tab4': 
                 console.log("Parametres mis à jour");
               break;
+              case 'form-tab3-sms':
+               ajaxUpSms(form);
+              break;
 
           }
           ajaxUpdSet();
@@ -392,6 +441,23 @@
                   }
                 });
               }
+
+          // Mise à jour sms_key
+           function ajaxUpSms(form)
+           {
+             $.ajax({
+               url:'/updSms',
+               method:'POST',
+               data:form.serialize(),
+               dataType:'json',
+               success:function(){
+                 toastr.success('Mis à jour');
+                },
+               error:function(){
+                    toastr.error('Probleme de connexion');
+                }
+             });
+           }
 
       })
     </script>

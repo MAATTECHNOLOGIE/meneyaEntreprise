@@ -132,6 +132,25 @@ if(!function_exists('getLastAbnmnt'))
 	}
 }
 
+//Verifie si le forfait actif ou le dernier forfai est essaie
+if(!function_exists('isEssaie'))
+{
+	function isEssaie()
+	{
+		$lastAbn = is_null(getAbnmnt()) ? getLastAbnmnt(): getAbnmnt();
+
+		if($lastAbn->libele == "essaie")
+		{
+		 return 1;
+		}
+		else
+		{
+		 return 0;
+		}
+           
+	}
+}
+
 //Retourne les info dune offre d'abonnement
     if(!function_exists('getForfait'))
 	{
