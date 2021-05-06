@@ -165,9 +165,28 @@ TABLEAU DE BORD
 
     // Clients
      $("#p_client").click(function(){
+                    loadingScreen();
       $('#main_content').load('/mbo/s_Client');
 
 
+     });
+
+            /*--------- -----------------
+                GESTION DES CLIENT P
+            -----------------------------*/
+
+    // Ajout Archives
+     $("#addDoc").click(function()
+     {
+        loadingScreen();
+       $('#main_content').load('/mbo/addDoc');
+     });
+     
+    // Liste Archives
+     $("#listDoc").click(function()
+     {
+        loadingScreen();
+       $('#main_content').load('/mbo/listDoc');
      });
 
 });
