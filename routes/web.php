@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
   //Interface de connexion
     Route::get('/', function () {return redirect('/login');});
 
