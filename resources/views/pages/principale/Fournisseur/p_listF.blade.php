@@ -88,13 +88,14 @@
                       
                                 </button>
                                 <button class="btn btn-falcon-default btn-sm btnEdit" id="{{  $fournisseur->id }}" type="button">
-                                  <span class="far fa-edit text-warning" data-fa-transform="shrink-3 down-2"></span>
-                                  <span class="far fa-edit text-warning" data-fa-transform="shrink-3 down-2"></span>
+                                  
+                                  <span class="far fa-edit text-warning fa-2x" data-fa-transform="shrink-3 down-2"></span>
                                 </button>
+
                                 <button class="btn btn-falcon-default btn-sm btnDel" 
                                  id="{{ $fournisseur->id }}" type="button">
-                                  <span class="far fa-trash-alt  text-danger" data-fa-transform="shrink-3 down-2"></span>
-                                  <span class="far fa-trash-alt text-danger" data-fa-transform="shrink-3 down-2"></span>
+                                  
+                                  <span class="far fa-trash-alt text-danger fa-2x" data-fa-transform="shrink-3 down-2"></span>
                       
                                 </button>
 

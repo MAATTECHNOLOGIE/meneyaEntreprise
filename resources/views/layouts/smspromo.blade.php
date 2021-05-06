@@ -20,7 +20,7 @@
                   	OK
                   </a><br><br>
                   <span>
-                  	<b>*Note:</b> Contactez le support technique Meneya pour toutes difficultés rencontrées.<br> - infos@meneya.com - www.meneya.com
+                  	<b>*Note:</b> Contactez le support technique Meneya pour toutes difficultés rencontrées.<br> +225 01 02 20 52 11 / +225 07 88 83 30 60 / meneyaco@gmail.com <br> Tchater directement avec le service client .
                   </span>
                 </div>
               </div>

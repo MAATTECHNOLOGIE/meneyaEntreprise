@@ -57,8 +57,13 @@
                     </div>
 
                     <div class="card-body">
-                     <div class="dashboard-data-table">
-                     	<table class="table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false}'>
+
+                      <!-- Pagination -->
+                       @include('pages/dash/pagnMod')
+
+                     <div class="dashboard-data-table" 
+                     id="loaderContent">
+                     	<table class="mytable table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false}'>
                         <thead class="bg-200">
                           <tr>
                             <th class="sort">N°</th>
@@ -86,6 +91,7 @@
                               </button>
 
                               <button class="btn btn-falcon-default btn-sm mr-1 mb-1 text-success besoins" type="button"
+                              nom="{{$value->nom}}"
                               id="{{$value->id}}">
                                <span class="fas fa-award mr-1" 
                                data-fa-transform="shrink-3"></span>Besoins
@@ -105,7 +111,16 @@
                             </td>
                           </tr>
                          @endforeach
-                    
+                        </tbody>
+                      </table>
+
+                      <!-- Pagination -->
+                      <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                         {{ $prospL->links() }}
+                        <input type="hidden" id='lastPrd' 
+                        value="{{ $prospL->last()->id}}">
+                      </div>
+
                      </div>
                     </div>
                   </div>
@@ -138,60 +153,56 @@
   </div>
 </div>
 
-<!-- Modal pour Besoins -->
-<div class="modal fade" id="BesoinModal" tabindex="-1" role="dialog" 
- aria-labelledby="BesoinModal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+<!-- Modal de besoins -->
+<div class="modal modal-fixed-right fade" id="exampleModalRight" tabindex="-1" role="dialog" aria-labelledby="exampleModalRightLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-vertical" role="document">
+    <div class="modal-content border-0 min-vh-100">
+      
       <div class="modal-header">
-        <h5 class="modal-title" id="BesoinModal">Prospects > Besoins</h5>
-        <button class="close" type="button" data-dismiss="modal" 
-         aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="exampleModalRightLabel">
+          Prospect> <b><span class="text-warning nm"></span></b>
+        </h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
       </div>
-      <div class="modal-body">
-        <div class="ContentB col-lg-12">
-           <div class="row">
-            <div class="col-lg-6">
-              <div class="form-group">
-                <label for="BesAnc">Besoins existant</label>
-                <select class="selectpicker besE" id="BesAnc">
+
+      <div class="modal-body py-5 text-center">
+        <span class="text-danger"><b>Nouvelle demande</b></span><br>
+        
+        <div class="form-group">
+          <label for="BesAnc">Besoins existant</label>
+            <select class="selectpicker besE" id="BesAnc">
                   <option value='no'>Aucun</option>
-                  @foreach($BesExs as $BesEx)
-                   <option value="{{$BesEx->id}}">{{$BesEx->nom}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="besoinsN">Besoins nouveaux</label>
-                <input class="form-control" id="besoinsN" type="text" 
-                 placeholder="">
-              </div>
-              <button class="btn btn-falcon-info mr-1 mb-1 addBs" type="button">
-               Ajouter
-              </button>
-              <button class="btn btn-falcon-danger mr-1 mb-1 NOBs" type="button">
-               Annuler
-              </button>
-              <input type="hidden" class="prosptId">
-            </div>
-            <div class="col-lg-6">
-              <label for="basic-example text-primary">Besoins du prospects</label>
-              <ul class="list-group" id="BesP">
-                 
-              </ul>
-            </div>
-           </div>
+                @foreach($BesExs as $BesEx)
+                  <option value="{{$BesEx->id}}">{{$BesEx->nom}}</option>
+                @endforeach
+            </select>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary btn-sm ferm" type="button" 
-          data-dismiss="modal">
-          Fermer
+
+        <div class="form-group">
+          <label for="besoinsN">Besoins nouveaux</label>
+          <input class="form-control" id="besoinsN" type="text" placeholder="">
+        </div>
+        <button class="btn btn-falcon-info mr-1 mb-1 addBs" type="button">
+         Ajouter
         </button>
+        <button class="btn btn-falcon-danger mr-1 mb-1 NOBs" type="button">
+         Annuler
+        </button><hr>
+        <input type="hidden" class="prosptId">
+
+        <div>
+          <label class="text-danger"><b>Demande du prospect</b></label>
+          <div id="BesP"></div>
+         
+        </div>
+
+        
+
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- Modal SMS Marketing -->
 <div class="modal fade" id="SMSModal" tabindex="-1" 
@@ -228,7 +239,8 @@
       </div>
       <div class="modal-footer">
         <div class="spinner-border lod" role="status"><span class="sr-only">Loading...</span></div>
-        <button type="button" class="btn btn-primary sendSMS">Envoyez
+        <button type="button" class="btn btn-primary sendSMS">
+          Envoyez
           <i class="far fa-paper-plane"></i>
         </button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer
@@ -272,24 +284,27 @@
   // Besoins propsects
 
     /* Liste des besoins */
-     $(".besoins").click(function(){
+    $(".besoins").click(function(){
       var id = $(this).attr("id");
+      var nom = $(this).attr('nom');
       $('.prosptId').val(id);
+      console.log(nom);
       $.ajax({
        url:'p_PrBes',
        method:'GET',
        data:{idp:id},
        dataType:'html',
        success:function(data){
+         $('.nm').html(nom);
          $("#BesP").html(data);
-         $("#BesoinModal").modal("show");
+         $("#exampleModalRight").modal("show");
        },
        error:function(){
          Swal.fire('Problème de connection internet');
        }
-     });
+      });
     
-     });
+    });
     
     /* Nouveau besoins*/
      $(".addBs").click(function(){
@@ -351,28 +366,40 @@
          data:{IPros:IPros,msg:msg,SendID:SendID},
          dataType:'json',
          success:function(data){
-          
-           if (data.success==1) {
+         
+           if (data.success==1) 
+           {
              Swal.fire(
                'Message envoyé !',
                'Le prospect a bien reçu le sms',
                'success'
-             )
-           }else{
+             );
+             $(".lod").hide();
+           }
+           else
+           {
+          
               Swal.fire(
                'Message echoué !',
                 data.error,
                'error'
-             )
+              )
+             $(".lod").hide();
            }
-           $('.lod').hide();
+           $("#smsP").val('');
          },
-         error:function(){
+         error:function(data)
+         {
+           console.log(data);
            Swal.fire('Envoie de SMS echoué');
+           $(".lod").hide();
          }
         });
-      }else{
-           Swal.fire('Veuillez saisir le message');
+      }
+      else
+      {
+        Swal.fire('Veuillez saisir le message');
+        $(".lod").hide();
       }
     });
 

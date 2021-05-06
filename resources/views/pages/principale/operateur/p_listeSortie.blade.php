@@ -234,10 +234,12 @@
 
               <div class="row align-items-center justify-content-between">
 
-                <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
+                <div class="col-6 col-sm-auto d-flex align-items-center pr-0">
 
                   <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Liste des sorties liées à l'opération<a href="" data-toggle="modal" data-target="#exampleModalRight"></a></h5>
-                 
+                  
+                  <!-- Pagination -->
+                   @include('pages/dash/pagnMod')
 
                 </div>
 
@@ -257,9 +259,9 @@
 
             <div class="card-body p-0">
 
-              <div class="falcon-data-table mytable">
+              <div class="falcon-data-table" id="loaderContent">
 
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
 
                   <thead class="bg-200 text-900">
 
@@ -355,6 +357,11 @@
                   </tbody>
 
                 </table>
+
+                <!-- Paginate -->
+                <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                   {{-- {{ $sorties->links() }} --}}
+                </div>
 
               </div>
 
@@ -459,6 +466,8 @@
 $(function()
 
 {
+   // Faire disparaitre les paginate de Javascript
+    $(".mytable").parent().next().hide();
 
   // Actualiser la page
   $(".refresh").click(function(){

@@ -91,7 +91,7 @@
  <script src="{{ asset('assets/js/theme.js') }}"></script>
 
 
-<script src="{{ asset('assets/lib/jquery-validation/jquery.validate.min.js') }}"></script>
+{{-- <script src="{{ asset('assets/lib/jquery-validation/jquery.validate.min.js') }}"></script> --}}
 
 <script type="text/javascript">
     $(function()
@@ -127,12 +127,22 @@
   {
     if(event.keyCode == 13)
       {
-        var valeur = $('#gotTo').val();
+            
+            
+            if ($('.refresh')) {
+              var idV = $('.refresh').attr('id');
+            }
+            else
+            {
+              var idV = 0;
+            }
+
+            var valeur = $('#gotTo').val();
             if(valeur>= 1)
             {
               var perPage = $('#perPage').val();
               var page = $('#lastPrd').val();
-              var urlCible = pagePath+'?page='+valeur+'&idPage='+page+'&perPage='+perPage;
+              var urlCible = pagePath+'?page='+valeur+'&idPage='+page+'&perPage='+perPage+'&idV='+idV;
                $('#loaderContent').html($('.loadModBody').html());
             conteneur.load(urlCible);
       

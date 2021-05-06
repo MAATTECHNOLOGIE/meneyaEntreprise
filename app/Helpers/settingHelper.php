@@ -206,6 +206,7 @@ if(!function_exists('getCommande'))
 		
 		$cmd = DB::table('sms_has_interesses')
 		         ->select('sms_has_interesses.*')
+		         ->where('sms_has_interesses.etat','0')
 		         ->get();
 		$nbcmd = count($cmd);
 		return $nbcmd;

@@ -46,6 +46,7 @@ class p_CampMarkController extends Controller
                 ->with('sender',$sender);
     }
 
+
     // Envoie de SMS
     public function smsPro(Request $request)
     {
@@ -60,6 +61,8 @@ class p_CampMarkController extends Controller
          $descrp  = $request->descrp;
          $smsPr   = $request->smsPr;
          $date = date('d/m/Y');
+
+
 
         // Traitement des données
          $path = $photo->store('Product','public');
@@ -110,7 +113,6 @@ class p_CampMarkController extends Controller
          //echo $obj->error;
 
          return redirect('/smspromo?alert='.$alert);
-
 
     }
 

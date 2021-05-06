@@ -24,6 +24,8 @@
                   
                   <li class="nav-item"><a class="nav-link active font-weight-semi-bold" href="#bootstrap-wizard-tab1" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="fas fa-lock"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Compte</span></a></li>
 
+                  <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab1-Entp" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-address-card"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Entreprise</span></a></li>
+
                   <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab2" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-clipboard"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Produits</span></a></li>
 
                   <li class="nav-item"><a class="nav-link font-weight-semi-bold" href="#bootstrap-wizard-tab3" data-toggle="tab"><span class="nav-item-circle-parent"><span class="nav-item-circle"><span class="far fa-bell"></span></span></span><span class="d-none d-md-block mt-1 fs--1">Seuil de stock</span></a></li>
@@ -40,6 +42,8 @@
               </div>
               <div class="card-body py-4">
                 <div class="tab-content">
+                  
+                  <!-- Compte -->
                   <div class="tab-pane active px-sm-3 px-md-5" id="bootstrap-wizard-tab1">
                     <form class="form-validation" data-options='{"rules":"terms":{"required":"Vous devez acceptez nos conditions "}}}' id='form-tab1'>
                       @csrf
@@ -57,6 +61,66 @@
                       </div>
                     </form>
                   </div>
+
+                  <!-- Infos entreprise -->
+                  <div class="tab-pane  px-sm-3 px-md-5" 
+                  id="bootstrap-wizard-tab1-Entp">
+                    <form class="form-validation" data-options='{"rules":"terms":{"required":"Vous devez acceptez nos conditions "}}}' id='form-tab1'>
+                      @csrf
+                      <div class="form-group">
+                        <label for="wizard-name">Nom Entreprise</label>
+                        <input class="form-control" type="text" 
+                        name="entreprise" value="" />
+                      </div>
+
+                     <div class="form-group">
+                       <label for="name">Logo</label>
+                       <div class="custom-file">
+                        <input class="custom-file-input" id="imageP" 
+                        type="file" name="imageP" required="required">
+                        <label class="custom-file-label" 
+                        for="customFile">sélectionner</label>
+                       </div>
+                     </div>
+
+
+                      <div class="form-group">
+                        <label for="wizard-email">Sender(identifiant sms)</label>
+                        <input class="form-control" type="text" 
+                        name="sender" required="required" 
+                        id="wizard-email" value="" />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="wizard-name">Lien Facebook</label>
+                        <input class="form-control" type="text" 
+                        name="facb"  id="wizard-name" 
+                        value="" />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="wizard-name">WhatsApp</label>
+                        <input class="form-control" type="text" 
+                        name="whatsAp"  id="wizard-name" 
+                        value="" />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="exampleFormControlTextarea1">
+                         A propos (Qui sommes-nous ?)
+                        </label>
+                        <textarea class="form-control" id="descrp"
+                         rows="3" 
+                         name="descrp">   
+                        </textarea>
+                      </div>
+
+
+                    </form>
+                  </div>
+
+
+
                   <div class="tab-pane px-sm-3 px-md-5" id="bootstrap-wizard-tab2">
                     <form class="form-validation" id='form-tab2'> 
                       @csrf

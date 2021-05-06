@@ -102,6 +102,7 @@
 
           <div class="card mb-3">
             <div class="card-header">
+
               <div class="row align-items-center justify-content-between">
                 <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
                    <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">
@@ -111,10 +112,14 @@
                 <div class="col-8 col-sm-auto ml-auto text-right pl-0">
                 </div>
               </div>
+
+              <!-- Pagination -->
+               @include('pages/dash/pagnMod')
+
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0" id="loaderContent">
               <div class="falcon-data-table">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":true,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":true,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-middle no-sort">
@@ -126,9 +131,12 @@
                       </th>
                       <th class="align-middle sort">Matr.</th>
                       <th class="align-middle sort">Opérat.</th>
-                      <th class="align-middle sort" style="min-width: 12.5rem;">Montant
+
+                      <th class="align-middle sort">Dépôt initial.</th>
+
+                      <th class="align-middle sort">Dépôt Total
                       </th>
-                      <th class="align-middle sort" style="min-width: 12.5rem;">Montant Restant
+                      <th class="align-middle sort">Montant Restant
                       </th>
                       <th class="align-middle sort">Date</th>
                       <th class="no-sort"></th>
@@ -151,6 +159,11 @@
                       </td>
                       <td class="py-2 align-middle white-space-nowrap"><a href="#">
                         <strong><?php echo $value->OperationLibele;?></strong><br />
+                      </td>
+                      <td class="py-2 align-middle">
+                        <span class="badge badge-pill badge-secondary" style="font-size: 15px">
+                          <?php echo formatPrice($value->depot_init);?>
+                          </span>
                       </td>
                       <td class="py-2 align-middle">
                         <span class="badge badge-pill badge-secondary" style="font-size: 15px">
@@ -225,6 +238,13 @@
                       
                   </tbody>
                 </table>
+                <!-- Paginate -->
+                <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                   {{ $OpTion->links() }}
+                   <input type="hidden" id='lastPrd' 
+                   value="{{ $OpTion->last()->id }}"> 
+                </div>
+
               </div>
             </div>
           </div>
@@ -340,9 +360,14 @@
 @csrf
 
 
-     <script src="{{ asset('assets/js/theme.js') }}"></script>
+     {{-- <script src="{{ asset('assets/js/theme.js') }}"></script> --}}
      <script type="text/javascript">
-        
+        // Faire disparaitre les paginate de Javascript
+        $(function(){
+           $(".mytable").parent().next().hide();
+        });
+         
+
         // Story de paiement
         $(".story").click(function(){
            var idOperaOperat = $(this).attr("id");

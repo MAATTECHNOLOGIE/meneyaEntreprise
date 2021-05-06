@@ -23,7 +23,10 @@
                 <div class="mb-4 col-md-6 col-lg-4">
                   <div class="border rounded h-100 d-flex flex-column justify-content-between pb-3">
                     <div class="overflow-hidden">
-                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="#"><img class="img-fluid rounded-top" src="{{$sms->img}}" alt="" /></a><span class="badge badge-pill badge-success position-absolute r-0 t-0 mt-2 mr-2 z-index-2">Pub</span>
+                      <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="#">
+                        <img class="img-fluid rounded-top" 
+                         src="{{$sms->img}}" alt="" /></a>
+                        <span class="badge badge-pill badge-success position-absolute r-0 t-0 mt-2 mr-2 z-index-2">Pub</span>
                       </div>
                       <div class="p-3">
                         <h5 class="fs-0"><a class="text-dark" href="#">
@@ -76,8 +79,23 @@
 <script src="{{ asset('assets/js/theme.js') }}"></script> 
 <script type="text/javascript">
   $('.deleteSMS').click(function(){
-      var idS = $(this).attr('id');
-      $.ajax({
+    var idS = $(this).attr('id');
+    Swal.fire({
+      title: 'SMS Marketing',
+      text: "Voulez-vous supprimer cette campagne?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'oui, supprimer!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        /*Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        );*/
+        $.ajax({
          url:"emptySMS",
          method:"get",
          data:{idsms:idS},
@@ -89,7 +107,12 @@
          error:function(){
            Swal.fire('erreur de connection');
          }
-      });
+        });
+      }
+    })
+
+      
+      
   });
 
 </script>   

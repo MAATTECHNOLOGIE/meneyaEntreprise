@@ -208,11 +208,17 @@ class p_OperaController extends Controller
        
     }
 
-    public function p_OpListe()
+    public function p_OpListe(Request $request)
     {
-        //Lectures des opérations
-         $opera = operateur::all()->sortByDesc('id');
-         return view('pages.principale.operateur.p_OpListe')->with('opera',$opera);
+        //Lectures des opérations-operateurs
+         $pagePath =  $request->path();
+         $perPage  =  setDefault($request->perPage,25);
+         $opera    =  operateur::orderBy('id','desc')->paginate($perPage);
+
+         return view('pages.principale.operateur.p_OpListe')
+                ->with('opera',$opera)
+                ->with('pagePath',$pagePath)
+                ->with('perPage',$perPage);
     }
 
     public function p_OpDele(Request $request)
@@ -271,7 +277,9 @@ class p_OperaController extends Controller
     {
         // Réception des données
          $ipOp = $request->idV;
-        /* dd($ipOp);*/
+        /* dd($request->perPage);*/
+         $pagePath =  $request->path();
+         $perPage  =  setDefault($request->perPage,1);
 
         // Lecture des opérations-opérateurs
          $OpTion = DB::table('operateurs')
@@ -281,8 +289,10 @@ class p_OperaController extends Controller
                    'operation_has_operateurs.operations_id')
             ->select('operateurs.*', 'operation_has_operateurs.*', 'operations.*','operation_has_operateurs.id as opeOperat','operations.id as IDoperation')
             ->where('operateurs.id','=',$ipOp)
-            ->get();
-            //dd($OpTion);
+            ->paginate($perPage);
+
+         //dd(count($OpTion));
+
         
         // Lecture des ingres_fetch_array(result)os opérateurs
          $oper = operateur::where('operateurs.id','=',$request->idV)->get();
@@ -296,7 +306,9 @@ class p_OperaController extends Controller
          return view('pages.principale.operateur.p_OpTion')
                 ->with('OpTion',$OpTion)
                 ->with('idOp',$idOp)
-                ->with('oper',$oper);
+                ->with('oper',$oper)
+                ->with('perPage',$perPage)
+                ->with('pagePath',$pagePath);
 
     }
 
@@ -459,6 +471,7 @@ class p_OperaController extends Controller
          $validation = $this->ControlOpOpera($request->all())->validate();
          $dataOp   = ['operateurs_id'=>$request->operat,
                       'operations_id'=>$request->opera,
+                      'depot_init'=>$request->montant,
                       'montant'=>$request->montant,
                       'montantrestant'=>$request->montant,
                       'date'=> $request->date,
@@ -683,10 +696,8 @@ class p_OperaController extends Controller
             // dd($matricule);
 
             $dataS = ['matSortie'=> $matricule,
-
                       "libelleSortie" =>
                       'Sortie_'.$_SESSION['sortieName'],
-
                       "operationsOperateurs_id" =>
                       (int)$_SESSION["sortieid"],
 
@@ -766,6 +777,11 @@ class p_OperaController extends Controller
         $operationcoment = $request->operationcoment;
         $idoperateurOperation = $request->idOpt;
         $idOp = $request->idOp;
+
+        $ipOp = $request->idV;
+        $pagePath =  $request->path();
+        $perPage  =  setDefault($request->perPage,25);
+
         //Lecture de la sortie en fonction de l'id operationOperateur
         $sorties = sortie_ops::where('operationsOperateurs_id','=',
                         $request->idOpt)
@@ -774,13 +790,16 @@ class p_OperaController extends Controller
         $operateur = operateur::find($request->idOp);
 
         return view('pages/principale/Operateur/p_listeSortie')
-               ->withSorties($sorties)
                ->withOperateur($operateur)
                ->with('operation',$operation)
                ->with('operationcode',$operationcode)
                ->with('operationcoment',$operationcoment)
                ->with('idOpt',$idoperateurOperation)
-               ->with('idOp',$idOp);
+               ->with('idOp',$idOp)
+               ->with('pagePath',$pagePath)
+               ->with('perPage',$perPage)
+               ->with('sorties',$sorties);
+
     }
 
     // Suppression d'une sortie

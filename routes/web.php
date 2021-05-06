@@ -114,8 +114,9 @@ use Illuminate\Support\Facades\Route;
           Route::get('p_OpUpval','p_OperaController@p_OpUpval')->name('p_OpUpval');
 
         // Opérateur => Opération
-          Route::post('p_OpTion','p_OperaController@p_OpTion')->name('p_OpTion');
-
+          Route::match(["get","post"],"p_OpTion",
+            'p_OperaController@p_OpTion')->name('p_OpTion');
+          
         // Opérateur => Modification phase 2
          Route::get('p_OperaUpd2','p_OperaController@p_OperaUpd2')->name('p_OperaUpd2');
 
@@ -123,8 +124,10 @@ use Illuminate\Support\Facades\Route;
          Route::get('p_opeOpNew','p_OperaController@p_opeOpNew')->name('p_opeOpNew');
 
         //Liste des sorties de l'operateur
-         Route::post('p_listeSortie','p_OperaController@p_listeSortie')->name('p_listeSortie');
+         Route::match(["get","post"],'p_listeSortie','p_OperaController@p_listeSortie')->name('p_listeSortie');
          Route::get('p_opRecuSorti','p_OperaController@p_opRecuSorti')->name('p_opRecuSorti');
+
+        
 
         // Suppression d'une sortie
          Route::get('p_SortieDel','p_OperaController@p_SortieDel')->name('p_SortieDel');
@@ -276,7 +279,7 @@ use Illuminate\Support\Facades\Route;
      Route::get('sendUniqSMS','p_CampMarkController@sendUniqSMS')->name('sendUniqSMS');
 
     // Campagne marketing groupé 
-     Route::get('sendNSMS','p_CampMarkController@sendNSMS')->name('sendNSMS');
+       Route::get('sendNSMS','p_CampMarkController@sendNSMS')->name('sendNSMS');
 
     // Vider l'historique des sms
      Route::get('emptySMS','p_CampMarkController@emptySMS')->name('emptySMS');

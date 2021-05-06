@@ -8,7 +8,7 @@
       <div class="row">
         <div class="col-lg-8">
           <h3 class="mb-0 text-primary"> <i class="fas fa-grin-stars"></i> Campg. Marketing >SMS & Email</h3>
-          <p class="mt-2">Relancez vos clients par SMS pro au moment opportun pour les inciter à l'achat</p>
+          <p class="mt-2">Relancez vos clients par SMS pro pour les inciter à l'achat</p>
         </div>
       </div>
     </div>
