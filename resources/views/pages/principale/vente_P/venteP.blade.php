@@ -76,13 +76,7 @@
                   <label for="basic-example">Produit</label>
                      <select class="js-example-data-ajax"  id="article" name="article"> 
                     </select> 
-{{--                   <select class="selectpicker" id="article" name="article">
-                    <option value="choix">Recherche en cours ...</option>
 
-                  </select>
- --}}
-{{--                   <input type="hidden" name="idArticle" id="produitId" value="">
-                  <input type="hidden" name="clientNom" id="clientNom" value=""> --}}
                 </div>
                 <div class="form-row justify-content-around">
                  <div class="form-group col-6">
