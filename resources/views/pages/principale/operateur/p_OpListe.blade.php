@@ -49,10 +49,15 @@
               </div>
               <br><br>
 
-              <!-- Pagination -->
-               @include('pages/dash/pagnMod')
+               <div class="row align-items-center justify-content-between">
+                 <!-- Pagination -->
+                 @include('pages/dash/pagnMod')
+               </div>
+
+              
               
             </div>
+            @if(!$opera->isEmpty())
             <div class="card-body p-0" id="loaderContent">
               <div class="falcon-data-table">
                 <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":100,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>"}'>
@@ -132,6 +137,9 @@
 
               </div>
             </div>
+            @else
+             <div class="alert alert-warning">Aucun Opérateur enregistré</div>
+            @endif
           </div>
 
 
@@ -166,7 +174,7 @@
      <script type="text/javascript">
       $(function(){
 
-                    // Faire disparaitre les paginate de Javascript
+        // Faire disparaitre les paginate de Javascript
           $(".mytable").parent().next().hide();
 
         //Valider 
@@ -288,7 +296,7 @@
            loadingScreen();
            var idV = $(this).attr('id');
            var token = $('input[name=_token]').val();
-           $("#main_content").load("/p_OpTion",{idV:idV,_token:token});
+           $("#main_content").load("/p_OpTion",{val1:idV,_token:token});
          }); 
         
         // Refresh

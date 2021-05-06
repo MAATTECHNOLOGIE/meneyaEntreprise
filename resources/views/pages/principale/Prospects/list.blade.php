@@ -58,9 +58,11 @@
 
                     <div class="card-body">
 
+                     <div class="row align-items-center justify-content-between">
                       <!-- Pagination -->
                        @include('pages/dash/pagnMod')
-
+                     </div>
+                    @if(!$prospL->isEmpty())
                      <div class="dashboard-data-table" 
                      id="loaderContent">
                      	<table class="mytable table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false}'>
@@ -122,6 +124,9 @@
                       </div>
 
                      </div>
+                     @else
+                        <div class="alert alert-warning">Aucun prospect enregistré</div>
+                     @endif
                     </div>
                   </div>
                 </div>
@@ -253,11 +258,14 @@
 
 
 
- <script src="{{ asset('assets/js/theme.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/theme.js') }}"></script> --}}
 <script type="text/javascript">
-
-  $(".lod").hide();
-
+ $(function(){
+    $(".lod").hide();
+    // Faire disparaitre les paginate de Javascript
+     $(".mytable").parent().next().hide();
+ });
+ 
   // Fonction de comptage
    function count_up(obj){
      document.getElementById('compteur').innerHTML = obj.value.length;

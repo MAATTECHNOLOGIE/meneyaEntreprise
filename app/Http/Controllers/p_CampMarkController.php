@@ -266,33 +266,41 @@ class p_CampMarkController extends Controller
     }
 
     // Nouvelle des commandes
-    public function CommdNew()
+    public function CommdNew(Request $request)
     {
+        $pagePath =  $request->path();
+        $perPage  =  setDefault($request->perPage,25);
         $comd = DB::table('sms_has_interesses')
                 ->join('sms','sms_has_interesses.sms_id','=','sms.id')
                 ->join('interesses','sms_has_interesses.interesse_id','=','interesses.id')
                 ->select('sms.*','interesses.*','sms_has_interesses.*','sms.id as SMSID','interesses.id as InterID')
                 ->where('sms_has_interesses.etat','=',0)
-                ->get();
+                ->paginate($perPage);
         $nbt = count($comd);
         return view('pages.principale.marketing.commd')
                ->with('comd',$comd)
-               ->with('nbt',$nbt);
+               ->with('nbt',$nbt)
+               ->with('pagePath',$pagePath)
+               ->with('perPage',$perPage);
     }
 
     // Commandes livrées
-    public function CommdLvr()
+    public function CommdLvr(Request $request)
     {
+        $pagePath =  $request->path();
+        $perPage  =  setDefault($request->perPage,25);
         $comd = DB::table('sms_has_interesses')
                 ->join('sms','sms_has_interesses.sms_id','=','sms.id')
                 ->join('interesses','sms_has_interesses.interesse_id','=','interesses.id')
                 ->select('sms.*','interesses.*','sms_has_interesses.*','sms.id as SMSID','interesses.id as InterID')
                 ->where('sms_has_interesses.etat','=',1)
-                ->get();
+                 ->paginate($perPage);;
         $nbt = count($comd);
         return view('pages.principale.marketing.commLivr')
                ->with('comd',$comd)
-               ->with('nbt',$nbt);
+               ->with('nbt',$nbt)
+               ->with('pagePath',$pagePath)
+               ->with('perPage',$perPage);
        
     }
 

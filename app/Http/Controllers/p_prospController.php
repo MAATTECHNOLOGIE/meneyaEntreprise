@@ -44,10 +44,16 @@ class p_prospController extends Controller
         return view('pages.principale.Prospects.stats');
     }
 
-    public function p_prstBesoin()
+    public function p_prstBesoin(Request $request)
     {
-        $BespL = DB::table('besoins')->latest()->get();
-        return view('pages.principale.Prospects.besoins')->with('BespL',$BespL);
+        $pagePath =  $request->path();
+        $perPage  =  setDefault($request->perPage,25);
+        //$BespL    =  DB::table('besoins')->latest()->get();
+        $BespL    =  besoins::orderBy('id','desc')->paginate($perPage);
+        return view('pages.principale.Prospects.besoins')
+        ->with('BespL',$BespL)
+        ->with('pagePath',$pagePath)
+        ->with('perPage',$perPage);
     }
 
     public function p_DelPB(Request $request){

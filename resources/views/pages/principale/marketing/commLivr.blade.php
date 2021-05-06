@@ -48,13 +48,19 @@
                       <b>Tout Supprimer</b></span></a> |
 
                       <a href="#" class="newP text-primary"><span class="">
-                      <b>Total:</b></span> {{$nbt}} commandes</a>
-
+                      <b>Total:</b></span> {{$nbt}} commandes livrées</a>
+                     
+                    <div class="row align-items-center justify-content-between">
+                     <!-- Pagination -->
+                      @include('pages/dash/pagnMod')
+                    </div>
                     </div>
 
-                    <div class="card-body">
+
+                    @if(!$comd->isEmpty())
+                    <div class="card-body" id="loaderContent">
                      <div class="dashboard-data-table">
-                     	<table class="table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false}'>
+                     	<table class="mytable table table-sm table-dashboard data-table no-wrap mb-0 fs--1 w-100" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false}'>
                         <thead class="bg-200">
                           <tr>
                           	<th class="sort">Date</th>
@@ -108,8 +114,20 @@
                           </tr>
                          @endforeach
                     	</tbody>
+                     </table>
+                     
+                      <!-- Paginate -->
+                      <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                        {{ $comd->links() }}
+                        <input type="hidden" id='lastPrd' 
+                         value="{{ $comd->last()->id }}"> 
+                      </div>  
+
                      </div>
                     </div>
+                    @else
+                      <div class="alert alert-warning">Aucune commande livrée enregistrée</div>
+                    @endif
                   </div>
                 </div>
               </div>
@@ -190,8 +208,12 @@
 
 
 
- <script src="{{ asset('assets/js/theme.js') }}"></script>
+{{--  <script src="{{ asset('assets/js/theme.js') }}"></script> --}}
 <script type="text/javascript">
+  $(function(){
+    // Faire disparaitre les paginate de Javascript
+     $(".mytable").parent().next().hide();
+  });
 
   // Fonction de comptage
    function count_up(obj){

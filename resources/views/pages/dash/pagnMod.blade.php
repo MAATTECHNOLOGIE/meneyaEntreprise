@@ -87,6 +87,11 @@
 {{-- HIDDEN NECESSAIRE POUR RECUPERATION DE DONNE --}}
 <input type="hidden" id="pagePath" value="{{ $pagePath }}">
 
+{{-- HIDDEN NECESSAIRE POUR RECUPERATION DES DONNEES AUTRE --}}
+<input type="hidden" id="val1" value="0">
+<input type="hidden" id="val2" value="0">
+<input type="hidden" id="val3" value="0">
+
 
  <script src="{{ asset('assets/js/theme.js') }}"></script>
 
@@ -106,16 +111,26 @@
          @endif
 
 
+
       //Action des bouton paginate de Laravel
         $('.page-item > .page-link').click(function()
         {
             event.preventDefault();
+
+            //Recuperation de donnee autre
+              var val1 = $('#val1').val();
+              var val2 = $('#val2').val();
+              var val3 = $('#val3').val();
+
+            //Conception url paginate suite
+              var urlSuite = '&val1='+val1+'&val2='+val2+'&val3='+val3;
+
             var valeur = parseInt($(this).text());
             if(valeur>= 1)
             {
               var perPage = $('#perPage').val();
               var page = $('#lastPrd').val();
-              var urlCible = pagePath+'?page='+valeur+'&idPage='+page+'&perPage='+perPage;
+              var urlCible = pagePath+'?page='+valeur+'&idPage='+page+'&perPage='+perPage+urlSuite;
               $('#loaderContent').html($('.loadModBody').html());
             conteneur.load(urlCible);
       

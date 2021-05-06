@@ -25,15 +25,17 @@
                       <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
                       <span class="d-none d-sm-inline-block ml-1">Nouveau</span>
                     </button>
-                    {{-- <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span class="d-none d-sm-inline-block ml-1">Filter</span></button> --}}
-
                   </div>
                 </div>
+                <!-- Pagination -->
+                  @include('pages/dash/pagnMod')
+                
               </div>
             </div>
-            <div class="card-body p-0">
+            @if(!$fournisseurs->isEmpty())
+            <div class="card-body p-0" id="loaderContent">
               <div class="falcon-data-table">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"pageLength":20,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-middle no-sort pr-3">
@@ -53,7 +55,7 @@
                   </thead>
                   <tbody id="customers">
 
-                                        @foreach($fournisseurs as $fournisseur)
+                   @foreach($fournisseurs as $fournisseur)
                     <tr class="btn-reveal-trigger">
                       <td class="py-2 align-middle white-space-nowrap">
                         <div class="custom-control custom-checkbox">
@@ -105,8 +107,19 @@
                    
                   </tbody>
                 </table>
+
+                <!-- Paginate -->
+                <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                   {{ $fournisseurs->links() }}
+                   <input type="hidden" id='lastPrd' 
+                   value="{{ $fournisseurs->last()->id }}"> 
+                </div>
+
               </div>
             </div>
+            @else
+              <div class="alert alert-warning">Aucun fournisseur enregistré</div>
+            @endif
           </div>
       
 
@@ -116,11 +129,13 @@
 
 
 
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
+{{--     <script src="{{ asset('assets/js/theme.js') }}"></script> --}}
 
     <script type="text/javascript">
       $(function()
       {
+        // Faire disparaitre les paginate de Javascript
+          $(".mytable").parent().next().hide();
 
           var input = '#mytoken input[name=_token]';
           var token = $(input).attr('value');

@@ -142,11 +142,17 @@ class p_OperaController extends Controller
 
     }
 
-    public function p_OpComd()
+    public function p_OpComd(Request $request)
     {
         //Lectures des opérations
-        $operat = operation::all()->sortByDesc('id');
-        return view('pages.principale.operateur.p_OpComd')->with('operat',$operat);
+        $pagePath =  $request->path();
+        $perPage  =  setDefault($request->perPage,25);
+        //$operat = operation::all()->sortByDesc('id')->paginate($perPage);
+        $operat = operation::orderBy('id','desc')->paginate($perPage);
+        return view('pages.principale.operateur.p_OpComd')
+               ->with('operat',$operat)
+               ->with('pagePath',$pagePath)
+               ->with('perPage',$perPage);;
     }
 
     public function p_cmdDOp(Request $request)
@@ -276,10 +282,9 @@ class p_OperaController extends Controller
     public function p_OpTion(Request $request)
     {
         // Réception des données
-         $ipOp = $request->idV;
-        /* dd($request->perPage);*/
+         $ipOp = !isset($request->val1) ? $request->idV: $request->val1;
          $pagePath =  $request->path();
-         $perPage  =  setDefault($request->perPage,1);
+         $perPage  =  setDefault($request->perPage,25);
 
         // Lecture des opérations-opérateurs
          $OpTion = DB::table('operateurs')
@@ -291,16 +296,14 @@ class p_OperaController extends Controller
             ->where('operateurs.id','=',$ipOp)
             ->paginate($perPage);
 
-         //dd(count($OpTion));
 
         
-        // Lecture des ingres_fetch_array(result)os opérateurs
-         $oper = operateur::where('operateurs.id','=',$request->idV)->get();
-         
-         for ($i=0; $i <count($oper) ; $i++) { 
+        // Lecture des  opérateurs
+         $oper = operateur::where('operateurs.id','=',$ipOp)->get();
+         for ($i=0; $i <count($oper) ; $i++) 
+         { 
            $idOp = $oper[$i]->id;
          }
-         /*dd($idOp);*/
          
         // Valeur retournée
          return view('pages.principale.operateur.p_OpTion')

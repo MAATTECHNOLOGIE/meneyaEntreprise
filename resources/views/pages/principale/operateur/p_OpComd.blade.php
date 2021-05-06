@@ -11,7 +11,8 @@
           <p class="mt-2"><b>Créer une opération</b></p>
           <span>Une opération, ce sont les différentes opérations que peut effectuer votre opérateur: la réalisation d'un chantier, achat de matériel etc.</span>
           <br>
-          <button class="btn btn-falcon-danger mr-1 mb-1" id="refresh" type="button">
+          <button class="btn btn-falcon-danger mr-1 mb-1" id="refresh" 
+           type="button">
              <span class="fab fa-battle-net fa-2x"  data-fa-transform="shrink-3">
              </span><a href="#">Actualiser</a>
           </button>
@@ -47,13 +48,16 @@
             <div class="card-header">
               <div class="row align-items-center justify-content-between">
                 <div class="col-4 col-sm-auto d-flex align-items-center pr-0">
-                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Nos opérations</h5>
+                  <h5 class="fs-0 mb-0 text-nowrap py-2 py-xl-0">Nos opérations
+                  </h5>
                 </div>
+                 <!-- Pagination -->
+                 @include('pages/dash/pagnMod')
               </div>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0"  id="loaderContent">
               <div class="falcon-data-table">
-                <table class="table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":false,"responsive":false,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":false,"responsive":false,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-middle no-sort">
@@ -101,6 +105,15 @@
                    <?php }?>
                   </tbody>
                 </table>
+
+                <!-- Paginate -->
+                <div class="row no-gutters px-1 py-3 align-items-center justify-content-center">
+                   {{ $operat->links() }}
+                   <input type="hidden" id='lastPrd' 
+                   value="{{ $operat->last()->id }}"> 
+                </div>
+
+
               </div>
             </div>
           </div>
@@ -135,8 +148,13 @@
 
 
 
-  <script src="{{ asset('assets/js/theme.js') }}"></script>
+{{--   <script src="{{ asset('assets/js/theme.js') }}"></script> --}}
   <script type="text/javascript">
+
+     $(function(){
+        // Faire disparaitre les paginate de Javascript
+         $(".mytable").parent().next().hide();
+      });
 
     // Ajouter une opération
     $("#Opera").on("submit",function(event){

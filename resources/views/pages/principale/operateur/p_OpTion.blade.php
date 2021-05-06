@@ -110,17 +110,19 @@
                      Opérations
                    </h5>
                 </div>
-                <div class="col-8 col-sm-auto ml-auto text-right pl-0">
-                </div>
+                   <!-- Pagination -->
+                   @include('pages/dash/pagnMod')
+
+                {{-- <div class="col-8 col-sm-auto ml-auto text-right pl-0">
+                </div> --}}
               </div>
 
-              <!-- Pagination -->
-               @include('pages/dash/pagnMod')
+              
 
             </div>
             <div class="card-body p-0" id="loaderContent">
               <div class="falcon-data-table">
-                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":true,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
+                <table class="mytable table table-sm mb-0 table-striped table-dashboard fs--1 data-table border-bottom border-200" data-options='{"searching":true,"responsive":false,"info":false,"lengthChange":false,"sWrapper":"falcon-data-table-wrapper","dom":"<&#39;row mx-1&#39;<&#39;col-sm-12 col-md-6&#39;l><&#39;col-sm-12 col-md-6&#39;f>><&#39;table-responsive&#39;tr><&#39;row no-gutters px-1 py-3 align-items-center justify-content-center&#39;<&#39;col-auto&#39;p>>","language":{"paginate":{"next":"<span class=\"fas fa-chevron-right\"></span>","previous":"<span class=\"fas fa-chevron-left\"></span>"}}}'>
                   <thead class="bg-200 text-900">
                     <tr>
                       <th class="align-middle no-sort">
@@ -363,8 +365,13 @@
 
      {{-- <script src="{{ asset('assets/js/theme.js') }}"></script> --}}
      <script type="text/javascript">
-        // Faire disparaitre les paginate de Javascript
         $(function(){
+
+          //Affectation de valeur
+            $('#val1').val({{$idOp}});
+
+
+          // Faire disparaitre les paginate de Javascript
            $(".mytable").parent().next().hide();
         });
          
@@ -521,7 +528,7 @@
          $('.refresh').click(function(){
            var idV = $(this).attr('id');
            var token = $('input[name=_token]').val();
-           $("#main_content").load("/p_OpTion",{idV:idV,_token:token});
+           $("#main_content").load("/p_OpTion",{val1:idV,_token:token});
          });
 
         //Ajouter une sortie

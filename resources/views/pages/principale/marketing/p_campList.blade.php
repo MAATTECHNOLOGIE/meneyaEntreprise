@@ -53,16 +53,23 @@
                     </div>
                     <div class="d-flex align-items-center justify-content-between px-3">
                       <div><b>Publié le {{$sms->datesms}}</b></div>
+                      
                       <div>
+
                         <a class="btn btn-sm btn-falcon-default mr-2 deleteSMS" 
                         href="#!" data-toggle="tooltip" data-placement="top" title="Supprimer" id="{{$sms->id}}">
                         <span class="far fa-trash-alt text-danger"></span>
                         </a>
-                        <a class="btn btn-sm btn-falcon-default mr-2" 
+                        
+                      </div>
+
+                      <div>
+                         <a class="btn btn-sm btn-falcon-default mr-2" 
                         href="{{$shareL.$sms->id}}" data-toggle="tooltip" data-placement="top" title="voir" target="_blank">
                         <span class="far fa-eye text-warning"></span>
                         </a>
                       </div>
+
                     </div>
                   </div>
 
