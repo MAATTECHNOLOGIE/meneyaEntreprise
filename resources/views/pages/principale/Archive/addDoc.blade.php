@@ -20,7 +20,7 @@
                   <div class="card-header">
                     <h5 class="mb-0">Information de l'archive</h5>
                   </div>
-                    @include('pages/principale/Archive/formAddDoc');
+                    @include('pages/principale/Archive/formAddDoc')
 
                 </div>
 

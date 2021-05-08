@@ -60,12 +60,10 @@
                     @foreach($dossiers as $dossier)
                     <tr class="btn-reveal-trigger">
                       <td class="py-2 align-middle white-space-nowrap">
-                        <div class="custom-control custom-checkbox">
-                          <input class="custom-control-input checkbox-bulk-select-target" type="checkbox" id="customer-checkbox-0" />
-                          <label class="custom-control-label" for="customer-checkbox-0"></label>
-                        </div>
+                        <h4 class="mb-0 text-primary"> <i class="fas fa-folder"></i></h4>
+
                       </td>
-                      <td class="py-2 align-middle white-space-nowrap customer-name-column"><a href="../pages/customer-details.html">
+                      <td class="py-2 align-middle white-space-nowrap customer-name-column"><a href="#">
                           <div class="media d-flex align-items-center">
                             <div class="media-body">
                               <h5 class="mb-0 fs--1">{{ $dossier->nomdossier }}</h5>
@@ -228,7 +226,6 @@
           $('#btnAdd').click(function()
           {
               createDoc();
-
           });
 
         //Consulter  contenue d'un dosier 
@@ -237,59 +234,60 @@
             var idDoc = $(this).attr('id');
             $("#main_content").load("mbo/viewFolder?idDoc="+idDoc);
           });
-    //Processs creation de Dossier
-      function createDoc()
-        {
-          Swal.mixin({
-          input: 'text',
-          confirmButtonText: 'Suivant &rarr;',
-          cancelButtonText: 'Annuler',
-          showCancelButton: true,
-          progressSteps: ['1', '2']
-          }).queue([
+          
+        //Processs creation de Dossier
+          function createDoc()
             {
-            title: 'Nouveau dossier',
-            text: 'Ajout de dossier d\'archive'
-            },
-            'Commentaire',
-          ]).then((result) => {
-            if (result.value) {
-              var answers = result.value
-              if(answers[0] != '')
-              {
-                  const ipAPI = '/mbo/saveFolder?titre='+answers[0]+'&com='+answers[1];
+              Swal.mixin({
+              input: 'text',
+              confirmButtonText: 'Suivant &rarr;',
+              cancelButtonText: 'Annuler',
+              showCancelButton: true,
+              progressSteps: ['1', '2']
+              }).queue([
+                {
+                title: 'Nouveau dossier',
+                text: 'Ajout de dossier d\'archive'
+                },
+                'Commentaire',
+              ]).then((result) => {
+                if (result.value) {
+                  var answers = result.value
+                  if(answers[0] != '')
+                  {
+                      const ipAPI = '/mbo/saveFolder?titre='+answers[0]+'&com='+answers[1];
 
-                  Swal.queue([{
-                    title: 'Création du dossier',
-                    confirmButtonText: 'Oui, Crée',
-                    text:'Voulez vous validez l\'ajout ?',
-                    showLoaderOnConfirm: true,
-                    preConfirm: () => {
-                      return fetch(ipAPI)
-                      .then(response => response.json())
-                      .then(data => createDocOk())
-                      .catch(() => {
-                        Swal.insertQueueStep({
-                          icon: 'error',
-                          title: 'Erreur de connexion !!!'
-                        })
-                      })
-                  }
-                }])
-            }
-            else
-            {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Des champs n\'ont pas été correctement remplis',
-                  showConfirmButton: true,
-                  confirmButtonText: 'Retour',
-                })
-            }
-          }
-        })
+                      Swal.queue([{
+                        title: 'Création du dossier',
+                        confirmButtonText: 'Oui, Crée',
+                        text:'Voulez vous validez l\'ajout ?',
+                        showLoaderOnConfirm: true,
+                        preConfirm: () => {
+                          return fetch(ipAPI)
+                          .then(response => response.json())
+                          .then(data => createDocOk())
+                          .catch(() => {
+                            Swal.insertQueueStep({
+                              icon: 'error',
+                              title: 'Erreur de connexion !!!'
+                            })
+                          })
+                      }
+                    }])
+                }
+                else
+                {
+                    Swal.fire({
+                      icon: 'error',
+                      title: 'Des champs n\'ont pas été correctement remplis',
+                      showConfirmButton: true,
+                      confirmButtonText: 'Retour',
+                    })
+                }
+              }
+            })
 
-        }
+            }
 
     //Success created doc
           function createDocOk()

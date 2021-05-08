@@ -349,5 +349,34 @@ if(!function_exists('getSender'))
 		}
 	}
 
+	//Creation de libelle 
+	    if(!function_exists('createLibele'))
+		{
+			function createLibele($chaine,$taille)
+			{
+
+				$taille = (strlen($chaine) > $taille) ?  $taille : strlen($chaine);
+				$msg=substr($chaine,0,$taille); 
+			   // Filtrer le messages
+			     $nvMsg = str_replace('à','a', $msg);
+			     $nvMsg = str_replace('á','a', $nvMsg);
+			     $nvMsg = str_replace('â','a', $nvMsg);
+			     $nvMsg = str_replace('ç','c', $nvMsg);
+			     $nvMsg = str_replace('è','e', $nvMsg);
+			     $nvMsg = str_replace('é','e', $nvMsg);
+			     $nvMsg = str_replace('ê','e', $nvMsg);
+			     $nvMsg = str_replace('ë','e', $nvMsg);
+			     $nvMsg = str_replace('ù','u', $nvMsg);
+			     $nvMsg = str_replace('ù','u', $nvMsg);
+			     $nvMsg = str_replace('ü','u', $nvMsg);
+			     $nvMsg = str_replace('û','u', $nvMsg);
+			     $nvMsg = str_replace('ô','o', $nvMsg);
+			     $nvMsg = str_replace('î','i', $nvMsg);
+			     $nvMsg = str_replace(' ','_', $nvMsg);
+
+			   return strtolower($nvMsg);
+
+			}
+		}
 
 	?>

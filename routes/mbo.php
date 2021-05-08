@@ -373,5 +373,8 @@ use Illuminate\Support\Facades\Route;
     //Consulter le contenue d'un dossier
       Route::get('/viewFolder', 'GestionArchives@viewFolder')->name('viewFolder');
 
+    //Modification deun fichier
+      Route::post('/updFile', 'GestionArchives@updFile')->name('updFile'); 
       
-
+    //Delete one or all file 
+      Route::get('/delFile', 'GestionArchives@delFile')->name('delFile');

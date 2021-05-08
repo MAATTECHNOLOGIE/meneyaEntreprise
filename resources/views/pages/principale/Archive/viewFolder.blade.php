@@ -7,7 +7,9 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-lg-8">
-                  <h4 class="mb-0 text-primary"> <i class="far fa-folder-open"></i> Archives >  <a href="#" class="folder" id="{{ $folder->id }}"> {{ $folder->nomdossier }}</a> > Fichiers 
+                  <h4 class="mb-0 text-primary"> <i class="far fa-folder-open"></i> 
+                    <a href="#" class="folder"> Archives </a> >>
+                      <a href="#" class="refresh" id="{{ $folder->id }}"> {{ $folder->nomdossier }}</a> >>> Liste fichier
                   </h4>
                 </div>
               </div>
@@ -24,10 +26,10 @@
                 <div class="col-8 col-sm-auto text-right pl-2">
                   <div id="customer-table-actions">
                     <button class="btn btn-falcon-default btn-sm" type="button" id="btnAdd">
-                      <span class="fas fa-folder-plus" data-fa-transform="shrink-3 down-2"></span>
+                      <span class="fas fa-file-medical" data-fa-transform="shrink-3 down-2"></span>
                       <span class="d-none d-sm-inline-block ml-1">Nouveau</span>
                     </button>
-                    <button class="btn btn-falcon-danger btn-sm" type="button" id="btnDelAll">
+                    <button class="btn btn-falcon-danger btn-sm" type="button" id="btnDelAll" idFolder="{{ $folder->id }}">
                       
                       <span class=" d-sm-inline-block ml-1 ">Tous suprimer</span>
                       <i class="fas fa-trash-restore text-danger"></i>
@@ -47,13 +49,10 @@
                           <label class="custom-control-label" for="checkbox-bulk-customers-select"></label>
                         </div>
                       </th>
-                      <th class="align-middle sort">Nom Fichier</th>
-                      <th class="align-middle sort">Pièce Jointe</th>
-                      <th class="align-middle sort">Crée par</th>
+                      <th class="align-middle no-sort">Fichier</th>
                       <th class="align-middle sort ">Date création</th>
                       <th class="align-middle sort ">Commentaire</th>
                       <th class="align-middle ">Actions</th>
-                      {{-- <th class="align-middle no-sort"></th> --}}
                     </tr>
                   </thead>
                   <tbody id="customers">
@@ -65,19 +64,23 @@
                           <label class="custom-control-label" for="customer-checkbox-0"></label>
                         </div>
                       </td>
-                      <td class="py-2 align-middle white-space-nowrap customer-name-column"><a href="../pages/customer-details.html">
-                          <div class="media d-flex align-items-center">
-                            <div class="media-body">
-                              <h5 class="mb-0 fs--1">{{ $file->titre }}</h5>
+                      <td class="py-2 align-middle white-space-nowrap customer-name-column">
+                        <div class="media mb-3 hover-actions-trigger align-items-center">
+                          <div class="file-thumbnail"><img class="img-fluid" src="assets/img/icons/docs.png" alt="">
+                          </div>
+                          <div class="media-body ml-3">
+                            <h6 class="mb-1">
+                              <a class="stretched-link text-900 font-weight-semi-bold" href="#!">
+                                {{ $file->titre }}
+                              </a>
+                            </h6>
+                            <div class="fs--1">
+                              <span class="font-weight-medium text-600 ml-2">Auteur : </span>
+
+                              <span class="font-weight-semi-bold">{{ gerantSuc($file->session)->name }}</span>
                             </div>
                           </div>
-                        </a>
-                      </td>
-                      <td class="py-2 align-middle white-space-nowrap ">
-                        {{ formatQte($file->joint)}}
-                      </td>
-                      <td class="py-2 align-middle white-space-nowrap">
-                       {{  gerantSuc($file->session)->name}}
+                        </div>
                       </td>
                       <td class="py-2 align-middle white-space-nowrap">
                         {{ $file->ref }}
@@ -86,24 +89,29 @@
                           {{ $file->commentaire }}                      
                       </td>
                       <td class="align-middle white-space-nowrap">
-                                <button class="btn btn-falcon-default btn-sm btnVoir" id="{{ $file->id }}"  type="button">
-                                  <span class="far fa-eye  text-primary fa-2x" data-fa-transform="shrink-3 down-2"></span>
+                                <button class="btn btn-falcon-default btn-sm btnVoir"
+                                type="button" data-toggle="modal" data-target="#viewDoc" 
+                                id="{{ $file->id }}" lien="{{ $file->joint}}"  type="button"
+                                libele="{{ createLibele($file->titre,10).'.pdf' }}">
+                                  <span class="far fa-eye  text-success fa-2x" data-fa-transform="shrink-3 down-2"></span>
                                 </button>
-                              <button class="btn btn-falcon-default btn-sm btnEdit" id="{{$file->id }}" type="button" data-toggle="modal" data-target="#modalDoc"
+                              <a class="btn btn-falcon-default btn-sm " 
+                              id="{{ $file->id }}"  type="button" href="{{ $file->joint}}"
+                               download="{{ createLibele($file->titre,10).'.pdf' }}">
+                                  <span class="fas fa-cloud-download-alt text-primary fa-2x" data-fa-transform="shrink-3 down-2"></span>
+                              </a>
+                              <button class="btn btn-falcon-default btn-sm btnEdit" id="{{$file->id }}"     type="button" data-toggle="modal" data-target="#modalDoc"
                                 name="{{ $file->titre }}"
                                 auteur="{{ $file->session }}"
                                 datepicker= "{{ $file->ref }}" 
                                 commentaire= "{{ $file->commentaire }}" 
-                                idDoc = {{ $file->id }}
-                                >
+                                idDoc = {{ $file->id }}>
                                   <span class="far fa-edit fa-2x text-warning" data-fa-transform="shrink-3 down-2"></span>
                                   
                                 </button>
-                                <button class="btn btn-falcon-default btn-sm btnDel" id="{{ $file->id }}" isAdminSuc="{{ $file->id }}" type="button">
+                                <button class="btn btn-falcon-default btn-sm btnDel" id="{{ $file->id }}" idFolder="{{ $folder->id }}" type="button">
                                   <span class="far fa-trash-alt  text-danger fa-2x" data-fa-transform="shrink-3 down-2"></span>
                                 </button>
-                                
-
                       </td>
                     </tr>
 
@@ -117,6 +125,35 @@
             </div>
           </div>
     
+    <ul>
+
+
+          {{-- ACTIONNE LA VISUALISATION DE FICHIER  --}}
+
+    <!-- ===============================================-->
+          <!--    Modal MODIF USER -->
+    <!-- ===============================================-->
+          <div class="modal fade" id="viewDoc" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Apreçue du fichier </h5>
+                  <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
+                </div>
+                <span id="link" class="text-center">
+                  
+                </span>
+                <div class="modal-footer ">
+                  
+                  <button class="btn btn-secondary btn-sm updDocFormCls" type="button" data-dismiss="modal">Fermer</button>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+{{-- POUR  LE PAGINATE  --}}
+<input type="hidden" id="lastPrd" value="{{ $folder->id }}">
 
 
     <!-- ===============================================-->
@@ -126,7 +163,7 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Modification Dossier </h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Modification de fichier </h5>
                   <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span class="font-weight-light" aria-hidden="true">&times;</span></button>
                 </div>
                   <div class="card-body bg-light">
@@ -138,7 +175,7 @@
                           <div class="form-row">
                             <div class="col-6">
                               <div class="form-group">
-                                <label for="name">Titre Dossier</label>
+                                <label for="name">Titre fichier</label>
                                 <input class="form-control" id="name" name="titre" type="text" placeholder="06 caratères min." required>
                               </div>
                             </div>
@@ -156,7 +193,7 @@
                       </form>
                 </div>
                 <div class="modal-footer ">
-                  <button class="btn btn-primary btn-sm updDoc" type="button">Enregistrer</button>
+                  <button class="btn btn-primary btn-sm updDoc" type="button">Mettre à jour</button>
                   <button class="btn btn-secondary btn-sm updDocFormCls" type="button" data-dismiss="modal">Fermer</button>
 
                 </div>
@@ -166,10 +203,37 @@
 
 
     <!-- ===============================================-->
-          <!--    Modal AUTORISATION-->
+          <!--    ANIMATION-->
     <!-- ===============================================-->
 
+<div class="animation text-center invisible mt-5" id="animationDoc">
 
+  <div>
+  <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-secondary" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-success" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-info" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-warning" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-danger" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-light" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div class="spinner-grow text-dark" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+
+</div>
 
 
 
@@ -195,19 +259,35 @@
             ajaxUpdDoc();
 
           })
+
+        //Rtour au dossier
+          $('.folder').click(function()
+          {
+             $('#main_content').load('/mbo/listDoc');
+          })
+        //Actualiser la page 
+          $('.refresh').click(function()
+          {
+            var idDoc = $(this).attr('id');
+            $("#main_content").load("mbo/viewFolder?idDoc="+idDoc);
+          });
+
+
         //Delete all DOC
-        $('#btnDelAll').click(function()
-        {
-          var mytext = "La validation de cette action entrainera la supression de tous vos archives";
-          ajaxDelAllDoc(0,mytext);
-        })
+          $('#btnDelAll').click(function()
+          {
+            var idFolder = $(this).attr('idFolder');
+            var mytext = "La validation de cette action entrainera la supression de tous vos documents du dossier";
+            ajaxDelAllDoc(0,mytext,idFolder);
+          })
 
         //supression
           $('.btnDel').click(function()
           {
+            var idFolder = $(this).attr('idFolder');
             var idEmpl= $(this).attr('id');
-            var mytext = "Confirmer vous la supression de ce dossier ?";
-            ajaxDelAllDoc(idEmpl,mytext);
+            var mytext = "Confirmer vous la supression de ce document ?";
+            ajaxDelAllDoc(idEmpl,mytext,idFolder);
           });
 
         //Edition 
@@ -227,76 +307,56 @@
         //Add User
           $('#btnAdd').click(function()
           {
-              createDoc();
-
+            $("#main_content").load("mbo/addDoc");  
           });
 
-        //Consulter  contenue d'un dosier 
+
+
+        //Telecharger une ressource
           $('.btnVoir').click(function()
           {
-            var idDoc = $(this).attr('id');
-            $("#main_content").load("mbo/viewFolder?idDoc="+idDoc);
+
+            $("#link").html($('#animationDoc').html());
+            var lien = $(this).attr('lien');
+            $("#link").attr("download", lien);
+            var myIframe ='<div class="embed-responsive embed-responsive-16by9"  ><iframe class="embed-responsive-item" src="'+lien+'" allowfullscreen=""></iframe></div>';
+            $("#link").html(myIframe);
+
+            // lanceDownload()
+
           });
-    //Processs creation de Dossier
-      function createDoc()
+        
+
+//Preload et lancement du telechargement
+       function lanceDownload()
         {
-          Swal.mixin({
-          input: 'text',
-          confirmButtonText: 'Suivant &rarr;',
-          cancelButtonText: 'Annuler',
-          showCancelButton: true,
-          progressSteps: ['1', '2']
-          }).queue([
-            {
-            title: 'Nouveau dossier',
-            text: 'Ajout de dossier d\'archive'
-            },
-            'Commentaire',
-          ]).then((result) => {
-            if (result.value) {
-              var answers = result.value
-              if(answers[0] != '')
-              {
-                  const ipAPI = '/mbo/saveFolder?titre='+answers[0]+'&com='+answers[1];
+         const ipAPI = '/storage/document/aMGpn9bVSltUWQKqJ0pMKLyPUFkJ7OWBrF0AORah.pdf';
+         Swal.queue([{
+          title: 'Téléchargement',
+          confirmButtonText: 'Validez vous ce téléchargement ?',
+          text:'En cours de télechargement',
+          showLoaderOnConfirm: true,
+          confirmButtonText: 'Oui, téléchargé',
 
-                  Swal.queue([{
-                    title: 'Création du dossier',
-                    confirmButtonText: 'Oui, Crée',
-                    text:'Voulez vous validez l\'ajout ?',
-                    showLoaderOnConfirm: true,
-                    preConfirm: () => {
-                      return fetch(ipAPI)
-                      .then(response => response.json())
-                      .then(data => createDocOk())
-                      .catch(() => {
-                        Swal.insertQueueStep({
-                          icon: 'error',
-                          title: 'Erreur de connexion !!!'
-                        })
-                      })
-                  }
-                }])
-            }
-            else
-            {
-                Swal.fire({
+          preConfirm: () => {
+            return fetch(ipAPI)
+              .then(response => response.text())
+              .then(data => testMe(data))
+              .catch(() => {
+                Swal.insertQueueStep({
                   icon: 'error',
-                  title: 'Des champs n\'ont pas été correctement remplis',
-                  showConfirmButton: true,
-                  confirmButtonText: 'Retour',
+                  title: 'Erreur de connexion !!!'
                 })
-            }
+              })
           }
-        })
+         }])
 
+        };
+      // Success de telechargement
+        function testMe(data)
+        {
+          Swal.fire('Telechargement terminé');
         }
-
-    //Success created doc
-          function createDocOk()
-          {
-            toastr.success('Création de dossier fait avec succès');
-            $("#listDoc").click();
-          }
 
       //Mis a jour des access
         function ajaxUpdDoc()
@@ -314,7 +374,7 @@
                 }).then((result) => {
                     if (result.value) {
                       $.ajax({
-                        url:'mbo/updDoc',
+                        url:'mbo/updFile',
                         method:'POST',
                         data:$('#updDocForm').serialize(),
                         dataType:'json',
@@ -325,8 +385,8 @@
                            'Fait avec succès',
                            'success'
                           );
-
-                          $("#main_content").load("mbo/listDoc");
+                          //clique sur le lien de nav en entete
+                          $(".refresh").click();
                           // $("#myNav").load("mbo/refreshNav");
                         },
                         error:function(){
@@ -339,8 +399,8 @@
         }
 
 
-      //Supression de tous des access
-        function ajaxDelAllDoc(idDoc,mytext)
+      //Fonction Supression
+        function ajaxDelAllDoc(idDoc,mytext,idFolder)
         {
                 Swal.fire({
                   title: 'URGENT !!!',
@@ -355,9 +415,9 @@
                 }).then((result) => {
                     if (result.value) {
                       $.ajax({
-                        url:'mbo/delDoc',
+                        url:'mbo/delFile',
                         method:'GET',
-                        data:{idDoc:idDoc},
+                        data:{idDoc:idDoc,idFolder:idFolder},
                         dataType:'json',
                         success:function(){
                           
@@ -367,7 +427,7 @@
                            'success'
                           );
 
-                          $('#main_content').load('/mbo/listDoc');
+                          $('.refresh').click();
                         },
                         error:function(){
                           Swal.fire('Problème de connexion internet');

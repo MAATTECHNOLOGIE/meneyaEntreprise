@@ -1,8 +1,3 @@
-      {{-- Recuperation des roles --}}
-      @php
-
-        $roles = allRole();
-      @endphp
 
                   <div class="card-body bg-light">
                      

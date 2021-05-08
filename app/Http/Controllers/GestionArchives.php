@@ -126,6 +126,21 @@ class GestionArchives extends Controller
 
 	    }
 
+   //Modification d'un fichier 
+      public function updFile(Request $request)
+      {
+  
+            $valeur = array(
+                    "titre"=>$request->titre,
+                    'ref'=>$request->datepicker,
+                    'commentaire'=>$request->commentaire,
+                  );
+
+        document::find($request->idDoc)->update($valeur);
+        return response()->json();
+
+      }
+
 	//SUPRESSION DE PLUSIEUR FICHIER 
 	   public function delDoc(Request $request)
 	   {
@@ -142,30 +157,51 @@ class GestionArchives extends Controller
 	   	return response()->json();
 	   }
 
+  //SUPRESSION DE FICHIER
+     public function delFile(Request $request)
+     {
+        if ($request->idDoc != 0) 
+        {
+        document::find($request->idDoc)->delete();
+        $dossier = dossier::find($request->idFolder);
+        $dossier->nbrefichier -= 1;
+        $dossier->save();
+        }
+        else
+        {
+        $doc = document::where('dossier_id','=',$request->idFolder)->delete();
+        $dossier = dossier::find($request->idFolder)->update(['nbrefichier' => 0]);
+        }
+        return response()->json();
+     }
+
   //consulter un dossier 
      public function viewFolder(Request $request)
      {
-      if ($request->idDoc != 0) 
-      {
-        //Recuperation du dossier 
-        $doc = dossier::find($request->idDoc);
 
-        //Parametre de recuperation des documents par paginate 
-        $pagePath =  $request->path();
-        $perPage = setDefault($request->perPage,25);
-        $elmts=  document::where('dossier_id','=',$doc->id)->orderBy('id', 'desc')
-                                                          ->paginate($perPage);
+       $idDoc = isset($request->idDoc) ? $request->idDoc : $request->idPage;
+      
+        if ($idDoc != 0) 
+        {
+          //Recuperation du dossier 
+          $doc = dossier::find($idDoc);
 
-        //Retourne la view 
-        return view('pages.principale.Archive.viewFolder')
-                                        ->with('files',$elmts)
-                                       ->with('pagePath',$pagePath)
-                                       ->with('perPage',$perPage)
-                                       ->with('folder',$doc);
-      }
-      else
-      {
-        return '<script> window.location.href="/login"</script>';
-      }
+          //Parametre de recuperation des documents par paginate 
+          $pagePath =  $request->path();
+          $perPage = setDefault($request->perPage,25);
+          $elmts=  document::where('dossier_id','=',$doc->id)->orderBy('id', 'desc')
+                                                            ->paginate($perPage);
+
+          //Retourne la view 
+          return view('pages.principale.Archive.viewFolder')
+                                          ->with('files',$elmts)
+                                         ->with('pagePath',$pagePath)
+                                         ->with('perPage',$perPage)
+                                         ->with('folder',$doc);
+        }
+        else
+        {
+          return '<script> window.location.href="/login"</script>';
+        }
      }
 }
