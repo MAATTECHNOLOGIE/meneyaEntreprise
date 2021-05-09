@@ -204,7 +204,7 @@ class abonmntControl extends Controller
                         abonnement::create();
 
                      // Notification mail au support
-                        Mail::to(getSettingByName('supportMail'))->send(new MailAbonnement($email,$offre,$domaine,$pass));
+                        Mail::to(getSettingByName('supportMail'))->queue(new MailAbonnement($email,$offre,$domaine,$pass));
 
                     }
                 }

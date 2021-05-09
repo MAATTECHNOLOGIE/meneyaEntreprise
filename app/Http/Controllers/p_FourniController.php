@@ -207,11 +207,17 @@ class p_FourniController extends Controller
     }
 
 
-    public function p_listF()
+    public function p_listF(Request $request)
     {
-        $fournisseurs = Fournisseur::all();
-        //dd($fournisseurs);
-        return view('pages.principale.Fournisseur.p_listF')->with('fournisseurs',$fournisseurs);;
+        //$fournisseurs = Fournisseur::all();
+        $pagePath =  $request->path();
+        $perPage  =  setDefault($request->perPage,25);
+        $fournisseurs = Fournisseur::orderBy('id','desc')->paginate($perPage);
+
+        return view('pages.principale.Fournisseur.p_listF')
+               ->with('fournisseurs',$fournisseurs)
+               ->with('pagePath',$pagePath)
+               ->with('perPage',$perPage);
     }
 
     public  function showFour(Request $request)

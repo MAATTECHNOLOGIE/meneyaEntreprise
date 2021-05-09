@@ -94,7 +94,7 @@
                             <div class="text-uppercase fs--2 font-weight-bold">
                               {{-- Nous acceptons --}}
                             </div>
-                            <img src="../assets/img/icons/icon-payment-methods-grid.png" alt="" width="120">
+                            <img src="{{asset('assets/img/icons/OIP.jpg')}}" alt="" width="300">
                             <img src="../assets/img/icons/momo.png" alt="" width="120">
 
                           </div>
@@ -117,7 +117,8 @@
                             <input class="custom-control-input" id="protection-option-2" type="checkbox" checked>
                             <label class="custom-control-label" for="protection-option-2"> <strong>Remboursement complet ou partiel</strong> Si le produit ou service n'est pas comme décrit dans les détails</label>
                           </div>
-                            <a class="fs--1 ml-3 pl-2" href="#!">{{getsender()}}
+                            <a class="fs--1 ml-3 pl-2" href="#!">
+                              <b>{{ getSettingByName('Entreprise')}}</b>
                             </a>
                         </div>
                       </div>
@@ -186,11 +187,11 @@
               <div class="col-10">
 
                 <h4 class="font-weight-normal mb-3 fs-1 fs-md-2">
-                  {{getSender()}}
+                  {{getSettingByName('Entreprise')}}
                 </h4>
                 <b>Qui sommes-nous ?</b>
                 <p class="fs--1">
-                  {{getShop()}}  
+                  {{getSettingByName('about')}}  
                 </p>
                 <div class="form-row my-4">
 
@@ -234,7 +235,12 @@
                     
                     <button class="btn btn-falcon-default btn-block mb-2 mb-xl-0">
                       <span class="fab fa-facebook-square text-facebook" data-fa-transform="grow-2"></span>
-                      <span class="font-weight-medium ml-2">{{facebookShop()}}</span></button>
+                      <span class="font-weight-medium ml-2">
+                        <a href="{{facebookShop()}}">
+                          Nous suivre...
+                        </a>
+                      </span>
+                    </button>
                     
                   </div>
 
@@ -283,7 +289,6 @@
      $("#lieu").val("");
      $("#qte").val("");
   });
-
 
    init();
 </script>

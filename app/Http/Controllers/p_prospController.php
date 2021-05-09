@@ -44,10 +44,16 @@ class p_prospController extends Controller
         return view('pages.principale.Prospects.stats');
     }
 
-    public function p_prstBesoin()
+    public function p_prstBesoin(Request $request)
     {
-        $BespL = DB::table('besoins')->latest()->get();
-        return view('pages.principale.Prospects.besoins')->with('BespL',$BespL);
+        $pagePath =  $request->path();
+        $perPage  =  setDefault($request->perPage,25);
+        //$BespL    =  DB::table('besoins')->latest()->get();
+        $BespL    =  besoins::orderBy('id','desc')->paginate($perPage);
+        return view('pages.principale.Prospects.besoins')
+        ->with('BespL',$BespL)
+        ->with('pagePath',$pagePath)
+        ->with('perPage',$perPage);
     }
 
     public function p_DelPB(Request $request){
@@ -98,7 +104,6 @@ class p_prospController extends Controller
         
         $fg = $request->dateS;
         $dateBP  = $request->dateS;
-        //dd($dateBP);
         $output  = '';
         
         //$output .='<input type="hidden" value='.$dateBP.' class="datBPros">';
@@ -138,7 +143,7 @@ class p_prospController extends Controller
                     <div class="card-body position-relative">
                       <h6>'.$dataBes->nom.'</h6>
                       <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-warning">
-                        '.$besOrd[$bes[$i]].' prospects
+                        '.$besOrd[$bes[$i]].' Demandes
                       </div>
                       <a class="font-weight-semi-bold fs--1 text-nowrap ReSMS" href="#!" id="'.$dataBes->id.'">Relance SMS
                         <span class="fas fa-angle-right ml-1" data-fa-transform="down-1">
@@ -163,7 +168,7 @@ class p_prospController extends Controller
                     <div class="card-body position-relative">
                       <h6>'.$dataBes->nom.'</h6>
                       <div class="display-4 fs-4 mb-2 font-weight-normal text-sans-serif text-warning">
-                        '.$besOrd[$bes[$i]].' prospects
+                        '.$besOrd[$bes[$i]].' Demandes
                       </div>
                       <a class="font-weight-semi-bold fs--1 text-nowrap ReSMS" href="#!" id="'.$dataBes->id.'">Relance SMS
                         <span class="fas fa-angle-right ml-1" data-fa-transform="down-1"></span>
@@ -183,7 +188,7 @@ class p_prospController extends Controller
                     <thead class="bg-light">
                       <tr class="text-900">
                         <th>Autres produits demandés</th>
-                        <th class="text-right">Nb prospects</th>
+                        <th class="text-right">Nb Demande</th>
                         <th class="pr-card text-right ReSMS" style="width: 8rem">Relance SMS</th>
                       </tr>
                     </thead>
@@ -316,6 +321,7 @@ class p_prospController extends Controller
                       data:{debut:debut,fin:fin,msgP:msgP,SenderID:senderID,besoID:besoID},
                       dataType:"json",
                       success:function(data){
+                        $(".msgP").val("");
                         if (data.success==1) {
                           Swal.fire(
                             "Message envoyé !",
@@ -333,6 +339,7 @@ class p_prospController extends Controller
                       },
                       error:function(){
                         Swal.fire("Envoie de SMS echoué");
+                        $(".lod").hide();
                       }
                     });
                  });
@@ -374,8 +381,9 @@ class p_prospController extends Controller
 
 
          for ($i=0; $i < count($prospL) ; $i++) { 
-             Sendsms($msg,$prospL[$i]->contact,$Sender);
+           $sms =  Sendsms($msg,$prospL[$i]->contact,$Sender);
          }
+         return $sms;
         
      }  
 
@@ -427,18 +435,32 @@ class p_prospController extends Controller
 
     public function p_prospL(Request $request)
     {
-        $prospL = DB::table('clients')->where('statutClt','=',0)->latest()->get();
+        $pagePath =  $request->path();
+        $perPage = setDefault($request->perPage,25);
+
+        $prospL = DB::table('clients')
+                   ->where('statutClt','=',0)
+                   ->paginate($perPage);
+
         $BesExs  = besoins::all();
         $nb = count($prospL);
+
         //Sender
-        $setting = DB::table('settings')->where('cle','=','sender')->get();
+        $setting = DB::table('settings')
+                     ->where('cle','=','sender')
+                     ->get();
+
         for ($i=0; $i < count($setting); $i++) { 
             $sender = $setting[$i]->valeur;
         }
-        return view('pages.principale.Prospects.list')->with('prospL',$prospL)
-                                                      ->with('BesExs',$BesExs)
-                                                      ->with('nb',$nb)
-                                                      ->with('sender',$sender);
+
+        return view('pages.principale.Prospects.list')
+                ->with('prospL',$prospL)
+                ->with('BesExs',$BesExs)
+                ->with('nb',$nb)
+                ->with('sender',$sender)
+                ->with('pagePath',$pagePath)
+                ->with('perPage',$perPage);;
     }
 
     public function p_DelP(Request $request)
@@ -499,6 +521,7 @@ class p_prospController extends Controller
             ->select('besoins.*')
             ->where('clients_has_besoins.clients_id','=',$request->idp)
             ->get();
+         
         
         $output='';
 
@@ -506,7 +529,7 @@ class p_prospController extends Controller
 
            
             $output.='
-             <li class="list-group-item d-flex justify-content-between align-items-center">'.$BesL[$i]->nom.'</li>
+             <li class="list-group-item d-flex justify-content-between align-items-center">'.$BesL[$i]->nom.' - le '.$BesL[$i]->dateV.'</li>
             ';
         }
 
@@ -515,9 +538,9 @@ class p_prospController extends Controller
         return $output;
     }
 
-    public function p_besoL(Request $request)
+     public function p_besoL(Request $request)
     {
-        $NewBes = $request->besN;
+        $NewBes = strtolower($request->besN);
         $AncBes = $request->besAc;
         $IdPors = $request->Idpro;
 
@@ -529,11 +552,27 @@ class p_prospController extends Controller
                       'image'   =>'image',
                       'dateV'   => $dateV
                      ];
-             $idB = besoins::create($dataB);
+
+            // Vérification de l'existence du besoin
+             $besoinsV = DB::table('besoins')
+                           ->where('nom','=', $NewBes)
+                           ->first();
+             
+             
+             if ($besoinsV=='') {
+                // Nouveau besoins
+                $idB = besoins::create($dataB);
+                $idF = $idB->id;
+             }else{
+                // Ancien besoin
+                $idF = $besoinsV->id;
+             }
+
+
             // Besoins-Prospect
              $idPros = $_GET['Idpro'];
              $dataPB = ['clients_id'=>$IdPors,
-                        'besoins_id'=>$idB->id,
+                        'besoins_id'=>$idF,
                         'dateD'=> date('d/m/yy')];
              clients_has_besoins::create($dataPB);
             
@@ -543,13 +582,17 @@ class p_prospController extends Controller
             // Lecture Besoins-Prospect
             $BesL = DB::table('clients_has_besoins')
                       ->join('besoins','besoins.id','=','clients_has_besoins.besoins_id')
-                      ->select('besoins.*')
+                      ->select('besoins.*','clients_has_besoins.*')
                       ->where('clients_has_besoins.clients_id','=',$IdPors)
                       ->get();
             $output='';
-            for ($i=0; $i < count($BesL); $i++) { 
-             $output.='<li class="list-group-item d-flex justify-content-between align-items-center">'.$BesL[$i]->nom.'</li>';
+            $output.='<select class="custom-select mb-3" multiple="">';
+            for ($i=0; $i < count($BesL) ; $i++) {
+              $output.='<option>'.$BesL[$i]->nom.' - le '.$BesL[$i]->dateD.'
+              </option>';
+
             }
+            $output.='</select>';
 
              return $output;
         }
@@ -565,15 +608,18 @@ class p_prospController extends Controller
                 // Lecture Besoins-Prospect
                   $BesL = DB::table('clients_has_besoins')
                     ->join('besoins', 'besoins.id', '=', 'clients_has_besoins.besoins_id')
-                    ->select('besoins.*')
+                    ->select('besoins.*','clients_has_besoins.*')
                     ->where('clients_has_besoins.clients_id','=',$request->Idpro)
                     ->get();
                   $output='';
-                    for ($i=0; $i < count($BesL) ; $i++) {
-                     $output.='<li class="list-group-item d-flex justify-content-between align-items-center">'.$BesL[$i]->nom.'</li>';
-                    }
-                 $output.='<input type="hidden" id="Idprosp" value="'.$request->Idpro.'"/>';
-                 return $output;
+                  $output.='<select class="custom-select mb-3" multiple="">';
+                   for ($i=0; $i < count($BesL) ; $i++) {
+                    $output.='<option>'.$BesL[$i]->nom.
+                     '- le '.$BesL[$i]->dateD.'</option>';
+                   }
+                  $output.='</select>';
+                  $output.='<input type="hidden" id="Idprosp" value="'.$request->Idpro.'"/>';
+                  return $output;
         }
 
         if ($NewBes!='' && $AncBes!='') {
@@ -591,8 +637,11 @@ class p_prospController extends Controller
          $tel    = $request->contact;
          $sender = $request->SendID;
 
+
         // Envoie de sms
          $sms = Sendsms($msg,$pros->contact,$request->SendID);
+         return $sms;
+
     }
 
 
