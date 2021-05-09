@@ -156,6 +156,7 @@
                           <label class="custom-control-label" for="checkbox-0"></label>
                         </div>
                       </td>
+                      
                       <td class="py-2 align-middle white-space-nowrap">
                         <a href="#">
                         <strong><?php echo $value->opeOperat;?></strong><br />

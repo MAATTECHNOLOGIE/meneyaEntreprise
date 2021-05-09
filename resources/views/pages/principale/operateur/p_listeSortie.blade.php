@@ -44,18 +44,12 @@
 
             <span class="fas fa-blender-phone"></span>
             <b>Contact</b>: {{  $operateur->operateurContact }}
-
-   
-
             <span class="fas fa-map-marker-alt ml-2"></span>
             <b>Lieu</b>: {{  $operateur->operateurLieu }}
-
-
 
             <span class="fab fa-gg ml-2"></span>
             <b>Matricule</b>:  {{ $operateur->operateurMat }}
             <hr>
-
             <span class="fas fas fa-barcode ml-2 operaCode"
              operacode="{{$operationcode}}"></span>
             <b>Opération code</b>:  {{$operationcode}}<br>
@@ -79,41 +73,7 @@
                    idOp={{$idOp}}
            >
               <span class="fab fa-battle-net fa-2x"  data-fa-transform="shrink-3"></span>Actualiser
-            </button>
-
-{{--           <br>
-
-           <button class="btn btn-falcon-danger mr-3 mb-1 btnRetour" 
-
-            id="" type="button">
-
-             <span class="fab fa-battle-net fa-2x "  data-fa-transform="shrink-3"></span>Retour
-
-           </button>
-
-            <button class="btn btn-falcon-danger mr-1 mb-1  bntSortie" 
-
-            id="" type="button">
-
-             <span class="fas fa-plus"  data-fa-transform="shrink-3" ></span>Ajouter sortie
-
-           </button>
-
-
-
-                    <button class="btn btn-falcon-default btn-sm btnNewOp" type="button">
-
-                      <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
-
-                      <span class="d-none d-sm-inline-block ml-1">
-
-                        Nouvelle opération
-
-                      </span>
-
-                    </button> --}}
-
-    
+            </button>   
 
         </div>
 
@@ -368,11 +328,6 @@
             </div>
 
           </div>
-
-
-
-    <script src="{{ asset('assets/js/theme.js') }}"></script>
-
 
 
 

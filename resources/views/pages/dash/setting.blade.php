@@ -73,12 +73,10 @@
                         name="entreprise" value="{{ getSettingByName('Entreprise') }}" readonly="" />
                       </div>
 
-                    <div class="form-group">
-                      <label for="imageP">Logo</label>
-                      <input class="form-control-file" name="imageP" id="imageP" type="file" required="required">
-                    </div>
-
-
+                          <div class="form-group custom-file mt-4">
+                            <input class="custom-file-input" id="imageP" type="file" name="imageP">
+                            <label class="custom-file-label" for="imageP">Votre fichier</label>
+                          </div>
                       <div class="form-group">
                         <label for="sender">Sender(identifiant sms)</label>
                         <input class="form-control" type="text" 
