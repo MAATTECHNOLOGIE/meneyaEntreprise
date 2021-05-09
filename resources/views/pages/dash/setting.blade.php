@@ -42,6 +42,8 @@
               </div>
               <div class="card-body py-4">
                 <div class="tab-content">
+                  
+                  <!-- Compte -->
                   <div class="tab-pane active px-sm-3 px-md-5" id="bootstrap-wizard-tab1">
                     <form class="form-validation" data-options='{"rules":"terms":{"required":"Vous devez acceptez nos conditions "}}}' id='form-tab1'>
                       @csrf

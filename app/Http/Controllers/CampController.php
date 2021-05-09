@@ -19,18 +19,20 @@ class CampController extends Controller
      * @return void
      */
 
-    public function camp(Request $request)
+        public function camp(Request $request)
     {
-    	if (isset($_GET['id'])) {
+        if (isset($_GET['id'])) {
             //Réception des données
-    	     $id = $request->id;
+             $id = $request->id;
              if ($id!='') {
                 // Traitement des données
                 $sms = sms::where('id','=',$id)->get();
                 $nb = count($sms);
                 if ($nb!=0) {
                     for ($i=0; $i < count($sms) ; $i++) { 
-                     //Sendsms($smsPn,$clients[$i]->contact,$sender);
+                     // Lancement de SMS
+                     //Sendsms($sms[$i]->msg,$clients[$i]->contact,$sender);
+
                      $titre   = $sms[$i]->titre;
                      $datesms = $sms[$i]->datesms;
                      $descrpt = $sms[$i]->descrpt;

@@ -55,6 +55,7 @@ function init() {
                   'icon': 'error',
                   'text': paymentInfo.cpm_error_message
                 });
+
                 //console.log(paymentInfo.cpm_error_message);
             }
         }
@@ -97,6 +98,7 @@ function init() {
                   'icon': 'error',
                   'text': data.responseJSON.message
                });
+                $(".sedPay").hide();
                
              }
            });
