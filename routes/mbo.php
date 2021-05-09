@@ -347,3 +347,34 @@ use Illuminate\Support\Facades\Route;
       Génération de reçu
      ------------------------*/
           Route::get('/recuVntP', 'GestionVentePrincipalController@recuVntP')->name('recuVntP');
+
+
+
+    /*--------- --------------------------
+        GESTION DES ARCHIVES
+    --------------------------------------*/
+
+    //Ajout de archives
+      Route::get('/addDoc', 'GestionArchives@addDoc')->name('addDoc');
+    //Liste de archives
+      Route::get('/listDoc', 'GestionArchives@listDoc')->name('listDoc'); 
+    //Enregster de archives
+      Route::post('/saveDoc', 'GestionArchives@saveDoc')->name('saveDoc'); 
+
+    //Enregster Dossier de archives
+      Route::get('/saveFolder', 'GestionArchives@saveFolder')->name('saveFolder'); 
+      
+    //Update my folder 
+      Route::post('/updDoc', 'GestionArchives@updDoc')->name('updDoc'); 
+
+    //Delete one or all DOC 
+      Route::get('/delDoc', 'GestionArchives@delDoc')->name('delDoc');
+
+    //Consulter le contenue d'un dossier
+      Route::get('/viewFolder', 'GestionArchives@viewFolder')->name('viewFolder');
+
+    //Modification deun fichier
+      Route::post('/updFile', 'GestionArchives@updFile')->name('updFile'); 
+      
+    //Delete one or all file 
+      Route::get('/delFile', 'GestionArchives@delFile')->name('delFile');

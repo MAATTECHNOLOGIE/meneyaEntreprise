@@ -173,6 +173,22 @@
                   </ul>
                 </li>
                 @endif
+
+                @if(hasStatAccesto(Auth::id(),3))
+                <li class="nav-item">
+                  <a class="nav-link dropdown-indicator" href="#archives" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="archives">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span class="fas fa-folder"></span></span><span class="nav-link-text">Gestion Archives</span>
+                    </div>
+                  </a>
+                  <ul class="nav collapse" id="archives" data-parent="#navbarVerticalCollapse">
+
+                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="addDoc"><a class="nav-link" href="#top">Ajouter</a>
+                    </li>
+                    <li class="nav-item  collapsed" data-toggle="collapse" data-target="#navbarVerticalCollapse" aria-controls="navbarVerticalCollapse" aria-expanded="false" aria-label="Toggle Navigation" id="listDoc"><a class="nav-link" href="#top">Liste Archive</a>
+                    </li>
+                  </ul>
+                </li>
+                @endif
               </ul>
               <div class="navbar-vertical-divider">
                 <hr class="navbar-vertical-hr my-2" />

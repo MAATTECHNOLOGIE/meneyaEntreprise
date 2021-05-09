@@ -55,11 +55,8 @@ if(!function_exists('getUserRole'))
             ->first();
 
            return $role;
-
 	}
 }
-
-
 
 
 if(!function_exists('allRole'))

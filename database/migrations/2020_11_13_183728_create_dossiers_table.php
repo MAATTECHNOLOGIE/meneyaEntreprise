@@ -16,6 +16,7 @@ class CreateDossiersTable extends Migration
         Schema::create('dossiers', function (Blueprint $table) {
             $table->id();
             $table->string('nomdossier');
+            $table->string('dateCreation');
             $table->string('nbrefichier');
             $table->string('ref')->comment('la référence du dossier');
             $table->integer('session')->comment('L\'utilisateur qu enregistre l\'information');
