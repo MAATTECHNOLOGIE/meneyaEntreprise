@@ -105,7 +105,7 @@ class p_CampMarkController extends Controller
          {
            for ($i=0; $i < count($clients) ; $i++)
            {
-             //Sendsms($MsgF,$clients[$i]->contact,$sender);
+             Sendsms($MsgF,$clients[$i]->contact,$sender);
            }
 
              if ($cible==0) {
