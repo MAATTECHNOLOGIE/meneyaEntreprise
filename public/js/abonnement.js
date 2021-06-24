@@ -53,7 +53,7 @@ function init()
         $('.Suscribe').click(function()
         {
           var offre_id = $(this).attr('forfait');
-         const ipAPI = '/suscribe?offre='+offre_id;
+          const ipAPI = '/suscribe?offre='+offre_id;
 
          Swal.queue([{
           title: 'Système de paiement',

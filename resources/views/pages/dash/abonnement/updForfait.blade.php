@@ -8,7 +8,6 @@
                 <div class="col-lg-8 d-flex justify-content-between">
                   <h4 class="mb-0 text-primary updForfait"><i class="fas fa-university"></i> 
                     Re-Abonnement <i class="fas fa-angle-right"></i> Choix de votre forfait </h4>
-                  
                 </div>
               </div>
             </div>

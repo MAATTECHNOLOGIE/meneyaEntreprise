@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le :  ven. 23 avr. 2021 à 11:06
+-- Généré le :  ven. 14 mai 2021 à 17:48
 -- Version du serveur :  10.1.38-MariaDB
 -- Version de PHP :  7.3.4
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `meneya_vide`
+-- Base de données :  `meneya`
 --
 
 -- --------------------------------------------------------
@@ -43,9 +43,7 @@ CREATE TABLE `abonnements` (
 --
 
 INSERT INTO `abonnements` (`id`, `dateDebut`, `dateFin`, `statuPaiement`, `offres_id`, `created_at`, `updated_at`) VALUES
-(2, '15/04/2021', '20/05/2021', '0', 1, NULL, '2021-04-21 22:30:45'),
-(3, '15/02/2021', '20/03/2021', '0', 3, NULL, '2021-04-21 22:30:45'),
-(4, '15/04/2021', '20/05/2021', '1', 2, NULL, '2021-04-23 07:45:58');
+(4, '15/04/2021', '16/05/2021', '1', 3, NULL, '2021-05-07 08:30:34');
 
 -- --------------------------------------------------------
 
@@ -145,6 +143,13 @@ CREATE TABLE `arrivages` (
   `description_charge` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `arrivages`
+--
+
+INSERT INTO `arrivages` (`id`, `arrivageLibelle`, `arrivagePrix`, `arrivageQte`, `arrivageDate`, `MatArvg`, `statut`, `created_at`, `updated_at`, `charge`, `description_charge`) VALUES
+(1, 'informatique', 1044005200, '260', '05/05/2021', 'Arr#09_02_32', 1, '2021-05-05 08:02:32', '2021-05-05 09:55:28', '52000', 'Douane');
+
 -- --------------------------------------------------------
 
 --
@@ -161,6 +166,48 @@ CREATE TABLE `arrivage_has_produits` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `arrivage_has_produits`
+--
+
+INSERT INTO `arrivage_has_produits` (`id`, `qteproduits`, `coutachat`, `prixvente`, `arrivage_id`, `produits_id`, `created_at`, `updated_at`) VALUES
+(1, 60, 800000, 900000, 1, 1, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(2, 200, 50000, 70000, 1, 2, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(3, 60, 800000, 900000, 1, 3, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(4, 200, 50000, 70000, 1, 4, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(167, 60, 800000, 900000, 1, 1, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(168, 200, 50000, 70000, 1, 1, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(169, 60, 800000, 900000, 1, 1, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(170, 200, 50000, 70000, 1, 4, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(171, 60, 800000, 900000, 1, 5, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(172, 200, 50000, 70000, 1, 6, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(173, 60, 800000, 900000, 1, 7, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(174, 200, 50000, 70000, 1, 8, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(175, 60, 800000, 900000, 1, 9, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(176, 200, 50000, 70000, 1, 10, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(177, 60, 800000, 900000, 1, 11, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(178, 200, 50000, 70000, 1, 12, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(179, 60, 800000, 900000, 1, 13, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(180, 200, 50000, 70000, 1, 14, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(181, 60, 800000, 900000, 1, 15, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(182, 200, 50000, 70000, 1, 16, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(183, 60, 800000, 900000, 1, 17, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(184, 200, 50000, 70000, 1, 18, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(185, 60, 800000, 900000, 1, 19, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(186, 200, 50000, 70000, 1, 20, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(187, 60, 800000, 900000, 1, 21, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(188, 200, 50000, 70000, 1, 22, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(189, 60, 800000, 900000, 1, 23, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(190, 200, 50000, 70000, 1, 24, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(191, 60, 800000, 900000, 1, 25, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(192, 200, 50000, 70000, 1, 26, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(193, 60, 800000, 900000, 1, 27, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(194, 200, 50000, 70000, 1, 28, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(195, 60, 800000, 900000, 1, 29, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(196, 200, 50000, 70000, 1, 30, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(197, 60, 800000, 900000, 1, 31, '2021-05-05 08:02:33', '2021-05-05 08:02:33'),
+(198, 200, 50000, 70000, 1, 32, '2021-05-05 08:02:33', '2021-05-05 08:02:33');
 
 -- --------------------------------------------------------
 
@@ -263,6 +310,13 @@ CREATE TABLE `clients` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `clients`
+--
+
+INSERT INTO `clients` (`id`, `statutClt`, `nom`, `contact`, `lieu`, `date`, `mail`, `created_at`, `updated_at`) VALUES
+(1, '0', 'MBO BOUA HUBERT', '45789632', 'Abidjan', '05/05/2021', NULL, '2021-05-05 10:01:31', '2021-05-05 10:01:31');
 
 -- --------------------------------------------------------
 
@@ -370,7 +424,8 @@ CREATE TABLE `dossiers` (
   `ref` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'la référence du dossier',
   `session` int(11) NOT NULL COMMENT 'L''utilisateur qu enregistre l''information',
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `dateCreation` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -510,6 +565,13 @@ CREATE TABLE `jobs` (
   `created_at` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `jobs`
+--
+
+INSERT INTO `jobs` (`id`, `queue`, `payload`, `attempts`, `reserved_at`, `available_at`, `created_at`) VALUES
+(8, 'default', '{\"uuid\":\"566caeb7-2427-484e-9ec0-72b82bf19c71\",\"displayName\":\"App\\\\Mail\\\\AlertExpireAbonnement\",\"job\":\"Illuminate\\\\Queue\\\\CallQueuedHandler@call\",\"maxTries\":null,\"maxExceptions\":null,\"delay\":null,\"timeout\":null,\"timeoutAt\":null,\"data\":{\"commandName\":\"Illuminate\\\\Mail\\\\SendQueuedMailable\",\"command\":\"O:34:\\\"Illuminate\\\\Mail\\\\SendQueuedMailable\\\":3:{s:8:\\\"mailable\\\";O:30:\\\"App\\\\Mail\\\\AlertExpireAbonnement\\\":28:{s:7:\\\"nbrJrst\\\";s:1:\\\"7\\\";s:5:\\\"offre\\\";s:7:\\\"premium\\\";s:7:\\\"domaine\\\";s:32:\\\"http:\\/\\/http:\\/\\/alishop.meneya.com\\\";s:6:\\\"locale\\\";N;s:4:\\\"from\\\";a:0:{}s:2:\\\"to\\\";a:1:{i:0;a:2:{s:4:\\\"name\\\";N;s:7:\\\"address\\\";s:16:\\\"aaaaa1@gmail.com\\\";}}s:2:\\\"cc\\\";a:0:{}s:3:\\\"bcc\\\";a:0:{}s:7:\\\"replyTo\\\";a:0:{}s:7:\\\"subject\\\";N;s:11:\\\"\\u0000*\\u0000markdown\\\";N;s:7:\\\"\\u0000*\\u0000html\\\";N;s:4:\\\"view\\\";N;s:8:\\\"textView\\\";N;s:8:\\\"viewData\\\";a:0:{}s:11:\\\"attachments\\\";a:0:{}s:14:\\\"rawAttachments\\\";a:0:{}s:15:\\\"diskAttachments\\\";a:0:{}s:9:\\\"callbacks\\\";a:0:{}s:5:\\\"theme\\\";N;s:6:\\\"mailer\\\";s:4:\\\"smtp\\\";s:10:\\\"connection\\\";N;s:5:\\\"queue\\\";N;s:15:\\\"chainConnection\\\";N;s:10:\\\"chainQueue\\\";N;s:5:\\\"delay\\\";N;s:10:\\\"middleware\\\";a:0:{}s:7:\\\"chained\\\";a:0:{}}s:5:\\\"tries\\\";N;s:7:\\\"timeout\\\";N;}\"}}', 0, NULL, 1620570185, 1620570185);
+
 -- --------------------------------------------------------
 
 --
@@ -613,9 +675,10 @@ CREATE TABLE `offres` (
 --
 
 INSERT INTO `offres` (`id`, `libele`, `prixInscription`, `Coutabonnement`, `created_at`, `updated_at`) VALUES
-(1, 'STARTER', '50 000', '20000', NULL, NULL),
-(2, 'MEDIUM', '80 000', '50000', NULL, NULL),
-(3, 'PREMIUM', '150 000', '100000', NULL, NULL);
+(1, 'starter', '50000', '20000', NULL, NULL),
+(2, 'medium', '80000', '50000', NULL, NULL),
+(3, 'premium', '150000', '100000', NULL, NULL),
+(4, 'essaie', '00', '00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -674,6 +737,13 @@ CREATE TABLE `operateurs` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `operateurs`
+--
+
+INSERT INTO `operateurs` (`id`, `operateurMat`, `operateurNom`, `operateurContact`, `operateurDate`, `operateurLieu`, `created_at`, `updated_at`) VALUES
+(1, '7Ap', 'MBO BOUA HUBERT', '53808065', '26/04/2021', 'Abidjan', '2021-04-25 19:01:33', '2021-04-25 19:01:33');
+
 -- --------------------------------------------------------
 
 --
@@ -689,6 +759,13 @@ CREATE TABLE `operations` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `operations`
+--
+
+INSERT INTO `operations` (`id`, `OperationLibele`, `operationCode`, `Operationcomt`, `created_at`, `updated_at`) VALUES
+(1, 'Prunekcreation', '9A', 'service', '2021-05-05 07:57:02', '2021-05-05 07:57:02');
+
 -- --------------------------------------------------------
 
 --
@@ -703,8 +780,17 @@ CREATE TABLE `operation_has_operateurs` (
   `montantrestant` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `depot_init` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `operation_has_operateurs`
+--
+
+INSERT INTO `operation_has_operateurs` (`id`, `operations_id`, `operateurs_id`, `montant`, `montantrestant`, `date`, `created_at`, `updated_at`, `depot_init`) VALUES
+(1, 1, 1, '50000', '-9675000', '02/05/2021', '2021-05-05 07:59:10', '2021-05-05 11:55:46', '000'),
+(2, 1, 1, '78555', '78555', '10/05/2021', '2021-05-09 13:45:50', '2021-05-09 13:45:50', '78555');
 
 -- --------------------------------------------------------
 
@@ -722,6 +808,40 @@ CREATE TABLE `operation_pay_historiques` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `paiements`
+--
+
+CREATE TABLE `paiements` (
+  `id` int(11) NOT NULL COMMENT 'table de vérification du paiement cinetpay',
+  `codepaiement` text NOT NULL,
+  `statuPaiement` text NOT NULL,
+  `amount` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `paiements`
+--
+
+INSERT INTO `paiements` (`id`, `codepaiement`, `statuPaiement`, `amount`, `created_at`, `updated_at`) VALUES
+(59, '20210424175815', '0', 10000, '2021-04-24 15:58:18', '2021-04-24 15:58:18'),
+(60, '20210424180921', '0', 6, '2021-04-24 16:09:21', '2021-04-24 16:09:21'),
+(61, '20210424181943', '0', 10000, '2021-04-24 16:19:43', '2021-04-24 16:19:43'),
+(62, '20210424204307', '0', 10000, '2021-04-24 18:43:07', '2021-04-24 18:43:07'),
+(63, '20210424204325', '0', 20000, '2021-04-24 18:43:25', '2021-04-24 18:43:25'),
+(64, '20210424235411', '0', 1250, '2021-04-24 22:54:11', '2021-04-24 22:54:11'),
+(65, '20210424235443', '0', 80000, '2021-04-24 22:54:44', '2021-04-24 22:54:44'),
+(66, '20210425195939', '0', 50000, '2021-04-25 18:59:39', '2021-04-25 18:59:39'),
+(67, '20210425200056', '0', 80000, '2021-04-25 19:00:56', '2021-04-25 19:00:56'),
+(68, '20210504085013', '0', 20000, '2021-05-04 07:50:13', '2021-05-04 07:50:13'),
+(69, '20210506115832', '0', 50000, '2021-05-06 10:58:32', '2021-05-06 10:58:32'),
+(70, '20210506115852', '0', 5000, '2021-05-06 10:58:52', '2021-05-06 10:58:52'),
+(71, '20210509154936', '0', 50000, '2021-05-09 14:49:36', '2021-05-09 14:49:36');
 
 -- --------------------------------------------------------
 
@@ -816,6 +936,62 @@ CREATE TABLE `produits` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `produits`
+--
+
+INSERT INTO `produits` (`id`, `produitMat`, `produitLibele`, `seuilAlert`, `produitPrix`, `produitPrixFour`, `description`, `image`, `unite_mesure`, `tva`, `autre_charge`, `categorie_id`, `created_at`, `updated_at`) VALUES
+(1, 'Prd1#03', 'LENOVO THINKPAD', 10, 900000, 800000, 'LENOVO THINKPAD', 'assets/img/illustrations/falcon.png', ' ', 0, 0, 1, '2021-05-05 08:01:06', '2021-05-05 09:55:28'),
+(2, 'Prd2#010', 'TABLETTE EDUC', 10, 70000, 50000, 'TABLETTE EDUC', 'assets/img/illustrations/falcon.png', ' ', 0, 0, 1, '2021-05-05 08:01:18', '2021-05-05 08:01:18'),
+(3, '[AB_0003]', 'ABATTANT SOFT SERT', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:28'),
+(4, '[AB_0004]', 'ABATTANT WORTHIT', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:28'),
+(5, '[AB_0005]', 'ABRASIL GRAND', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:29'),
+(6, '[AB_0006]', 'ABRASIL PETIT', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:29'),
+(7, '[AC_0007]', 'ACIDE CHLORYDRIUE', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:29'),
+(8, '[AC_0008]', 'ACIDE MURIATIQUE 1L', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:29'),
+(9, '[AD_0009]', 'ADAPTATEUR EST TETE BLANC', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:29'),
+(10, '[AD_0010]', 'ADAPTATEUR PLUGS', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:30'),
+(11, '[AD_0011]', 'ADAPTATEUR WANG TAI PREDATOR', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:30'),
+(12, '[AD_0012]', 'ADAPTEUR DE B6/B12 TETE ROUGE', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:30'),
+(13, '[AF_0013]', 'AFLIKOT 15Kg', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:30'),
+(14, '[AF_0014]', 'AFLIKOT 5KG', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:30'),
+(15, '[AG_0015]', 'AGRIFFE N°10-12', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:30'),
+(16, '[AG_0016]', 'AGRIFFE N°8-6', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:30'),
+(17, '[AI_0017]', 'AIMANT MEIQIA', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:31'),
+(18, '[AI_0018]', 'AIMANT MEITIAN', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:31'),
+(19, '[AI_0019]', 'AIMANT MEIYA', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:31'),
+(20, '[AM_0020]', 'AMPOULE 12W LED EMERGENCE', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:31'),
+(21, '[AM_0021]', 'AMPOULE 4 HELICE', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:31'),
+(22, '[AM_0022]', 'AMPOULE 5 HELICE', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:31'),
+(23, '[AM_0023]', 'AMPOULE 7W LED EMERGENCE', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:31'),
+(24, '[AM_0024]', 'AMPOULE ADES 6W', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:31'),
+(25, '[AM_0025]', 'AMPOULE CARRE 13W', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:32'),
+(26, '[AM_0026]', 'AMPOULE CARRE 18W', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:32'),
+(27, '[AM_0027]', 'AMPOULE CARRE 28W', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:32'),
+(28, '[AM_0028]', 'AMPOULE D\'APPLIQUE DE DOUCHE 60W', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:32'),
+(29, '[AM_0029]', 'AMPOULE EVERY DAY 18W B22', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:32'),
+(30, '[AM_0030]', 'AMPOULE EVERY DAY 36W B22', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:32'),
+(31, '[AM_0031]', 'AMPOULE KINSLUX 25 W ROUGE', 10, 900000, 800000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:33'),
+(32, '[AM_0032]', 'AMPOULE KINSLUX 25W E27', 10, 70000, 50000, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, '2021-05-05 09:55:33'),
+(33, '[AM_0033]', 'AMPOULE LED 12W MOSQUITO KILLER', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(34, '[AM_0034]', 'AMPOULE LED 15W', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(35, '[AM_0035]', 'AMPOULE LED 20W', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(36, '[AM_0036]', 'AMPOULE LED 28W', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(37, '[AM_0037]', 'AMPOULE LED 3W B22', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(38, '[AM_0038]', 'AMPOULE LED 3W BLEU B22', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(39, '[AM_0039]', 'AMPOULE LED 40W', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(40, '[AM_0040]', 'AMPOULE LED 50W', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(41, '[AM_0041]', 'AMPOULE LED 6W B22', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(42, '[AM_0042]', 'AMPOULE LED COULEUR 5W', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(43, '[AM_0043]', 'AMPOULE LED EN CAOUTCHOUC', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(44, '[AM_0044]', 'AMPOULE LED LIFE EVERYDAY 48W B22', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(45, '[AM_0045]', 'AMPOULE LED LIGHT 38W', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(46, '[AM_0046]', 'AMPOULE LED MIDEA 11W E27', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(47, '[AM_0047]', 'AMPOULE LED MIDEA 12W E27', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(48, '[AM_0048]', 'AMPOULE LED MIDEA 15W E27', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(49, '[AM_0049]', 'AMPOULE LED MIDEA 18W B22', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL),
+(50, '[AM_0050]', 'AMPOULE LED MIDEA 18W E27', 10, 1, 0, NULL, 'assets/img/illustrations/falcon.png', NULL, 0, 0, 1, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -849,6 +1025,21 @@ CREATE TABLE `produits_has_sortie_ops` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `produits_has_sortie_ops`
+--
+
+INSERT INTO `produits_has_sortie_ops` (`id`, `qte`, `prixvente`, `tva`, `produits_id`, `sortie_ops_id`, `created_at`, `updated_at`) VALUES
+(1, 4, 70000, NULL, 2, 1, '2021-05-05 11:38:07', '2021-05-05 11:38:07'),
+(2, 1, 900000, NULL, 15, 1, '2021-05-05 11:38:07', '2021-05-05 11:38:07'),
+(3, 14, 70000, NULL, 2, 1, '2021-05-05 11:38:07', '2021-05-05 11:38:07'),
+(4, 5, 70000, NULL, 18, 1, '2021-05-05 11:38:07', '2021-05-05 11:38:07'),
+(5, 5, 900000, NULL, 11, 1, '2021-05-05 11:38:07', '2021-05-05 11:38:07'),
+(6, 4, 70000, NULL, 22, 4, '2021-05-05 11:53:38', '2021-05-05 11:53:38'),
+(7, 2, 900000, NULL, 23, 4, '2021-05-05 11:53:38', '2021-05-05 11:53:38'),
+(8, 4, 70000, NULL, 22, 4, '2021-05-05 11:53:38', '2021-05-05 11:53:38'),
+(9, 5, 70000, NULL, 2, 5, '2021-05-05 11:55:46', '2021-05-05 11:55:46');
 
 -- --------------------------------------------------------
 
@@ -978,7 +1169,8 @@ CREATE TABLE `role_has_users` (
 INSERT INTO `role_has_users` (`id`, `roles_id`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, NULL, '2021-04-23 02:39:00'),
 (2, 1, 1, '2021-04-21 08:55:58', '2021-04-23 02:39:00'),
-(4, 3, 1, NULL, '2021-04-23 02:39:00');
+(4, 3, 1, NULL, '2021-04-23 02:39:00'),
+(6, 2, 1, '2021-04-23 18:55:28', '2021-04-23 18:55:28');
 
 -- --------------------------------------------------------
 
@@ -1037,29 +1229,32 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`id`, `cle`, `valeur`, `commentaire`, `created_at`, `updated_at`) VALUES
-(1, 'dedouanement', '0', 'Frais du dedouanement que dois supporter chaque produits dans le calcul de son prix', '2020-10-05 23:00:00', '2020-10-21 09:23:02'),
-(2, 'taxePort', '0', 'Les taxes du port que dois supporter chaque produits dans le calcul de son prix', '2020-10-05 23:00:00', '2020-10-08 23:12:09'),
-(3, 'fraisAnnexe', '0', 'Frais anexe que dois supporter chaque produits dans le calcul de son prix', '0000-00-00 00:00:00', '2020-10-08 23:12:09'),
-(4, 'margeVente', '0', 'Marge ajouter au prix brute du produit afin de geneer des benefices', '0000-00-00 00:00:00', '2020-10-08 23:12:09'),
+(1, 'dedouanement', '0', 'Frais du dedouanement que dois supporter chaque produits dans le calcul de son prix', '2020-10-05 23:00:00', '2021-05-09 15:11:36'),
+(2, 'taxePort', '0', 'Les taxes du port que dois supporter chaque produits dans le calcul de son prix', '2020-10-05 23:00:00', '2021-05-09 15:11:36'),
+(3, 'fraisAnnexe', '2', 'Frais anexe que dois supporter chaque produits dans le calcul de son prix', '0000-00-00 00:00:00', '2021-05-05 12:43:51'),
+(4, 'margeVente', '10', 'Marge ajouter au prix brute du produit afin de geneer des benefices', '0000-00-00 00:00:00', '2021-05-05 12:43:51'),
 (5, 'seuilPrd', '10', 'Niveaau critique du stock ou on doit etre alerter', NULL, NULL),
-(6, 'alertTel', '53808065', 'Nuero de telephone recevant les alertes defin de stock', NULL, '2020-10-08 23:13:56'),
-(7, 'alertMail', 'maattechnologie@gmail.com', 'Adresse mail recevant les alertes de fin de stock', NULL, '2020-10-08 23:13:56'),
+(6, 'alertTel', '01020304', 'Nuero de telephone recevant les alertes defin de stock', NULL, '2021-05-05 12:47:57'),
+(7, 'alertMail', 'xxxxx@gmail.com', 'Adresse mail recevant les alertes de fin de stock', NULL, '2021-05-09 15:11:48'),
 (8, 'etatAlert', '1', '', NULL, '2020-10-06 19:32:07'),
 (9, 'dateMiseEnligne', '05/10/2020', '', NULL, NULL),
-(10, 'devise', '1', '', NULL, '2020-10-21 09:23:43'),
-(11, 'mobileMoney', '0', '', NULL, '2020-10-16 13:14:19'),
-(12, 'sender', 'connecticka', 'Le senderId lors de la réception des SMS', '2021-02-16 16:31:55', '2021-02-16 16:31:55'),
-(13, 'about', 'Magasin de vêtement sise à cocdy', 'description de l\'entreprise', '2021-02-19 20:34:49', '2021-02-19 20:34:49'),
-(14, 'whatsApp', '2250777718083', 'whatsApp de l\'entreprise', '2021-02-19 20:39:22', '2021-02-19 20:39:22'),
-(15, 'facebook', 'WixShop', 'Nom de la page facebook', '2021-02-19 20:48:09', '2021-02-19 20:48:09'),
+(10, 'devise', '1', '', NULL, '2021-05-05 12:44:43'),
+(11, 'mobileMoney', '0', '', NULL, '2021-05-05 12:56:24'),
+(12, 'sender', 'Meneya', 'Le senderId lors de la réception des SMS', '2021-02-16 16:31:55', '2021-05-06 11:37:08'),
+(13, 'about', 'Encore plus de client pour vous avec MENEYA', 'description de l\'entreprise', '2021-02-19 20:34:49', '2021-05-05 15:21:28'),
+(14, 'whatsApp', '225010000000', 'whatsApp de l\'entreprise', '2021-02-19 20:39:22', '2021-02-19 20:39:22'),
+(15, 'facebook', 'https://facebook.com/', 'Nom de la page facebook', '2021-02-19 20:48:09', '2021-05-09 15:11:22'),
 (16, 'fblink', 'wwww.meneya.com', 'Lien de la page facebook', '2021-02-19 20:50:05', '2021-02-19 20:50:05'),
-(17, 'Entreprise', 'ALISHOP', 'Nom de votre entreprise', '2021-02-28 22:40:55', '2021-02-28 22:40:55'),
-(18, 'local', 'Abobo derrière barrage', '', '2021-02-28 22:45:36', '2021-02-28 22:45:36'),
+(17, 'Entreprise', 'NON DEFINIS', 'Nom de votre entreprise', '2021-02-28 22:40:55', '2021-02-28 22:40:55'),
+(18, 'local', 'NON DEFINIS', '', '2021-02-28 22:45:36', '2021-02-28 22:45:36'),
 (19, 'contact', '225 01 02 20 52 11', 'Le numéro de l\'entreprise', '2021-02-28 22:52:14', '2021-02-28 22:52:14'),
-(20, 'logo', 'assets/img/logos/meneya2.png', '', NULL, NULL),
-(21, 'domaine', 'alishop.meneya.com', NULL, NULL, NULL),
+(20, 'logo', 'storage/logo/6JHeSOhJ6GN6jvaCPSicR8XyWw0HH5wK0nLoVkx9.png', '', NULL, '2021-05-09 15:11:22'),
+(21, 'domaine', 'http://alishop.meneya.com', NULL, NULL, NULL),
 (22, 'supportMail', 'meneyaco@gmail.com', NULL, NULL, NULL),
-(23, 'nbrConnexion', '2', NULL, NULL, '2021-04-23 00:54:32');
+(23, 'nbrConnexion', '2', NULL, NULL, '2021-05-04 07:49:31'),
+(24, 'notifExpiration', '09/05/2021', NULL, NULL, '2021-05-09 13:23:05'),
+(25, 'sms_secret', 'H97p0ZwvhpZBriJfWqJCb5iMuupodaibo@5veXbt', 'SMS_secret id', '2021-04-23 21:29:36', '2021-04-23 23:15:05'),
+(26, 'sms_mail', 'kouame.ngues123@gmail.com', 'Email d\'envoie de sms', '2021-04-23 21:31:50', '2021-04-24 01:21:50');
 
 -- --------------------------------------------------------
 
@@ -1135,6 +1330,15 @@ CREATE TABLE `sortie_ops` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `sortie_ops`
+--
+
+INSERT INTO `sortie_ops` (`id`, `matSortie`, `libelleSortie`, `montantS`, `quantiteS`, `dateSortie`, `charges`, `chargesDesc`, `tva`, `operationsOperateurs_id`, `created_at`, `updated_at`) VALUES
+(1, 'SRT#05/05/2021#263', 'Sortie_Prunekcreation (Matr: 1|50.000 CFA|02/05/2021 )', 7010000, 29, '05/05/2021', NULL, 'aucun', NULL, 1, '2021-05-05 11:38:07', '2021-05-05 11:38:07'),
+(4, 'SRT#05/05/2021#527', 'Sortie_Prunekcreation (Matr: 1|-6.960.000 CFA|02/05/2021 )', 2360000, 10, '05/05/2021', NULL, 'aucun', NULL, 1, '2021-05-05 11:53:38', '2021-05-05 11:53:38'),
+(5, 'SRT#05/05/2021#695', 'Sortie_Prunekcreation (Matr: 1|-9.320.000 CFA|02/05/2021 )', 355000, 5, '06/05/2021', '5000', 'livraison', NULL, 1, '2021-05-05 11:55:46', '2021-05-05 11:55:46');
+
 -- --------------------------------------------------------
 
 --
@@ -1162,6 +1366,44 @@ CREATE TABLE `stock_principales` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `stock_principales`
+--
+
+INSERT INTO `stock_principales` (`id`, `stock_Qte`, `produits_id`, `created_at`, `updated_at`) VALUES
+(1, '440', 1, '2021-05-05 08:02:37', '2021-05-05 09:55:28'),
+(2, '400', 2, '2021-05-05 08:02:37', '2021-05-05 09:55:28'),
+(3, '60', 3, '2021-05-05 09:55:28', '2021-05-05 09:55:28'),
+(4, '400', 4, '2021-05-05 09:55:28', '2021-05-05 09:55:28'),
+(5, '60', 5, '2021-05-05 09:55:29', '2021-05-05 09:55:29'),
+(6, '200', 6, '2021-05-05 09:55:29', '2021-05-05 09:55:29'),
+(7, '60', 7, '2021-05-05 09:55:29', '2021-05-05 09:55:29'),
+(8, '200', 8, '2021-05-05 09:55:29', '2021-05-05 09:55:29'),
+(9, '60', 9, '2021-05-05 09:55:29', '2021-05-05 09:55:30'),
+(10, '200', 10, '2021-05-05 09:55:30', '2021-05-05 09:55:30'),
+(11, '60', 11, '2021-05-05 09:55:30', '2021-05-05 09:55:30'),
+(12, '200', 12, '2021-05-05 09:55:30', '2021-05-05 09:55:30'),
+(13, '60', 13, '2021-05-05 09:55:30', '2021-05-05 09:55:30'),
+(14, '200', 14, '2021-05-05 09:55:30', '2021-05-05 09:55:30'),
+(15, '60', 15, '2021-05-05 09:55:30', '2021-05-05 09:55:30'),
+(16, '200', 16, '2021-05-05 09:55:30', '2021-05-05 09:55:31'),
+(17, '60', 17, '2021-05-05 09:55:31', '2021-05-05 09:55:31'),
+(18, '200', 18, '2021-05-05 09:55:31', '2021-05-05 09:55:31'),
+(19, '60', 19, '2021-05-05 09:55:31', '2021-05-05 09:55:31'),
+(20, '200', 20, '2021-05-05 09:55:31', '2021-05-05 09:55:31'),
+(21, '60', 21, '2021-05-05 09:55:31', '2021-05-05 09:55:31'),
+(22, '200', 22, '2021-05-05 09:55:31', '2021-05-05 09:55:31'),
+(23, '60', 23, '2021-05-05 09:55:31', '2021-05-05 09:55:31'),
+(24, '200', 24, '2021-05-05 09:55:31', '2021-05-05 09:55:32'),
+(25, '60', 25, '2021-05-05 09:55:32', '2021-05-05 09:55:32'),
+(26, '200', 26, '2021-05-05 09:55:32', '2021-05-05 09:55:32'),
+(27, '60', 27, '2021-05-05 09:55:32', '2021-05-05 09:55:32'),
+(28, '200', 28, '2021-05-05 09:55:32', '2021-05-05 09:55:32'),
+(29, '60', 29, '2021-05-05 09:55:32', '2021-05-05 09:55:32'),
+(30, '200', 30, '2021-05-05 09:55:32', '2021-05-05 09:55:32'),
+(31, '60', 31, '2021-05-05 09:55:33', '2021-05-05 09:55:33'),
+(32, '200', 32, '2021-05-05 09:55:33', '2021-05-05 09:55:33');
 
 -- --------------------------------------------------------
 
@@ -1218,6 +1460,13 @@ CREATE TABLE `succursale_has_clients` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `succursale_has_clients`
+--
+
+INSERT INTO `succursale_has_clients` (`id`, `succursale_id`, `clients_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2021-05-05 10:01:31', '2021-05-05 10:01:31');
+
 -- --------------------------------------------------------
 
 --
@@ -1261,7 +1510,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `contact`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `localite`) VALUES
-(1, 'ADMIN', '53808065', 'admin@meneya.com', '2020-07-29 15:21:17', '$2y$10$arMlIFDcVVg4s0bhPQAkfOaGPMqrGzcU1f4bA6QYwsd8xIZhLuIq6', '', NULL, '2021-04-23 02:39:00', 'meneya20');
+(1, 'ADMIN', '53808065', 'admin@meneya.com', '2020-07-29 15:21:17', '$2y$10$uxTHB.BI32/9OY8tsRIU8uE24BJgxYOPmGWuwv3BYXFqg/u0OHnW6', '', NULL, '2021-05-09 15:02:58', 'meneya20');
 
 -- --------------------------------------------------------
 
@@ -1601,6 +1850,12 @@ ALTER TABLE `operation_pay_historiques`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `paiements`
+--
+ALTER TABLE `paiements`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `password_resets`
 --
 ALTER TABLE `password_resets`
@@ -1866,13 +2121,13 @@ ALTER TABLE `approvisionnements`
 -- AUTO_INCREMENT pour la table `arrivages`
 --
 ALTER TABLE `arrivages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `arrivage_has_produits`
 --
 ALTER TABLE `arrivage_has_produits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 
 --
 -- AUTO_INCREMENT pour la table `avances`
@@ -1908,7 +2163,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT pour la table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `clients_has_besoins`
@@ -1992,7 +2247,7 @@ ALTER TABLE `interesses`
 -- AUTO_INCREMENT pour la table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `migrations`
@@ -2004,7 +2259,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT pour la table `offres`
 --
 ALTER TABLE `offres`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `offres_has_acces_offres`
@@ -2016,25 +2271,31 @@ ALTER TABLE `offres_has_acces_offres`
 -- AUTO_INCREMENT pour la table `operateurs`
 --
 ALTER TABLE `operateurs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `operations`
 --
 ALTER TABLE `operations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `operation_has_operateurs`
 --
 ALTER TABLE `operation_has_operateurs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `operation_pay_historiques`
 --
 ALTER TABLE `operation_pay_historiques`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `paiements`
+--
+ALTER TABLE `paiements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'table de vérification du paiement cinetpay', AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT pour la table `prets`
@@ -2058,7 +2319,7 @@ ALTER TABLE `princip_factu_avoirs`
 -- AUTO_INCREMENT pour la table `produits`
 --
 ALTER TABLE `produits`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT pour la table `produits_has_approvisionnements`
@@ -2070,7 +2331,7 @@ ALTER TABLE `produits_has_approvisionnements`
 -- AUTO_INCREMENT pour la table `produits_has_sortie_ops`
 --
 ALTER TABLE `produits_has_sortie_ops`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT pour la table `produits_has_ventes_succursales`
@@ -2130,7 +2391,7 @@ ALTER TABLE `salaries`
 -- AUTO_INCREMENT pour la table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT pour la table `sms`
@@ -2148,7 +2409,7 @@ ALTER TABLE `sms_has_clients`
 -- AUTO_INCREMENT pour la table `sortie_ops`
 --
 ALTER TABLE `sortie_ops`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `stock_operateurs`
@@ -2160,7 +2421,7 @@ ALTER TABLE `stock_operateurs`
 -- AUTO_INCREMENT pour la table `stock_principales`
 --
 ALTER TABLE `stock_principales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT pour la table `stock_succursales`
@@ -2172,13 +2433,13 @@ ALTER TABLE `stock_succursales`
 -- AUTO_INCREMENT pour la table `succursales`
 --
 ALTER TABLE `succursales`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `succursale_has_clients`
 --
 ALTER TABLE `succursale_has_clients`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `super_admins`
@@ -2190,7 +2451,7 @@ ALTER TABLE `super_admins`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `user_has_acces`
