@@ -1,5 +1,5 @@
 <div class="card mb-3">
-  <div class="bg-holder d-none d-lg-block bg-card" 
+  <div class="bg-holder d-none d-lg-block bg-card"
    style="background-image:url(../assets/img/illustrations/corner-4.png);">
   </div>
   <!--/.bg-holder-->
@@ -24,7 +24,7 @@
                   <div class="border rounded h-100 d-flex flex-column justify-content-between pb-3">
                     <div class="overflow-hidden">
                       <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="#">
-                        <img class="img-fluid rounded-top" 
+                        <img class="img-fluid rounded-top"
                          src="{{$sms->img}}" alt="" /></a>
                         <span class="badge badge-pill badge-success position-absolute r-0 t-0 mt-2 mr-2 z-index-2">Pub</span>
                       </div>
@@ -48,23 +48,23 @@
 
                         <p class="fs--1 mb-1">Messages: <strong>
                           {{$sms->msg}}</strong></p>
-                       
+
                       </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between px-3">
                       <div><b>Publié le {{$sms->datesms}}</b></div>
-                      
+
                       <div>
 
-                        <a class="btn btn-sm btn-falcon-default mr-2 deleteSMS" 
+                        <a class="btn btn-sm btn-falcon-default mr-2 deleteSMS"
                         href="#!" data-toggle="tooltip" data-placement="top" title="Supprimer" id="{{$sms->id}}">
                         <span class="far fa-trash-alt text-danger"></span>
                         </a>
-                        
+
                       </div>
 
                       <div>
-                         <a class="btn btn-sm btn-falcon-default mr-2" 
+                         <a class="btn btn-sm btn-falcon-default mr-2"
                         href="{{$shareL.$sms->id}}" data-toggle="tooltip" data-placement="top" title="voir" target="_blank">
                         <span class="far fa-eye text-warning"></span>
                         </a>
@@ -82,8 +82,8 @@
             </div>
           </div>
 </div>
-                
-<script src="{{ asset('assets/js/theme.js') }}"></script> 
+
+<script src="{{ asset('assets/js/theme.js') }}"></script>
 <script type="text/javascript">
   $('.deleteSMS').click(function(){
     var idS = $(this).attr('id');
@@ -118,8 +118,8 @@
       }
     })
 
-      
-      
+
+
   });
 
-</script>   
+</script>

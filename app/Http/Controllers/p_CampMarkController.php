@@ -32,18 +32,30 @@ class p_CampMarkController extends Controller
     {
         return view('home');
     }
-    
+
     // Formulaire pour créer une campagne marketing
     public function CampgNew()
     {
         //Sender
          $setting = DB::table('settings')->where('cle','=','sender')->get();
-         for ($i=0; $i < count($setting); $i++) { 
+         for ($i=0; $i < count($setting); $i++) {
            $sender = $setting[$i]->valeur;
          }
 
+        // Nombe Total de Clients
+        $clients = DB::table('clients')->where('statutClt', 1)->get();
+        $nbclient = count($clients);
+
+        // Nombre total de prospects
+        $prosp = DB::table('clients')->where('statutClt', 0)->get();
+        $nbprosp = count($prosp);
+
+
+
          return view('pages.principale.marketing.p_campNew')
-                ->with('sender',$sender);
+                ->with('sender',$sender)
+                ->with('clients',$nbclient)
+                ->with('prospect',$nbprosp);
     }
 
 
@@ -60,9 +72,8 @@ class p_CampMarkController extends Controller
          $liv     = $request->liv;
          $descrp  = $request->descrp;
          $smsPr   = $request->smsPr;
+         $cible   = $request->cible2ID;
          $date = date('d/m/Y');
-
-
 
         // Traitement des données
          $path = $photo->store('Product','public');
@@ -78,39 +89,46 @@ class p_CampMarkController extends Controller
                   'msg'    =>$smsPr,
                   'img'    =>$photoF,
                  ];
+
          $product = sms::create($data);
          $idProduct = $product->id;
-
         // Liens de partages
          $shareLink = env('APP_URL').'/camp?id='.$idProduct;
          $MsgF = $smsPr.'.cliquez sur '.$shareLink." pour voir";
 
         // Lecture des numéros clients et envoie du message
-         $clients = clients::all();
-         for ($i=0; $i < count($clients); $i++) { 
-            $tel     = $clients[$i]->contact;
-            $datasms = Sendsms($MsgF,$tel,$sender);
+         //$clients = clients::all();
+         $clients = DB::table('clients')->where('statutClt', $cible)->get();
+         $nb = count($clients);
+
+         if ($nb!=0)
+         {
+           for ($i=0; $i < count($clients) ; $i++)
+           {
+             //Sendsms($MsgF,$clients[$i]->contact,$sender);
+           }
+
+             if ($cible==0) {
+               $alert="Vos prospects ont bien reçu la campagne";
+             }
+             else {
+               $alert="Vos clients ont bien reçu la campagne";
+             }
+
+
+         }
+         else {
+           if ($cible==0) {
+             $alert="Votre campagne a échoué car vous n'avez aucun prospects";
+             DB::table('sms')->where('id', '=',$idProduct)->delete();
+
+           }
+           else {
+             $alert="Votre campagne a échoué car vous n'avez aucun client";
+             DB::table('sms')->where('id', '=',$idProduct)->delete();
+           }
          }
 
-
-        // Rédirection
-         $obj = json_decode($datasms);
-         if (isset($obj->success)) {
-            if ($obj->success==1) {
-                $alert = "Vos clients ont bien reçu la campagne";
-            }else{
-                $alert = "Erreur d'envoie veuillez contacter le support technique de MENEYA";
-            }
-         }else{
-            $alert =  $obj->error ;
-         }
-
-        // Retour des données
-        /* return view('smspromo')
-                ->with('alert',$alert);*/
-
-         //dd($obj);
-         //echo $obj->error;
 
          return redirect('/smspromo?alert='.$alert);
 
@@ -133,27 +151,35 @@ class p_CampMarkController extends Controller
         // Réception des données
          $smsPn = $request->smsPn;
          $sender = $request->sender;
-
+         $cible = $request->cible;
         // Filtre des clients
-         $clients = DB::table('clients')->where('statutClt', '1')->get();
-         for ($i=0; $i < count($clients) ; $i++) { 
-            $datasms =  Sendsms($smsPn,$clients[$i]->contact,$sender);
-         }
+         $clients = DB::table('clients')->where('statutClt', $cible)->get();
+         $nb = count($clients);
+         // dd($clients);
+         if ($nb!=0)
+         {
+           for ($i=0; $i < count($clients) ; $i++)
+           {
+             $datasms = Sendsms($smsPn,$clients[$i]->contact,$sender);
+           }
+            // dd($datasms);
 
-        // Traitement en json
-         $obj = json_decode($datasms);
-         if (isset($obj->success)) {
-            if ($obj->success==1) {
-             $alert = "Vos clients ont bien reçu la campagne";
-            }else{
-             $alert = "Erreur d'envoie veuillez contacter le support technique de Meneya";
-            }
-             
-         }else{
-             $alert = $obj->error;
-         }
+             if ($cible==0) {
+               echo "Vos prospects ont bien reçu la campagne";
+             }
+             else {
+               echo "Vos clients ont bien reçu la campagne";
+             }
 
-         echo $alert;
+
+         }else {
+           if ($cible==0) {
+             echo "Vous n'avez aucun prospects";
+           }
+           else {
+             echo "Vous n'avez aucun client";
+           }
+         }
 
     }
 
@@ -197,7 +223,7 @@ class p_CampMarkController extends Controller
     // Détails d'une commande
      public function comdShow(Request $request)
      {
-         
+
         // Réception des données
          $idInters = $request->idInters;
          $SMSID    = $request->SMSID;
@@ -220,7 +246,7 @@ class p_CampMarkController extends Controller
             }
            echo '
            <div class="row">
-                
+
                 <div class="col-lg-12">
                     <h5>Produit: '.$value->titre.'</h5>
 
@@ -236,8 +262,8 @@ class p_CampMarkController extends Controller
                     <a class="fs--1 mb-2 d-block text-dark" href="#!">
                     Prix ancien:<del class="mr-1"> '.$value->prixold.' '.getMyDevise().'</del>
                     </a>
-                    
-                    
+
+
                     <a class="fs--1 mb-2 d-block text-dark" href="#!">
                      Livraison: '.$liv.' '.getMyDevise().'</a>
 
@@ -301,11 +327,11 @@ class p_CampMarkController extends Controller
                ->with('nbt',$nbt)
                ->with('pagePath',$pagePath)
                ->with('perPage',$perPage);
-       
+
     }
 
 
 
-    
+
 
 }

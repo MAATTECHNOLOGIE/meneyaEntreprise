@@ -6,7 +6,7 @@
                 <div class="col-lg-6"><img class="img-fluid" src="../assets/img/illustrations/4.png" alt=""></div>
                 <div class="col-lg-6 pl-lg-4 my-5 text-center text-lg-left">
                   <h3>J'augmente mes ventes !!</h3>
-                  
+
                   <div class="alert alert-success" role="alert">
                      <h4 class="alert-heading font-weight-semi-bold">
                      	Bien joué !!!
@@ -20,7 +20,7 @@
                   	OK
                   </a><br><br>
                   <span>
-                  	<b>*Note:</b> Contactez le support technique Meneya pour toutes difficultés rencontrées.<br> +225 01 02 20 52 11 / +225 07 88 83 30 60 / meneyaco@gmail.com <br> Tchater directement avec le service client .
+                  	<b>*Note:</b> Contactez le support technique Meneya pour toutes difficultés rencontrées.<br>+225 07 88 83 30 60 / support@meneya.com <br> Tchater directement avec le service client .
                   </span>
                 </div>
               </div>

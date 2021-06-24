@@ -41,7 +41,7 @@ use Illuminate\Support\Facades\Route;
   Route::match(["get","post"],"/cinetpay_notify_sms",
     "abonmntControl@cinetpay_notify_sms")
   ->name('cinetpay_notify_sms');
- 
+
 
 
 
@@ -58,7 +58,7 @@ use Illuminate\Support\Facades\Route;
      Route::get('alertAbonmnt','abonmntControl@alertAbonmnt');
     // Update du forfait
      Route::get('updForfait', 'abonmntControl@updForfait');
-     
+
     // Info Abonnement
      Route::get('myAbonmnt', 'abonmntControl@myAbonmnt');
 
@@ -90,7 +90,7 @@ use Illuminate\Support\Facades\Route;
     ---------------
      Une personne depose une somme d'argent
      pour une ou plusieurs opérations données.
-     Il faut suivre les sorties et la solvabilité 
+     Il faut suivre les sorties et la solvabilité
      de l'operation de l'opérateur en question.
    ********************
   */
@@ -109,13 +109,13 @@ use Illuminate\Support\Facades\Route;
         // Opérateur => Modification phase 1
           Route::get('p_OpUpd','p_OperaController@p_OpUpd')->name('p_OpUpd');
 
-        // Opérateur => Modification phase 2 
+        // Opérateur => Modification phase 2
           Route::get('p_OpUpval','p_OperaController@p_OpUpval')->name('p_OpUpval');
 
         // Opérateur => Opération
           Route::match(["get","post"],"p_OpTion",
             'p_OperaController@p_OpTion')->name('p_OpTion');
-          
+
         // Opérateur => Modification phase 2
          Route::get('p_OperaUpd2','p_OperaController@p_OperaUpd2')->name('p_OperaUpd2');
 
@@ -126,11 +126,11 @@ use Illuminate\Support\Facades\Route;
          Route::match(["get","post"],'p_listeSortie','p_OperaController@p_listeSortie')->name('p_listeSortie');
          Route::get('p_opRecuSorti','p_OperaController@p_opRecuSorti')->name('p_opRecuSorti');
 
-        
+
 
         // Suppression d'une sortie
          Route::get('p_SortieDel','p_OperaController@p_SortieDel')->name('p_SortieDel');
-         
+
         // Suppression d'un produit lié à une sortie
          Route::get('delPrd','p_OperaController@delPrd')
               ->name('delPrd');
@@ -154,15 +154,15 @@ use Illuminate\Support\Facades\Route;
         // Vider le panier de la sortie
         Route::get('suprSortie','p_OperaController@suprSortie')->name('suprSortie');
 
-        // Enregistrer la sortie d'une opération 
+        // Enregistrer la sortie d'une opération
          Route::get('saveSortie','p_OperaController@saveSortie')->name('saveSortie');
 
-        //Ajout credit operation 
+        //Ajout credit operation
          Route::get('addCredit','p_OperaController@addCredit')->name('addCredit');
 
         // Story de paiement des crédits liées une opération
          Route::get("story","p_OperaController@story")->name("story");
-        
+
         // Détails d'une sortie liée à une operation
           Route::get('p_opDet','p_OperaController@p_opDet')->name('p_opDet');
 
@@ -191,7 +191,7 @@ use Illuminate\Support\Facades\Route;
    *******************
     * Cas pratique*
     ---------------
-     Un propspect est une personne qui vient prendre des 
+     Un propspect est une personne qui vient prendre des
      rensignements sur un produit sans acheter.
      L'objectif est de faire une prospection automatque.
    ********************
@@ -206,7 +206,7 @@ use Illuminate\Support\Facades\Route;
         // Suppression globale des besoins
                 Route::get('p_DelBesAll','p_prospController@p_DelBesAll')
                       ->name('p_DelBesAll');
-        
+
         // Liste des prospects
          Route::get('p_prospL','p_prospController@p_prospL')->name('prospect');
 
@@ -278,7 +278,7 @@ use Illuminate\Support\Facades\Route;
     // SMS Marketing unique
      Route::get('sendUniqSMS','p_CampMarkController@sendUniqSMS')->name('sendUniqSMS');
 
-    // Campagne marketing groupé 
+    // Campagne marketing groupé
        Route::get('sendNSMS','p_CampMarkController@sendNSMS')->name('sendNSMS');
 
     // Vider l'historique des sms
@@ -289,8 +289,8 @@ use Illuminate\Support\Facades\Route;
 ----------------------------*/
   // Nouvelle commandes
    Route::get('CommdNew','p_CampMarkController@CommdNew')->name('CommdNew');
-  
-  //Listes des commandes 
+
+  //Listes des commandes
    Route::get('CommdLvr','p_CampMarkController@CommdLvr')->name('CommdLvr');
 
   // Suppression d'une commande
@@ -304,13 +304,13 @@ use Illuminate\Support\Facades\Route;
 
   // Supprimer toutes les commandes
    Route::get('p_DelCdAll','p_CampMarkController@p_DelCdAll')->name('p_DelCdAll');
-   
-   
 
-   
 
-   
-   
+
+
+
+
+
 
 
 
@@ -340,13 +340,13 @@ use Illuminate\Support\Facades\Route;
     // Supprimer un fournisseur
      Route::get('/delFour', 'p_FourniController@delFour')->name('delFour');
 
-    // Fournisseur => Update 
+    // Fournisseur => Update
      Route::post('/editF', 'p_FourniController@editF')->name('editF');
      Route::post('/updateF', 'p_FourniController@updateF')->name('updateF');
-    
+
     // Fournisseur => Echeance consulter
      Route::post('/showFour','p_FourniController@showFour')->name('showFour');
-    
+
     // Echeance
      Route::get('/p_Eche', 'p_FourniController@p_Eche')->name('p_Eche');
      Route::post('/EcheFour','p_FourniController@EcheFour')->name('EcheFour');
@@ -377,7 +377,7 @@ use Illuminate\Support\Facades\Route;
 */
 
         Route::get('/appSuc','GestionSuccursaleController@appSuc')->name('appSuc');
-        
+
         // Enregistrement de la commande
          Route::match(["get","post"],'/s_Vente',
                       's_VenteController@s_Vente')
@@ -386,21 +386,21 @@ use Illuminate\Support\Facades\Route;
         // Formulaire Ajout d'une vente
           Route::get('/Addvente', 's_VenteController@Addvente')->name('Addvente');
 
-       //Recup produit de la principal 
+       //Recup produit de la principal
        Route::get('ajaxRecupPrdSuc','s_VenteController@ajaxRecupPrdSuc');
 
        //enregistre un prd d'une vente
         Route::post('/savePrdAchatSuc','s_VenteController@savePrdAchatSuc' );
 
-        //Liste des produits de l'achat 
+        //Liste des produits de l'achat
         Route::get('/lPrdAchat','s_VenteController@lPrdAchat' );
 
-        //Suprimer la vente en session 
+        //Suprimer la vente en session
         Route::get('/delAchatSuc','s_VenteController@delAchatSuc');
-        //Suprimer un produit de la vente en session 
+        //Suprimer un produit de la vente en session
         Route::get('/delPrdAchatSuc','s_VenteController@delPrdAchatSuc');
 
-        //Enregistrer la vente en session 
+        //Enregistrer la vente en session
         Route::get('/saveAchatSuc','s_VenteController@saveAchatSuc');
 
        //Recu de la vente
@@ -411,10 +411,10 @@ use Illuminate\Support\Facades\Route;
         Route::get('/validVntSuc','s_VenteController@validVntSuc');
 
        //Editer une vente de la principales
-       Route::post('editVntSuc','s_VenteController@editVntSuc'); 
+       Route::post('editVntSuc','s_VenteController@editVntSuc');
 
        //Suprimer un prduit d'une vente de la principales
-       Route::get('delPrdVntSuc','s_VenteController@delPrdVntSuc'); 
+       Route::get('delPrdVntSuc','s_VenteController@delPrdVntSuc');
 
       //Mis a jour d'une vente / achat
         Route::get('/updAchatSuc','s_VenteController@updAchatSuc');
@@ -437,7 +437,7 @@ use Illuminate\Support\Facades\Route;
           Route::get('/histCrd','s_CreditController@histCrd')->name('histCrd');
 
 
-        //Payer un credit 
+        //Payer un credit
           Route::post('/s_payCrd','s_CreditController@s_payCrd')->name('s_payCrd');
 
         //Suprimer credit
@@ -470,4 +470,3 @@ use Illuminate\Support\Facades\Route;
 
        // Mise à jour Entreprise
        Route::post('updEntp','SettingController@updEntp')->name('updEntp');
-       
