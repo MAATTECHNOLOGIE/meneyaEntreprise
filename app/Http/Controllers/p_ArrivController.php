@@ -55,10 +55,7 @@ class p_ArrivController extends Controller
                      'prix'     => $request->prix,
   	                 'prixV'     => $request->prixV,
   	                 'article'     => $request->article,
-  	                 'idArticle'     => $request->article,
-
-
-  	                 );
+  	                 'idArticle'     => $request->article,);
   	                $_SESSION["arrivPrd"][$count] = $item_array;
   	              }
   	          else

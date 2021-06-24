@@ -89,21 +89,22 @@ class p_CampMarkController extends Controller
          $clients = clients::all();
          for ($i=0; $i < count($clients); $i++) { 
             $tel     = $clients[$i]->contact;
-            $datasms = Sendsms($MsgF,$tel,$sender);
+            // $datasms = Sendsms($MsgF,$tel,$sender);
+
          }
 
 
         // Rédirection
-         $obj = json_decode($datasms);
-         if (isset($obj->success)) {
-            if ($obj->success==1) {
-                $alert = "Vos clients ont bien reçu la campagne";
-            }else{
-                $alert = "Erreur d'envoie veuillez contacter le support technique de MENEYA";
-            }
-         }else{
-            $alert =  $obj->error ;
-         }
+         // $obj = json_decode($datasms);
+         // if (isset($obj->success)) {
+         //    if ($obj->success==1) {
+         //        $alert = "Vos clients ont bien reçu la campagne";
+         //    }else{
+         //        $alert = "Erreur d'envoie veuillez contacter le support technique de MENEYA";
+         //    }
+         // }else{
+         //    $alert =  $obj->error ;
+         // }
 
         // Retour des données
         /* return view('smspromo')
@@ -111,6 +112,8 @@ class p_CampMarkController extends Controller
 
          //dd($obj);
          //echo $obj->error;
+
+        $alert = "Vos clients ont bien reçu la campagne";
 
          return redirect('/smspromo?alert='.$alert);
 

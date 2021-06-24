@@ -662,7 +662,7 @@ class p_OperaController extends Controller
         // liste des produits de la sortie;
          $option_opteur = operation_has_operateurs::find($_SESSION['sortieid']);
 
-        return view('pages/principale/Operateur/listPrdSortie')
+        return view('pages/principale/operateur/listPrdSortie')
                 ->with('option_opteur',$option_opteur)
                 ->with('operation',$operation)
                 ->with('operationcode',$operationcode)

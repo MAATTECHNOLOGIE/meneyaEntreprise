@@ -54,8 +54,7 @@ class GestionArchives extends Controller
 
     //  !!!!!!!!!!!!!!!!  Lien des image  !!!!!!!!!!!!!!!! 
       
-          // $lien = 'myapp/storage/app/public/';  //en ligne
-          $lien = 'storage/';                // en local
+          $lien = env('LIEN_FILE');
 
         //  !!!!!!!!!!!!!!!!  Lien des image  !!!!!!!!!!!!!!!!!!
    
